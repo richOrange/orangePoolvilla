@@ -75,7 +75,7 @@
                     <nav class="classy-navbar justify-content-between" id="robertoNav">
 
                         <!-- Logo -->
-                        <a class="nav-brand" href="${pageContext.request.contextPath}/template/index.html"><img src="${pageContext.request.contextPath}/template/./img/core-img/logo.png" alt=""></a>
+                        <a class="nav-brand" href="${pageContext.request.contextPath}/template/index.html"><img src="${pageContext.request.contextPath}/template/img/core-img/logo.png" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
