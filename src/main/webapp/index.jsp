@@ -140,7 +140,7 @@
     <section class="welcome-area">
         <div class="welcome-slides owl-carousel">
             <!-- Single Welcome Slide -->
-            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(img/bg-img/16.jpg);" data-img-url="img/bg-img/16.jpg">
+            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/16.jpg);" data-img-url="${pageContext.request.contextPath}/template/img/bg-img/16.jpg">
                 <!-- Welcome Content -->
                 <div class="welcome-content h-100">
                     <div class="container h-100">
@@ -159,7 +159,7 @@
             </div>
 
             <!-- Single Welcome Slide -->
-            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(img/bg-img/17.jpg);" data-img-url="img/bg-img/17.jpg">
+            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/17.jpg);" data-img-url="${pageContext.request.contextPath}/template/img/bg-img/17.jpg">
                 <!-- Welcome Content -->
                 <div class="welcome-content h-100">
                     <div class="container h-100">
@@ -178,7 +178,7 @@
             </div>
 
             <!-- Single Welcome Slide -->
-            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(img/bg-img/18.jpg);" data-img-url="img/bg-img/18.jpg">
+            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/18.jpg);" data-img-url="${pageContext.request.contextPath}/template/img/bg-img/18.jpg">
                 <!-- Welcome Content -->
                 <div class="welcome-content h-100">
                     <div class="container h-100">
@@ -344,7 +344,7 @@
             <!-- Single Room Slide -->
             <div class="single-room-slide d-flex align-items-center">
                 <!-- Thumbnail -->
-                <div class="room-thumbnail h-100 bg-img" style="background-image: url(img/bg-img/16.jpg);"></div>
+                <div class="room-thumbnail h-100 bg-img" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/16.jpg);"></div>
 
                 <!-- Content -->
                 <div class="room-content">
@@ -363,7 +363,7 @@
             <!-- Single Room Slide -->
             <div class="single-room-slide d-flex align-items-center">
                 <!-- Thumbnail -->
-                <div class="room-thumbnail h-100 bg-img" style="background-image: url(img/bg-img/17.jpg);"></div>
+                <div class="room-thumbnail h-100 bg-img" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/17.jpg);"></div>
 
                 <!-- Content -->
                 <div class="room-content">
@@ -474,7 +474,7 @@
         <!-- Projects Slide -->
         <div class="projects-slides owl-carousel">
             <!-- Single Project Slide -->
-            <div class="single-project-slide active bg-img" style="background-image: url(img/bg-img/5.jpg);">
+            <div class="single-project-slide active bg-img" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/5.jpg);">
                 <!-- Project Text -->
                 <div class="project-content">
                     <div class="text">
@@ -494,7 +494,7 @@
             </div>
 
             <!-- Single Project Slide -->
-            <div class="single-project-slide bg-img" style="background-image: url(img/bg-img/6.jpg);">
+            <div class="single-project-slide bg-img" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/6.jpg);">
                 <!-- Project Text -->
                 <div class="project-content">
                     <div class="text">
@@ -514,7 +514,7 @@
             </div>
 
             <!-- Single Project Slide -->
-            <div class="single-project-slide bg-img" style="background-image: url(img/bg-img/7.jpg);">
+            <div class="single-project-slide bg-img" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/7.jpg);">
                 <!-- Project Text -->
                 <div class="project-content">
                     <div class="text">
@@ -534,7 +534,7 @@
             </div>
 
             <!-- Single Project Slide -->
-            <div class="single-project-slide bg-img" style="background-image: url(img/bg-img/8.jpg);">
+            <div class="single-project-slide bg-img" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/8.jpg);">
                 <!-- Project Text -->
                 <div class="project-content">
                     <div class="text">
@@ -554,7 +554,7 @@
             </div>
 
             <!-- Single Project Slide -->
-            <div class="single-project-slide bg-img" style="background-image: url(img/bg-img/9.jpg);">
+            <div class="single-project-slide bg-img" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/9.jpg);">
                 <!-- Project Text -->
                 <div class="project-content">
                     <div class="text">
@@ -646,7 +646,7 @@
     <!-- Call To Action Area Start -->
     <section class="roberto-cta-area">
         <div class="container">
-            <div class="cta-content bg-img bg-overlay jarallax" style="background-image: url(img/bg-img/1.jpg);">
+            <div class="cta-content bg-img bg-overlay jarallax" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/1.jpg);">
                 <div class="row align-items-center">
                     <div class="col-12 col-md-7">
                         <div class="cta-text mb-50">
