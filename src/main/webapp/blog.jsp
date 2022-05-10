@@ -11,7 +11,7 @@
     <title>Roberto - Hotel &amp; Resort HTML Template</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/img/core-img/favicon.png">
+    <link rel="icon" href="${pageContext.request.contextPath}/template/img/core-img/favicon.png">
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/style.css">
@@ -74,7 +74,7 @@
                     <nav class="classy-navbar justify-content-between" id="robertoNav">
 
                         <!-- Logo -->
-                        <a class="nav-brand" href="${pageContext.request.contextPath}/template/index.html"><img src="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/img/core-img/logo.png" alt=""></a>
+                        <a class="nav-brand" href="${pageContext.request.contextPath}/template/index.html"><img src="${pageContext.request.contextPath}/template/img/core-img/logo.png" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -90,18 +90,18 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul id="nav">
-                                    <li class="active"><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/index.html">Home</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/room.html">Rooms</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/about.html">About Us</a></li>
+                                    <li class="active"><a href="${pageContext.request.contextPath}/template/index.html">Home</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/template/room.html">Rooms</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/template/about.html">About Us</a></li>
                                     <li><a href="${pageContext.request.contextPath}/template/#">Pages</a>
                                         <ul class="dropdown">
-                                            <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/index.html">- Home</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/room.html">- Rooms</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/single-room.html">- Single Rooms</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/about.html">- About Us</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/blog.html">- Blog</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/single-blog.html">- Single Blog</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/contact.html">- Contact</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/template/index.html">- Home</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/template/room.html">- Rooms</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/template/single-room.html">- Single Rooms</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/template/about.html">- About Us</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/template/blog.html">- Blog</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/template/single-blog.html">- Single Blog</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/template/contact.html">- Contact</a></li>
                                             <li><a href="${pageContext.request.contextPath}/template/#">- Dropdown</a>
                                                 <ul class="dropdown">
                                                     <li><a href="${pageContext.request.contextPath}/template/#">- Dropdown Item</a></li>
@@ -112,8 +112,8 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/blog.html">News</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/template/${pageContext.request.contextPath}/template/contact.html">Contact</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/template/blog.html">News</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/template/contact.html">Contact</a></li>
                                 </ul>
 
                                 <!-- Search -->
