@@ -1,44 +1,42 @@
 package vo;
 
-public class Order {
-	private int orderNo;
+public class Reservation {
+	private int reservationNo;
 	private String customerId;
 	private String pvNo;
 	private String reservationBeginDate;
 	private String reservationLastDate;
-	private String orderStatus;
+	private String reservationStatus;
 	private String createDate;
 	private String updateDate;
-	
-	public Order() {
+	public Reservation() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	
-	public Order(int orderNo, String customerId, String pvNo, String reservationBeginDate, String reservationLastDate,
-			String orderStatus, String createDate, String updateDate) {
+	public Reservation(int reservationNo, String customerId, String pvNo, String reservationBeginDate,
+			String reservationLastDate, String reservationStatus, String createDate, String updateDate) {
 		super();
-		this.orderNo = orderNo;
+		this.reservationNo = reservationNo;
 		this.customerId = customerId;
 		this.pvNo = pvNo;
 		this.reservationBeginDate = reservationBeginDate;
 		this.reservationLastDate = reservationLastDate;
-		this.orderStatus = orderStatus;
+		this.reservationStatus = reservationStatus;
 		this.createDate = createDate;
 		this.updateDate = updateDate;
 	}
-	
 	@Override
 	public String toString() {
-		return "Order [orderNo=" + orderNo + ", customerId=" + customerId + ", pvNo=" + pvNo + ", reservationBeginDate="
-				+ reservationBeginDate + ", reservationLastDate=" + reservationLastDate + ", orderStatus=" + orderStatus
-				+ ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
+		return "Reservation [reservationNo=" + reservationNo + ", customerId=" + customerId + ", pvNo=" + pvNo
+				+ ", reservationBeginDate=" + reservationBeginDate + ", reservationLastDate=" + reservationLastDate
+				+ ", reservationStatus=" + reservationStatus + ", createDate=" + createDate + ", updateDate="
+				+ updateDate + "]";
 	}
-	
-	public int getOrderNo() {
-		return orderNo;
+	public int getReservationNo() {
+		return reservationNo;
 	}
-	public void setOrderNo(int orderNo) {
-		this.orderNo = orderNo;
+	public void setReservationNo(int reservationNo) {
+		this.reservationNo = reservationNo;
 	}
 	public String getCustomerId() {
 		return customerId;
@@ -64,11 +62,11 @@ public class Order {
 	public void setReservationLastDate(String reservationLastDate) {
 		this.reservationLastDate = reservationLastDate;
 	}
-	public String getOrderStatus() {
-		return orderStatus;
+	public String getReservationStatus() {
+		return reservationStatus;
 	}
-	public void setOrderStatus(String orderStatus) {
-		this.orderStatus = orderStatus;
+	public void setReservationStatus(String reservationStatus) {
+		this.reservationStatus = reservationStatus;
 	}
 	public String getCreateDate() {
 		return createDate;
@@ -82,4 +80,5 @@ public class Order {
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
+	
 }
