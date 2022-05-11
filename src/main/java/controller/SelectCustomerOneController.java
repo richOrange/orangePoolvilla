@@ -14,16 +14,16 @@ import vo.Customer;
 @WebServlet("/SelectCustomerOneController")
 public class SelectCustomerOneController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//session °ª ¿äÃ»
+		//session ê°’ ìš”ì²­
 		HttpSession session = request.getSession();
 	    String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
-	    //·Î±×ÀÎÀÌ ¾ÈµÇ¾îÀÖÀ» °æ¿ì LoginController·Î º¸³¿
+	    //ë¡œê·¸ì¸ì´ ì•ˆë˜ì–´ìˆì„ ê²½ìš° LoginControllerë¡œ ë³´ëƒ„
 	    if(sessionCustomerId == null) {
 	        response.sendRedirect(request.getContextPath()+"/LoginController");
 	        System.out.println("notLogin");
 	        return;
 	    }
-	    //¸ğµ¨ È£Ãâ
+	    //ëª¨ë¸ í˜¸ì¶œ 
 	    CustomerDao CustomerDao = new CustomerDao();
 	    Customer customer = CustomerDao.selectCustomerOne(sessionCustomerId);
 	    request.setAttribute("Customer", customer);

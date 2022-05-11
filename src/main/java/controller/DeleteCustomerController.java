@@ -15,55 +15,55 @@ import vo.Customer;
 @WebServlet("/DeleteCustomerController")
 public class DeleteCustomerController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//session °ª ¿äÃ»
+		//session ê°’ ìš”ì²­ 
 		HttpSession session = request.getSession();
 	    String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
-	    //·Î±×ÀÎÀÌ ¾ÈµÇ¾îÀÖÀ» °æ¿ì LoginController·Î º¸³¿
+	    //ë¡œê·¸ì¸ì´ ì•ˆë˜ì–´ìˆì„ ê²½ìš° LoginControllerë¡œ ë³´ëƒ„
 	    if(sessionCustomerId == null) {
 	        response.sendRedirect(request.getContextPath()+"/LoginController");
-	        System.out.println("noLogin");//µğ¹ö±ë
+	        System.out.println("noLogin");//ë””ë²„ê¹…
 	        return;
 	      }
-	    //idÁ¤º¸·Î È¸¿øÅ»Åğ Æû È£Ãâ
+	    //idì •ë³´ë¡œ íšŒì›íƒˆí‡´ í¼ í˜¸ì¶œ
 	    request.setAttribute("CustomerId", sessionCustomerId);
 	    request.getRequestDispatcher("/WEB-INF/view/deleteCustomerForm.jsp").forward(request, response);
 			}	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//session °ª ¿äÃ»
+		//session ê°’ ìš”ì²­
 		HttpSession session = request.getSession();
 	    String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
-	    //·Î±×ÀÎÀÌ ¾ÈµÇ¾îÀÖÀ» °æ¿ì LoginController·Î º¸³¿
+	    //ë¡œê·¸ì¸ì´ ì•ˆë˜ì–´ìˆì„ ê²½ìš° LoginControllerë¡œ ë³´ëƒ„
 	    if(sessionCustomerId == null) {
 	        response.sendRedirect(request.getContextPath()+"/LoginController");
-	        System.out.println("noLogin");//µğ¹ö±ë
+	        System.out.println("noLogin");//ë””ë²„ê¹…
 	        return;
 	      }
-		//³ÎÃ¼Å©
+		//ë„ì²´í¬
 	    if(request.getParameter("CustomerPw")==null||request.getParameter("CustomerId")==null) {
-	    	//¸Ş¼¼Áö¿Í ÇÔ²² DeleteCustomerController ´Ù½Ã ¿äÃ»
+	    	//ë©”ì„¸ì§€ì™€ í•¨ê»˜ DeleteCustomerController ë‹¤ì‹œ ìš”ì²­
 	    	response.sendRedirect(request.getContextPath()+"/DeleteCustomerController?msg=null");
 	    	return;
 	    }
-	    //¿äÃ»°ª Ã³¸®
+	    //ìš”ì²­ê°’ ì²˜ë¦¬
 	    Customer customer = new Customer();
 	    customer.setCustomerId(request.getParameter("CustomerId"));
 	    customer.setCustomerPw(request.getParameter("CustomerPw"));
-	    //µğ¹ö±ë
+	    //ë””ë²„ê¹…
 	    System.out.println(customer.toString()+"DeleteCustomerController.dopost");
-	    //Dao¿¡ delete ¿äÃ»
+	    //Daoì— delete ìš”ì²­
 	    CustomerDao CustomerDao = new CustomerDao();
 	    int row = CustomerDao.deleteCustomer(customer);
-	    if (row==1) { //¼º°ø½Ã ·Î±× ¾Æ¿ô ÈÄ¿¡ LogincontrollerÀ¸·Î µ¹·Áº¸³¿
-	    	System.out.println("»èÁ¦¼º°ø DeleteCustomerController.dopost");
-	    	request.getSession().invalidate();//session °»½Å ¸Ş¼­µå-·Î±×¾Æ¿ô
+	    if (row==1) { //ì„±ê³µì‹œ ë¡œê·¸ ì•„ì›ƒ í›„ì— Logincontrollerìœ¼ë¡œ ëŒë ¤ë³´ëƒ„
+	    	System.out.println("ì‚­ì œì„±ê³µ DeleteCustomerController.dopost");
+	    	request.getSession().invalidate();//session ê°±ì‹  ë©”ì„œë“œ-ë¡œê·¸ì•„ì›ƒ
 	    	response.sendRedirect(request.getContextPath()+"/LoginController");
 	    	return;
-	    }else if(row==0) {// row==0ÀÌ¸é ¿µÇâ¹ŞÀº ÇàÀÌ ¾øÀ¸¹Ç·Î (row ±âº»°ª -1), »èÁ¦½ÇÆĞ,ºñ¹Ğ¹øÈ£¿À·ù
-	    	System.out.println("»èÁ¦½ÇÆĞ deleteCustomerController.dopost");
+	    }else if(row==0) {// row==0ì´ë©´ ì˜í–¥ë°›ì€ í–‰ì´ ì—†ìœ¼ë¯€ë¡œ (row ê¸°ë³¸ê°’ -1), ì‚­ì œì‹¤íŒ¨,ë¹„ë°€ë²ˆí˜¸ì˜¤ë¥˜
+	    	System.out.println("ì‚­ì œì‹¤íŒ¨ deleteCustomerController.dopost");
 	    	response.sendRedirect(request.getContextPath()+"/DeleteCustomerController?msg=wrongPw");
 	    	return;
-	    }else if (row==-1) {//row°¡ -1ÀÌ¸é sqlÀÌ ÀÛµ¿ ¾ÈÇÔ
-	    	System.out.println("¿¹¿Ü ¹ß»ı DeleteCustomerController.dopost");
+	    }else if (row==-1) {//rowê°€ -1ì´ë©´ sqlì´ ì‘ë™ ì•ˆí•¨
+	    	System.out.println("ì˜ˆì™¸ ë°œìƒ DeleteCustomerController.dopost");
 	    	response.sendRedirect(request.getContextPath()+"/DeleteCustomerController?msg=exception");
 	    	return;
 	    }

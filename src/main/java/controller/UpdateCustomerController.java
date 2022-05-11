@@ -14,18 +14,18 @@ import vo.Customer;
 @WebServlet("/UpdateCustomerController")
 public class UpdateCustomerController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//session °ª ¿äÃ»
+		//session ê°’ ìš”ì²­ 
 		HttpSession session = request.getSession();
 	    String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
-	    //·Î±×ÀÎÀÌ ¾ÈµÇ¾îÀÖÀ» °æ¿ì LoginController·Î º¸³¿
+	    //ë¡œê·¸ì¸ì´ ì•ˆë˜ì–´ìˆì„ ê²½ìš° LoginControllerë¡œ ë³´ëƒ„
 	    if(sessionCustomerId == null) {
 	        response.sendRedirect(request.getContextPath()+"/LoginController");
-	        System.out.println("noLogin");//µğ¹ö±ë
+	        System.out.println("noLogin");//ë””ë²„ê¹…
 	        return;
 	      }
-	    //Dao È£Ãâ
+	    //Dao í˜¸ì¶œ
 	    CustomerDao customerDao = new CustomerDao();
-	    //idÁ¤º¸·Î DBÀÇ »ó¼¼º¸±â °ª È£Ãâ
+	    //idì •ë³´ë¡œ DBì˜ ìƒì„¸ë³´ê¸° ê°’ í˜¸ì¶œ
 	    Customer Customer = new Customer();
 	    Customer  = customerDao.selectCustomerOne(sessionCustomerId);
 	    request.setAttribute("Customer", Customer);
@@ -33,61 +33,61 @@ public class UpdateCustomerController extends HttpServlet {
 	}	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//ÀÎÄÚµù
+		//ì¸ì½”ë”©
 		request.setCharacterEncoding("UTF-8");
-		//session °ª ¿äÃ»
+		//session ê°’ ìš”ì²­
 		HttpSession session = request.getSession();
 	    String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
-	    //·Î±×ÀÎÀÌ ¾ÈµÇ¾îÀÖÀ» °æ¿ì LoginController·Î º¸³¿
+	    //ë¡œê·¸ì¸ì´ ì•ˆë˜ì–´ìˆì„ ê²½ìš° LoginControllerë¡œ ë³´ëƒ„
 	    if(sessionCustomerId == null) {
 	        response.sendRedirect(request.getContextPath()+"/LoginController");
-	        System.out.println("noLogin");//µğ¹ö±ë
+	        System.out.println("noLogin");//ë””ë²„ê¹…
 	        return;
 	      }
-	    //³Î Ã¼Å©
+	    //ë„ ì²´í¬
 	    if(request.getParameter("name")==null||request.getParameter("age")==null||request.getParameter("CustomerPw")==null||request.getParameter("CustomerId")==null||request.getParameter("gender")==null) {
 	    	System.out.println("null UpdateCustomercontroller.dopost");
-	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController");//¿äÃ»°ª¿¡ nullÀÖÀ¸¸é UpdateCustomerController·Î µ¹·Áº¸³¿
+	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController");//ìš”ì²­ê°’ì— nullìˆìœ¼ë©´ UpdateCustomerControllerë¡œ ëŒë ¤ë³´ëƒ„
 	    	return;
 	    }
-	    //form ¿äÃ» °ª Ã³¸®
+	    //form ìš”ì²­ ê°’ ì²˜ë¦¬
 	    Customer customer = new Customer();
 	    customer.setCustomerId(request.getParameter("CustomerId"));
 	    customer.setName(request.getParameter("name"));
 	    customer.setBirthDate(request.getParameter("BirthDate"));
 	    customer.setGender(request.getParameter("gender"));
 	    customer.setCustomerPw(request.getParameter("CustomerPw"));
-	    System.out.println(customer.toString()+"<-UPdateCustomerController.dopost");//µğ¹ö±ë
+	    System.out.println(customer.toString()+"<-UPdateCustomerController.dopost");//ë””ë²„ê¹…
 	    
 	    String newCustomerPw="";
 	    if(request.getParameter("newPw")==null) {
 	    	System.out.println("1245");
 	    }
-	    if(request.getParameter("newPw").equals("open")){//ºñ¹Ğ¹øÈ£ º¯°æ ¿äÃ» ¿©ºÎ È®ÀÎ
+	    if(request.getParameter("newPw").equals("open")){//ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ ìš”ì²­ ì—¬ë¶€ í™•ì¸
 	    	if(request.getParameter("newCustomerPw1")!=null&&!request.getParameter("newCustomerPw1").equals("")&&request.getParameter("newCustomerPw1").equals(request.getParameter("newCustomerPw2"))) {
-	    		//»õ·Î¿î ºñ¹Ğ¹øÈ£°¡ null,"" ÀÌ ¾Æ´Ï°í pw1,pw2°¡ ÀÏÄ¡ÇÏ¸é newCustomerPw¿¡ ÀúÀå
+	    		//ìƒˆë¡œìš´ ë¹„ë°€ë²ˆí˜¸ê°€ null,"" ì´ ì•„ë‹ˆê³  pw1,pw2ê°€ ì¼ì¹˜í•˜ë©´ newCustomerPwì— ì €ì¥
 	    		newCustomerPw=request.getParameter("newCustomerPw1");
-	    		System.out.println(newCustomerPw+"<- newCustomerPw UpdateCustomerController.dopost");//µğ¹ö±ë
+	    		System.out.println(newCustomerPw+"<- newCustomerPw UpdateCustomerController.dopost");//ë””ë²„ê¹…
 	    	}else if(request.getParameter("newCustomerPw1")!=null&&!request.getParameter("newCustomerPw1").equals("")&&!request.getParameter("newCustomerPw1").equals(request.getParameter("newCustomerPw2"))){
-	    		//null, ""Àº ¾Æ´ÏÁö¸¸, pw1,pw2°¡ ÀÏÄ¡ÇÏÁö ¾ÊÀ» °æ¿ì msg¿Í ÇÔ²² µ¹·Áº¸³¿
+	    		//null, ""ì€ ì•„ë‹ˆì§€ë§Œ, pw1,pw2ê°€ ì¼ì¹˜í•˜ì§€ ì•Šì„ ê²½ìš° msgì™€ í•¨ê»˜ ëŒë ¤ë³´ëƒ„
 	    		response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=notMatch");
 	    		return;
 	    	}
 	    }
-	    //Dao¿¡ update ¿äÃ»
+	    //Daoì— update ìš”ì²­
 	    CustomerDao CustomerDao = new CustomerDao();
 	    int row = CustomerDao.updateCustomerByIdPw(customer, newCustomerPw);
 	    System.out.println(row+"<-row UpdateCustomerController.dopist");
-	    if (row==1) { //¼º°ø½Ã SelectCustomerOnecontrollerÀ¸·Î µ¹·Áº¸³¿
-	    	System.out.println("¼öÁ¤¼º°ø UpdateCustomerController.dopist");
+	    if (row==1) { //ì„±ê³µì‹œ SelectCustomerOnecontrollerìœ¼ë¡œ ëŒë ¤ë³´ëƒ„
+	    	System.out.println("ìˆ˜ì •ì„±ê³µ UpdateCustomerController.dopist");
 	    	response.sendRedirect(request.getContextPath()+"/SelectCustomerOneController");
 	    	return;
-	    }else if(row==0) {// row==0ÀÌ¸é ¿µÇâ¹ŞÀº ÇàÀÌ ¾øÀ¸¹Ç·Î (row ±âº»°ª -1), ºñ¹Ğ¹øÈ£ ¿À·ù
-	    	System.out.println("¼öÁ¤½ÇÆĞºñ¹Ğ¹øÈ£¿À·ù UpdateCustomerController.dopist");
+	    }else if(row==0) {// row==0ì´ë©´ ì˜í–¥ë°›ì€ í–‰ì´ ì—†ìœ¼ë¯€ë¡œ (row ê¸°ë³¸ê°’ -1), ë¹„ë°€ë²ˆí˜¸ ì˜¤ë¥˜
+	    	System.out.println("ìˆ˜ì •ì‹¤íŒ¨ë¹„ë°€ë²ˆí˜¸ì˜¤ë¥˜ UpdateCustomerController.dopist");
 	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=wrongPw");
 	    	
-	    }else if (row==-1) {//row°¡ -1ÀÌ¸é sqlÀÌ ÀÛµ¿ ¾ÈÇÔ
-	    	System.out.println("¿¹¿Ü ¹ß»ı UpdateCustomerController.dopist");
+	    }else if (row==-1) {//rowê°€ -1ì´ë©´ sqlì´ ì‘ë™ ì•ˆí•¨
+	    	System.out.println("ì˜ˆì™¸ ë°œìƒ UpdateCustomerController.dopist");
 	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=exception");
 	    }
 	    

@@ -15,38 +15,38 @@ import vo.Customer;
 @WebServlet("/InsertCustomerController")
 public class InsertCustomerController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//·Î±×ÀÎ µÇ¾î ÀÖ´Â ¸â¹ö¸é CashBookByMonthController·Î ¸®´ÙÀÌ·ºÆ®
+		//ë¡œê·¸ì¸ ë˜ì–´ ìˆëŠ” ë©¤ë²„ë©´ CashBookByMonthControllerë¡œ ë¦¬ë‹¤ì´ë ‰íŠ¸ 
 		HttpSession session = request.getSession();
 		if(session.getAttribute("sessionCustomerId") != null) {
 			response.sendRedirect(request.getContextPath()+"/CashBookByMonthController");
 			return;
 		}
-		//insertCustomerForm.jsp È£Ãâ
+		//insertCustomerForm.jsp í˜¸ì¶œ
 		request.getRequestDispatcher("/WEB-INF/view/insertCustomerForm.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//ÀÎÄÚµù
+		//ì¸ì½”ë”©
 		request.setCharacterEncoding("UTF-8");
-		//·Î±×ÀÎ µÇ¾î ÀÖ´Â ¸â¹ö¸é CashBookByMonthController·Î ¸®´ÙÀÌ·ºÆ®
+		//ë¡œê·¸ì¸ ë˜ì–´ ìˆëŠ” ë©¤ë²„ë©´ CashBookByMonthControllerë¡œ ë¦¬ë‹¤ì´ë ‰íŠ¸
 		HttpSession session = request.getSession();
 		if(session.getAttribute("sessionCustomerId") != null) {
 			response.sendRedirect(request.getContextPath()+"/CashBookByMonthController");
 			return;
 		}
-	    //³Î Ã¼Å©
+	    //ë„ ì²´í¬
 	    if(request.getParameter("name")==null||request.getParameter("age")==null||request.getParameter("CustomerId")==null||request.getParameter("gender")==null) {
 	    	System.out.println("null insertCustomercontroller.dopost");
-	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=null");//¿äÃ»°ª¿¡ nullÀÖÀ¸¸é UpdateCustomerController·Î µ¹·Áº¸³¿
+	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=null");//ìš”ì²­ê°’ì— nullìˆìœ¼ë©´ UpdateCustomerControllerë¡œ ëŒë ¤ë³´ëƒ„
 	    	return;
 	    }
-	    //¿äÃ»°ª Ã³¸®
-	    String CustomerPw =null; //ºñ¹Ğ¹øÈ£°¡ µé¾î°¥ º¯¼ö ÃÊ±âÈ­
+	    //ìš”ì²­ê°’ ì²˜ë¦¬
+	    String CustomerPw =null; //ë¹„ë°€ë²ˆí˜¸ê°€ ë“¤ì–´ê°ˆ ë³€ìˆ˜ ì´ˆê¸°í™”
 	    if(request.getParameter("CustomerPw1")!=null&&request.getParameter("CustomerPw2")!=null&&!request.getParameter("CustomerPw1").equals("")&&request.getParameter("CustomerPw1").equals(request.getParameter("CustomerPw2"))) {
-	    // null, ºóÄ­ÀÌ ¾Æ´Ñ ºñ¹Ğ¹øÈ£°¡ µÑÀÌ ÀÏÄ¡ÇÑ´Ù¸é CustomerPw¿¡ ÀúÀå
+	    // null, ë¹ˆì¹¸ì´ ì•„ë‹Œ ë¹„ë°€ë²ˆí˜¸ê°€ ë‘˜ì´ ì¼ì¹˜í•œë‹¤ë©´ CustomerPwì— ì €ì¥
 	     CustomerPw = request.getParameter("CustomerPw1");
 	    }else if(request.getParameter("CustomerPw1")!=null&&request.getParameter("CustomerPw2")!=null&&!request.getParameter("CustomerPw1").equals("")&&!request.getParameter("CustomerPw1").equals(request.getParameter("CustomerPw2"))){
-	    	// null, ºóÄ­Àº ¾Æ´ÏÁö¸¸ ºñ¹Ğ¹øÈ£°¡ µÑÀÌ ÀÏÄ¡ÇÏÁö ¾Ê´Â´Ù¸é msg¿Í ÇÔ²² µ¹·Áº¸³¿
+	    	// null, ë¹ˆì¹¸ì€ ì•„ë‹ˆì§€ë§Œ ë¹„ë°€ë²ˆí˜¸ê°€ ë‘˜ì´ ì¼ì¹˜í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´ msgì™€ í•¨ê»˜ ëŒë ¤ë³´ëƒ„
 	    	response.sendRedirect(request.getContextPath()+"/InsertCustomerController?msg=notMatch");
 	    	return;
 	    }
@@ -56,21 +56,21 @@ public class InsertCustomerController extends HttpServlet {
 	    customer.setBirthDate(request.getParameter("age"));
 	    customer.setGender(request.getParameter("gender"));
 	    customer.setCustomerPw(CustomerPw);
-	    //µğ¹ö±ë
+	    //ë””ë²„ê¹…
 	    System.out.println(customer.toString()+"<-insertCustomerController.dopost");
-	    //Dao¿¡ insert ¿äÃ»
+	    //Daoì— insert ìš”ì²­
 	    CustomerDao CustomerDao = new CustomerDao();
 	    int row = CustomerDao.insertCustomer(customer);
-	    if (row==1) { //¼º°ø½Ã LogincontrollerÀ¸·Î µ¹·Áº¸³¿
-	    	System.out.println("°¡ÀÔ¼º°ø InsertCustomerController.dopist");
+	    if (row==1) { //ì„±ê³µì‹œ Logincontrollerìœ¼ë¡œ ëŒë ¤ë³´ëƒ„
+	    	System.out.println("ê°€ì…ì„±ê³µ InsertCustomerController.dopist");
 	    	response.sendRedirect(request.getContextPath()+"/LoginController");
 	    	return;
-	    }else if(row==0) {// row==0ÀÌ¸é ¿µÇâ¹ŞÀº ÇàÀÌ ¾øÀ¸¹Ç·Î (row ±âº»°ª -1), °¡ÀÔ½ÇÆĞ
-	    	System.out.println("°¡ÀÔ½ÇÆĞ insertCustomerController.dopist");
+	    }else if(row==0) {// row==0ì´ë©´ ì˜í–¥ë°›ì€ í–‰ì´ ì—†ìœ¼ë¯€ë¡œ (row ê¸°ë³¸ê°’ -1), ê°€ì…ì‹¤íŒ¨
+	    	System.out.println("ê°€ì…ì‹¤íŒ¨ insertCustomerController.dopist");
 	    	response.sendRedirect(request.getContextPath()+"/InsertCustomerController?msg=fail");
 	    	
-	    }else if (row==-1) {//row°¡ -1ÀÌ¸é sqlÀÌ ÀÛµ¿ ¾ÈÇÔ
-	    	System.out.println("¿¹¿Ü ¹ß»ı insertCustomerController.dopist");
+	    }else if (row==-1) {//rowê°€ -1ì´ë©´ sqlì´ ì‘ë™ ì•ˆí•¨
+	    	System.out.println("ì˜ˆì™¸ ë°œìƒ insertCustomerController.dopist");
 	    	response.sendRedirect(request.getContextPath()+"/InsertCustomerController?msg=exception");
 	    }
 	    
