@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import dao.CookingToolDao;
 import vo.CookingTool;
 
-@WebServlet("/cookingToolController")
+@WebServlet("/host/cookingToolController")
 public class CookingToolController extends HttpServlet {
 
+	private CookingToolDao cookingToolDao;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		CookingToolDao cookingToolDao = new CookingToolDao();
+		cookingToolDao = new CookingToolDao();
 		ArrayList<CookingTool> list = cookingToolDao.selectCookingTool();
 		
 		request.setAttribute("list", list);
@@ -27,16 +29,19 @@ public class CookingToolController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		CookingToolDao cookingToolDao = new CookingToolDao();
+		cookingToolDao = new CookingToolDao();
 		
+		// 요청값 처리
 		String cookingToolName = null;
-		System.out.println("cookingToolName : " + cookingToolName);
 		if(request.getParameter("cookingToolName") != null) {
 			cookingToolName =  request.getParameter("cookingToolName");
 			cookingToolDao.insertCookingTool(cookingToolName);
 		}
 		
-		response.sendRedirect(request.getContextPath() + "/cookingToolController");
+		// 디버깅
+		System.out.println("[CookingToolController.doPost()] cookingToolName : " + cookingToolName);
+		
+		response.sendRedirect(request.getContextPath() + "/host/cookingToolController");
 	}
 
 }

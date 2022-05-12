@@ -9,22 +9,27 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.CookingToolDao;
 
-@WebServlet("/deleteCookingToolController")
+@WebServlet("/host/deleteCookingToolController")
 public class DeleteCookingToolController extends HttpServlet {
+	
+	private CookingToolDao cookingToolDao;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		CookingToolDao cookingToolDao = new CookingToolDao();
+		cookingToolDao = new CookingToolDao();
 		
+		// 요청값 처리
 		int cookingToolNo  = 0;
-		System.out.println("cookingToolNo : " + cookingToolNo);
 		if(!request.getParameter("cookingToolNo").equals(0)) {
 			cookingToolNo =  Integer.parseInt(request.getParameter("cookingToolNo"));
 		}
 		
+		// 디버깅
+		System.out.println("[DeleteCookingToolController.doGet()] cookingToolNo : " + cookingToolNo);
+		
 		cookingToolDao.deleteCookingTool(cookingToolNo);
 		
-		response.sendRedirect(request.getContextPath() + "/cookingToolController");
+		response.sendRedirect(request.getContextPath() + "/host/cookingToolController");
 	}
 
 }

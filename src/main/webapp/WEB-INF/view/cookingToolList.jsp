@@ -1,13 +1,10 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="vo.CookingTool"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
-<%
-	ArrayList<CookingTool> list = (ArrayList<CookingTool>)request.getAttribute("list");
-%>
 <head>
+
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,13 +13,16 @@
     <title>Roberto - Hotel &amp; Resort HTML Template Template</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="${pageContext.request.contextPath}/template/img/core-img/favicon.png">
+    <link rel="icon" href="${pageContext.request.contextPath}/template/img/core-img/favicon.ico">
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/style.css">
 
 </head>
 
+	<!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
 <body>
     <!-- Preloader -->
     <div id="preloader">
@@ -31,85 +31,8 @@
     <!-- /Preloader -->
 
     <!-- Header Area Start -->
-    <header class="header-area">
-        <!-- Search Form -->
-        <div class="search-form d-flex align-items-center">
-            <div class="container">
-                <form action="index.html" method="get">
-                    <input type="search" name="search-form-input" id="searchFormInput" placeholder="Type your keyword ...">
-                    <button type="submit"><i class="icon_search"></i></button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Main Header Start -->
-        <div class="main-header-area">
-            <div class="classy-nav-container breakpoint-off">
-                <div class="container">
-                    <!-- Classy Menu -->
-                    <nav class="classy-navbar justify-content-between" id="robertoNav">
-
-                        <!-- Logo -->
-                        <a class="nav-brand" href="${pageContext.request.contextPath}/template/index.html"><img src="${pageContext.request.contextPath}/template/img/core-img/logo.png" alt=""></a>
-
-                        <!-- Navbar Toggler -->
-                        <div class="classy-navbar-toggler">
-                            <span class="navbarToggler"><span></span><span></span><span></span></span>
-                        </div>
-
-                        <!-- Menu -->
-                        <div class="classy-menu">
-                            <!-- Menu Close Button -->
-                            <div class="classycloseIcon">
-                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
-                            </div>
-                            <!-- Nav Start -->
-                            <div class="classynav">
-                                <ul id="nav">
-                                    <li class="active"><a href="${pageContext.request.contextPath}/template/index.html">Home</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/template/room.html">Rooms</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/template/about.html">About Us</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/template/#">Pages</a>
-                                        <ul class="dropdown">
-                                            <li><a href="${pageContext.request.contextPath}/template/index.html">- Home</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/room.html">- Rooms</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/single-room.html">- Single Rooms</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/about.html">- About Us</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/blog.html">- Blog</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/single-blog.html">- Single Blog</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/contact.html">- Contact</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/template/#">- Dropdown</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="${pageContext.request.contextPath}/template/#">- Dropdown Item</a></li>
-                                                    <li><a href="${pageContext.request.contextPath}/template/#">- Dropdown Item</a></li>
-                                                    <li><a href="${pageContext.request.contextPath}/template/#">- Dropdown Item</a></li>
-                                                    <li><a href="${pageContext.request.contextPath}/template/#">- Dropdown Item</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="${pageContext.request.contextPath}/template/blog.html">News</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/template/contact.html">Contact</a></li>
-                                </ul>
-
-                                <!-- Search -->
-                                <div class="search-btn ml-4">
-                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                </div>
-
-                                <!-- Book Now -->
-                                <div class="book-now-btn ml-3 ml-lg-5">
-                                    <a href="${pageContext.request.contextPath}/template/#">Book Now <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
-                                </div>
-                            </div>
-                            <!-- Nav End -->
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- Header Area End -->
+        <div id="includeHeader"> <!-- Insert your file here --></div>
+	<!-- Header Area End -->
 
     <!-- Breadcrumb Area Start -->
     <div class="breadcrumb-area bg-img bg-overlay jarallax" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/17.jpg);">
@@ -149,23 +72,19 @@
 											<th>Number</th>
 											<th>Cooking Tool Name</th>
 											<th>Update Date</th>
-											<th></th>
+											<th>&nbsp;</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<%
-												for(CookingTool ck : list) {
-											%>
+											<c:forEach var = "ck" items = "${ list }">
 													<tr>
-														<td><%= ck.getCookingToolNo() %></td>
-														<td><%= ck.getCookingToolName() %></td>
-														<td><%= ck.getUpdateDate() %><td> 
-														<td><a href="${pageContext.request.contextPath}/deleteCookingToolController?cookingToolNo=<%= ck.getCookingToolNo() %>" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+														<td>${ ck.cookingToolNo }</td>
+														<td>${ ck.cookingToolName }</td>
+														<td>${ ck.updateDate }</td> 
+														<td><a href="${pageContext.request.contextPath}/host/deleteCookingToolController?cookingToolNo=${ ck.cookingToolNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
 													</tr>
-											<%		
-												}
-											%>
+											</c:forEach>
 										</tr>
 									</tbody>
 								</table>
@@ -176,7 +95,7 @@
                         <h2>Enter</h2>
 
                         <!-- Form -->
-                        <form action="${pageContext.request.contextPath}/cookingToolController" method="post">
+                        <form action="${pageContext.request.contextPath}/host/cookingToolController" method="post">
                             <div class="row">
                                 <div class="col-12">
                                     <input type="text" name="cookingToolName" class="form-control mb-30" placeholder="Please enter the cooking tool">
@@ -189,6 +108,12 @@
                     </div>
                 </div>
 
+</body>
+
+<script>
+        $("#includeHeader").load('${pageContext.request.contextPath}/includeController');
+</script>
+
     <!-- **** All JS Files ***** -->
     <!-- jQuery 2.2.4 -->
     <script src="${pageContext.request.contextPath}/template/js/jquery.min.js"></script>
@@ -200,7 +125,5 @@
     <script src="${pageContext.request.contextPath}/template/js/roberto.bundle.js"></script>
     <!-- Active -->
     <script src="${pageContext.request.contextPath}/template/js/default-assets/active.js"></script>
-
-</body>
-
+    
 </html>
