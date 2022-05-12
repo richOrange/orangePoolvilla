@@ -17,21 +17,60 @@ public class ReservationController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String reservationStatus = "";
+		
+		int currentPage = 2;
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		request.setAttribute("currentPage", currentPage);
+		
+		int rowPerPage = 10; 
+		request.setAttribute("rowPerPage", rowPerPage);
+		
+		int beginRow = (currentPage-1) * rowPerPage;
+		System.out.println("[ReservationController.doGet()] beginRow : "+beginRow);
+		request.setAttribute("beginRow", beginRow);
+		
+		HostDao hostDao = new HostDao();
+
+		ArrayList<HashMap<String, Object>> reservationStatusList = hostDao.selectReservationStatusCount();
+		request.setAttribute("reservationStatusList", reservationStatusList);
+		
+		ArrayList<HashMap<String, Object>> reservationList = hostDao.selectReservationList(rowPerPage, beginRow, reservationStatus); 
+		request.setAttribute("reservationList", reservationList);
+		
+		int totalRow = hostDao.selectReservationTotalRow(); 
+		request.setAttribute("totalRow", totalRow);
 		/*
 		String reservationStatus = request.getParameter("reservationStatus");
 		System.out.println("[ReservationController.doGet()] reservationStatus : " + reservationStatus);
 		*/
 		
-		String reservationStatus = "";
-		// 예약 상태에 값이 들어왔다면 
-		if(request.getParameter("reservationStatus") != null) {
+		if(request.getParameter("reservationStatus") == null || request.getParameter("reservationStatus") =="") {
 			request.setAttribute("reservationStatus", reservationStatus);
-			request.getRequestDispatcher("/WEB-INF/view/reservationList.jsp?reservationStatus="+reservationStatus).forward(request, response);
-			return;
+
+			request.getRequestDispatcher("/WEB-INF/view/reservationList.jsp").forward(request, response);
 		}
 		
-		int currentPage = 1;
+		// 예약 상태에 값이 들어왔다면 
+		if(request.getParameter("reservationStatus") != null) {
+			System.out.println("[ReservationController.doGet()] reservationStatus : "+reservationStatus);
+				if(request.getParameter("currentPage") == null) {
+					request.setAttribute("reservationStatus", reservationStatus);
+					
+					request.getRequestDispatcher("/WEB-INF/view/reservationList.jsp?reservationStatus="+reservationStatus).forward(request, response);
+				} else if(request.getParameter("currentPage") != null) {
+					request.setAttribute("reservationStatus", reservationStatus);
+					currentPage = Integer.parseInt(request.getParameter("currentPage"));
+					request.setAttribute("currentPage", currentPage);
+					
+					request.getRequestDispatcher("/WEB-INF/view/reservationList.jsp?currentPage="+currentPage+"&reservationStatus="+reservationStatus).forward(request, response);
+					System.out.println("[ReservationController.doGet()] currentPage : "+currentPage);
+				}
+		}
 		
+		/*
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 			request.setAttribute("currentPage", currentPage);
@@ -39,32 +78,31 @@ public class ReservationController extends HttpServlet {
 			System.out.println("[ReservationController.doGet()] currentPage : "+currentPage);
 			return;
 		}
+		*/
+		
+		/*
 		
 		// 한 페이지당 보여줄 행의 개수 
 		int rowPerPage = 10; 
+		request.setAttribute("rowPerPage", rowPerPage);
 		
 		int beginRow = (currentPage-1) * rowPerPage;
-		System.out.println("[reservationList.jsp] beginRow : "+beginRow);
+		System.out.println("[ReservationController.doGet()] beginRow : "+beginRow);
+		request.setAttribute("beginRow", beginRow);
 		
 		HostDao hostDao = new HostDao();
 
 		ArrayList<HashMap<String, Object>> reservationStatusList = hostDao.selectReservationStatusCount();
-
+		request.setAttribute("reservationStatusList", reservationStatusList);
+		
 		ArrayList<HashMap<String, Object>> reservationList = hostDao.selectReservationList(rowPerPage, beginRow, reservationStatus); 
-
-		int totalRow = hostDao.selectTotalRow();
+		request.setAttribute("reservationList", reservationList);
+		
+		int totalRow = hostDao.selectTotalRow(); 
 		request.setAttribute("totalRow", totalRow);
+		*/
+		// 
 		
-		int lastPage = 0;
-		if(totalRow % rowPerPage == 0) {
-			lastPage = totalRow / rowPerPage;
-		} else {
-			lastPage = (totalRow / rowPerPage) + 1;
-		}
-		request.setAttribute("lastPage", lastPage);
-		
-		// 아무 값도 못받은 경우 reservationList.jsp 페이지로 바로 보낸다 
-		request.getRequestDispatcher("/WEB-INF/view/reservationList.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

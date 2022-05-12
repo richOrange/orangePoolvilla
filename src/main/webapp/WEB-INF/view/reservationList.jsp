@@ -4,37 +4,35 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	
+
 	int currentPage = (Integer)request.getAttribute("currentPage");
 	System.out.println("[reservationList.jsp] currentPage : "+currentPage);
 
-	String reservationStatus = request.getParameter("reservationStatus");
+	String reservationStatus = String.valueOf(request.getAttribute("reservationStatus"));
 	System.out.println("[reservationList.jsp] reservationStatus : "+reservationStatus);
 	
 	// 한 페이지당 보여줄 행의 개수 
-	int rowPerPage = 10; 
+	int rowPerPage = (Integer)request.getAttribute("rowPerPage");
+	System.out.println("[reservationList.jsp] rowPerPage : "+rowPerPage);
 	
-	int beginRow = (currentPage-1) * rowPerPage;
+	int beginRow = (Integer)request.getAttribute("beginRow");
 	System.out.println("[reservationList.jsp] beginRow : "+beginRow);
 	
-	ArrayList<HashMap<String, Object>> list = (ArrayList<HashMap<String, Object>>)request.getAttribute("reservationStatusList");
+	ArrayList<HashMap<String, Object>> reservationStatusList = (ArrayList<HashMap<String, Object>>)request.getAttribute("reservationStatusList");
 	
-	HostDao hostDao = new HostDao();
-
-	ArrayList<HashMap<String, Object>> reservationStatusList = hostDao.selectReservationStatusCount();
-
-	ArrayList<HashMap<String, Object>> reservationList = hostDao.selectReservationList(rowPerPage, beginRow, reservationStatus); 
+	ArrayList<HashMap<String, Object>> reservationList = (ArrayList<HashMap<String, Object>>)request.getAttribute("reservationList");
 	
 	int totalRow = (Integer)request.getAttribute("totalRow");
+	System.out.println("[reservationList.jsp] totalRow : "+totalRow);
 	
-	int lastPage = (Integer)request.getAttribute("lastPage");
-	/*
+	int lastPage = 0;
+	
 	if(totalRow % rowPerPage == 0) {
 		lastPage = totalRow / rowPerPage;
 	} else {
 		lastPage = (totalRow / rowPerPage) + 1;
 	}
-	*/
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -52,7 +50,7 @@
 	%>
 			<div>
 				<li>
-					<button> <!-- controller 이동 안되면 소문자 확인 -->
+					<button> <!-- controller 이동 안되면 소문자 확인 --> <!-- m.get() 해당 값 어떻게 Controller로 넘길지 ?  -->
 						<a href="<%=request.getContextPath()%>/reservationController?reservationStatus=<%=m.get("reservationStatus")%>"><%=m.get("reservationStatus")%>
 							<button>
 								(<%=m.get("cnt")%>)
