@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Title -->
-    <title>Roberto - Hotel &amp; Resort HTML Template Template</title>
+    <title>OrangePoolvilla:cookingToolList</title>
 
     <!-- Favicon -->
     <link rel="icon" href="${pageContext.request.contextPath}/template/img/core-img/favicon.ico">
