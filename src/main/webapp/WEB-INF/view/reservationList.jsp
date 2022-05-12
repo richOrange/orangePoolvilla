@@ -5,29 +5,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	
-	int currentPage = 1;
-	if(request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage"));
-	}
-	System.out.println(currentPage+ " <-- currentPage // [장주현] reservationList.jsp ");
+	int currentPage = (Integer)request.getAttribute("currentPage");
+	System.out.println("[reservationList.jsp] currentPage : "+currentPage);
 
-	String reservationStatus = "";
-	if(request.getParameter("reservationStatus") != null) {
-		reservationStatus = request.getParameter("reservationStatus");
-	}
-	System.out.println(reservationStatus+ " <-- reservationStatus // [장주현] reservationList.jsp ");
+	String reservationStatus = request.getParameter("reservationStatus");
+	System.out.println("[reservationList.jsp] reservationStatus : "+reservationStatus);
 	
 	// 한 페이지당 보여줄 행의 개수 
 	int rowPerPage = 10; 
 	
 	int beginRow = (currentPage-1) * rowPerPage;
-	System.out.println(beginRow + " <-- beginRow // [장주현] reservationList.jsp");
+	System.out.println("[reservationList.jsp] beginRow : "+beginRow);
+	
+	ArrayList<HashMap<String, Object>> list = (ArrayList<HashMap<String, Object>>)request.getAttribute("reservationStatusList");
 	
 	HostDao hostDao = new HostDao();
 
 	ArrayList<HashMap<String, Object>> reservationStatusList = hostDao.selectReservationStatusCount();
 
-	ArrayList<Reservation> reservationList = null; 
+	ArrayList<HashMap<String, Object>> reservationList = hostDao.selectReservationList(rowPerPage, beginRow, reservationStatus); 
+	
+	int totalRow = (Integer)request.getAttribute("totalRow");
+	
+	int lastPage = (Integer)request.getAttribute("lastPage");
+	/*
+	if(totalRow % rowPerPage == 0) {
+		lastPage = totalRow / rowPerPage;
+	} else {
+		lastPage = (totalRow / rowPerPage) + 1;
+	}
+	*/
 %>
 <!DOCTYPE html>
 <html>
@@ -38,13 +45,15 @@
 <body>
 	<h1>거래 목록 관리 페이지</h1>
 	
+	<h3>전체 거래량 ( total : <%=totalRow %> )</h3>
+	
 	<%
 		for(HashMap<String, Object> m : reservationStatusList) {
 	%>
 			<div>
 				<li>
 					<button> <!-- controller 이동 안되면 소문자 확인 -->
-						<a href="<%=request.getContextPath()%>/ReservationController?reservationStatus=<%=m.get("reservationStatus")%>"><%=m.get("reservationStatus")%>
+						<a href="<%=request.getContextPath()%>/reservationController?reservationStatus=<%=m.get("reservationStatus")%>"><%=m.get("reservationStatus")%>
 							<button>
 								(<%=m.get("cnt")%>)
 							</button>
@@ -57,7 +66,7 @@
 	%>
 	
 	<div>
-		<table>
+		<table border="1">
 			<thead>
 				<tr>
 					<th>회원 아이디</th>
@@ -71,15 +80,15 @@
 			
 			<tbody>
 				<%
-					for(Reservation r : reservationList) {
+					for(HashMap<String, Object> m : reservationList) {
 				%>
 						<tr>
-							<td><%=r.getCustomerId()%></td>
-							<td><%=r.getPvNo()%></td>
-							<td><%=r.getReservationBeginDate()%> ~ <%=r.getReservationLastDate()%></td>
-							<td><%=r.getReservationStatus()%></td>
-							<td><%=r.getCreateDate() %></td>
-							<td><%=r.getUpdateDate() %></td>
+							<td><%=m.get("customerId")%></td>
+							<td><%=m.get("pvNo")%></td>
+							<td><%=m.get("reservationDate")%></td>
+							<td><%=m.get("reservationStatus")%></td>
+							<td><%=m.get("createDate")%></td>
+							<td><%=m.get("updateDate")%></td>
 						</tr>
 				<%
 					}
@@ -88,5 +97,28 @@
 		</table>
 	</div>
 	
+	<div>
+	
+	
+		<%
+			if(currentPage > 1) {
+		%>
+				<button>
+					<a href="<%=request.getContextPath()%>/reservationController?currentPage=<%=currentPage-1%>&reservationStatus=<%=reservationStatus %>">이전</a>
+				</button>
+		<%
+			}
+		%>
+		
+		<%
+			if(currentPage < lastPage) {
+		%>
+				<button>
+					<a href="<%=request.getContextPath()%>/reservationController?currentPage=<%=currentPage+1%>&reservationStatus=<%=reservationStatus %>">다음</a>
+				</button>
+		<%
+			}
+		%>
+	</div>
 </body>
 </html>
