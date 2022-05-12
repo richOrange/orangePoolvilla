@@ -12,67 +12,88 @@ import javax.servlet.http.HttpSession;
 import dao.CustomerDao;
 import vo.Customer;
 
-@WebServlet("/insertCustomerController")
+@WebServlet("/all/insertCustomerController")
 public class InsertCustomerController extends HttpServlet {
+	
+	private CustomerDao customerDao;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
 		if(session.getAttribute("sessionCustomerId") != null) {
 			return;
 		}
-		//insertCustomerForm.jsp 호출
+		// insertCustomerForm.jsp 호출
 		request.getRequestDispatcher("/WEB-INF/view/insertCustomerForm.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//인코딩
-		request.setCharacterEncoding("UTF-8");
+		
+		/*
 		HttpSession session = request.getSession();
 		if(session.getAttribute("sessionCustomerId") != null) {
 			return;
 		}
-	    //널 체크
-	    if(request.getParameter("name")==null||request.getParameter("age")==null||request.getParameter("CustomerId")==null||request.getParameter("gender")==null) {
-	    	System.out.println("null insertCustomercontroller.dopost");
-	    	response.sendRedirect(request.getContextPath()+"/updateCustomerController?msg=null");//요청값에 null있으면 UpdateCustomerController로 돌려보냄
-	    	return;
-	    }
-	    //요청값 처리
-	    String CustomerPw =null; //비밀번호가 들어갈 변수 초기화
-	    if(request.getParameter("customerPw1")!=null&&request.getParameter("customerPw2")!=null&&!request.getParameter("customerPw1").equals("")&&request.getParameter("customerPw1").equals(request.getParameter("customerPw2"))) {
-	    // null, 빈칸이 아닌 비밀번호가 둘이 일치한다면 CustomerPw에 저장
-	     CustomerPw = request.getParameter("customerPw1");
-	    }else if(request.getParameter("customerPw1")!=null&&request.getParameter("customerPw2")!=null&&!request.getParameter("customerPw1").equals("")&&!request.getParameter("customerPw1").equals(request.getParameter("customerPw2"))){
-	    	// null, 빈칸은 아니지만 비밀번호가 둘이 일치하지 않는다면 msg와 함께 돌려보냄
-	    	response.sendRedirect(request.getContextPath()+"/insertCustomerController?msg=notMatch");
-	    	return;
-	    }
-	    Customer customer = new Customer();
-	    customer.setCustomerId(request.getParameter("customerId"));
-	    customer.setName(request.getParameter("name"));
-	    customer.setBirthDate(request.getParameter("birthDate"));
-	    customer.setGender(request.getParameter("gender"));
-	    customer.setCustomerPw(CustomerPw);
-	    //디버깅
-	    System.out.println(customer.toString()+"<-insertCustomerController.dopost");
-	    //Dao에 insert 요청
-	    CustomerDao CustomerDao = new CustomerDao();
-	    int row = CustomerDao.insertCustomer(customer);
-	    if (row==1) { //성공시 Logincontroller으로 돌려보냄
-	    	System.out.println("가입성공 InsertCustomerController.dopist");
+	    // Dao에 insert 요청
+	    int row = customerDao.insertCustomer(customer);
+	    if (row == 1) { // 성공 시 Logincontroller로 돌려보냄
+	    	System.out.println("[InsertCustomerController.doPost()] 가입 성공");
 	    	response.sendRedirect(request.getContextPath()+"/loginController");
-	    	return;
-	    }else if(row==0) {// row==0이면 영향받은 행이 없으므로 (row 기본값 -1), 가입실패
-	    	System.out.println("가입실패 insertCustomerController.dopist");
-	    	response.sendRedirect(request.getContextPath()+"/insertCustomerController?msg=fail");
-	    	
-	    }else if (row==-1) {//row가 -1이면 sql이 작동 안함
-	    	System.out.println("예외 발생 insertCustomerController.dopist");
-	    	response.sendRedirect(request.getContextPath()+"/insertCustomerController?msg=exception");
+	    } else if(row == 0) {// row == 0이면 영향받은 행이 없으므로 (row 기본값 -1), 가입실패
+	    	System.out.println("[InsertCustomerController.doPost()] 가입 실패");
+	    	response.sendRedirect(request.getContextPath()+"/insertCustomerController");
+	    } else if (row == -1) {//row가 -1이면 sql이 작동 안함
+	    	System.out.println("[InsertCustomerController.doPost()] 예외 발생");
+	    	response.sendRedirect(request.getContextPath()+"/insertCustomerController");
 	    }
+	    */
+		
+		// 요청값 처리
+		String customerId = null;
+		String customerPw = null;
+		String name = null;
+		String gender = null;
+		String birthDate = null;
+		String emailId = null;
+		String emailUrl = null;
+		String phone = null;
+		Customer customer = new Customer();
+		
+		if(request.getParameter("customerId") != null) {
+			customerId = request.getParameter("customerId");
+			customer.setCustomerId(customerId);
+		}
+		if(request.getParameter("customerPw1") != null) {
+			customerPw = request.getParameter("customerPw1");
+			customer.setCustomerPw(customerPw);
+		}
+		if(request.getParameter("name") != null) {
+			name = request.getParameter("name");
+			customer.setName(name);
+		}
+		if(request.getParameter("gender") != null) {
+			gender = request.getParameter("gender");
+			customer.setGender(gender);
+		}
+		if(request.getParameter("birth") != null) {
+			birthDate = request.getParameter("birth");
+			customer.setBirthDate(birthDate);
+		}
+		if(request.getParameter("emailId") != null && request.getParameter("emailUrl") != null) {
+			emailId = request.getParameter("emailId");
+			emailUrl = request.getParameter("emailUrl");
+			customer.setEmail(emailId + "@" + emailUrl);
+		}
+		if(request.getParameter("phone") != null) {
+			phone = request.getParameter("phone");
+			customer.setPhone(phone);
+		}
+		
+		//디버깅
+	    System.out.println("[InsertCustomerController.doPost()] customer.toString() : " + customer.toString());
 	    
+	    customerDao = new CustomerDao();
+	    customerDao.insertCustomer(customer);
 	    
-	    
-	
 	}
 }
