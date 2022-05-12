@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.CustomerDao;
 import vo.Customer;
-@WebServlet("/UpdateCustomerController")
+@WebServlet("/updateCustomerController")
 public class UpdateCustomerController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//session 값 요청 
@@ -77,17 +77,17 @@ public class UpdateCustomerController extends HttpServlet {
 	    //Dao에 update 요청
 	    CustomerDao CustomerDao = new CustomerDao();
 	    int row = CustomerDao.updateCustomerByIdPw(customer, newCustomerPw);
-	    System.out.println(row+"<-row UpdateCustomerController.dopist");
+	    System.out.println(row+"<-row UpdateCustomerController.dopost");
 	    if (row==1) { //성공시 SelectCustomerOnecontroller으로 돌려보냄
-	    	System.out.println("수정성공 UpdateCustomerController.dopist");
+	    	System.out.println("수정성공 UpdateCustomerController.dopost");
 	    	response.sendRedirect(request.getContextPath()+"/SelectCustomerOneController");
 	    	return;
 	    }else if(row==0) {// row==0이면 영향받은 행이 없으므로 (row 기본값 -1), 비밀번호 오류
-	    	System.out.println("수정실패비밀번호오류 UpdateCustomerController.dopist");
+	    	System.out.println("수정실패비밀번호오류 UpdateCustomerController.dopost");
 	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=wrongPw");
 	    	
 	    }else if (row==-1) {//row가 -1이면 sql이 작동 안함
-	    	System.out.println("예외 발생 UpdateCustomerController.dopist");
+	    	System.out.println("예외 발생 UpdateCustomerController.dopost");
 	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=exception");
 	    }
 	    

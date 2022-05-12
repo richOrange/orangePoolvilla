@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.CustomerDao;
 import vo.Customer;
-@WebServlet("/SelectCustomerOneController")
+@WebServlet("/selectCustomerOneController")
 public class SelectCustomerOneController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//session 값 요청
@@ -27,7 +27,7 @@ public class SelectCustomerOneController extends HttpServlet {
 	    CustomerDao CustomerDao = new CustomerDao();
 	    Customer customer = CustomerDao.selectCustomerOne(sessionCustomerId);
 	    request.setAttribute("Customer", customer);
-	    request.getRequestDispatcher("/WEB-INF/view/CustomerOne.jsp").forward(request, response);
+	    request.getRequestDispatcher("/WEB-INF/view/customerOne.jsp").forward(request, response);
 	}
 
 }
