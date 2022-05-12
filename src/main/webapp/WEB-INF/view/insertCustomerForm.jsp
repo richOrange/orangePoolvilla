@@ -181,9 +181,12 @@
 			
 			$('#emailHelper').text('email를 입력하세요');
 			$('#emailId').focus();
+		} else if($('#phone').val() == '') {
+			$('phoneHelper').text('phone을 입력하세요')
+			$('#phone').focus();
 		} else {
 			$('#signupForm').submit();
-		}
+		} 
 	});
 </script>
 </html>
