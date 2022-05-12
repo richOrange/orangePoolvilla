@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.OttDao;
 
-@WebServlet("/deleteOttController")
+@WebServlet("/host/deleteOttController")
 public class DeleteOttController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,10 +29,10 @@ public class DeleteOttController extends HttpServlet {
 		
 		if(row == 1 ) {
 			System.out.println("삭제 성공");
-			response.sendRedirect(request.getContextPath() + "/ottController");
+			response.sendRedirect(request.getContextPath() + "/host/ottController");
 		} else {
 			System.out.println("삭제 실패");
-			response.sendRedirect(request.getContextPath() + "/ottController?ottNo="+ottNo);
+			response.sendRedirect(request.getContextPath() + "/host/ottController?ottNo="+ottNo);
 		}
 
 	}

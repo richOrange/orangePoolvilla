@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.FacilityDao;
 
-@WebServlet("/deleteFacilityController")
+@WebServlet("/host/deleteFacilityController")
 public class DeleteFacilityController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,10 +29,10 @@ public class DeleteFacilityController extends HttpServlet {
 		
 		if(row == 1 ) {
 			System.out.println("삭제 성공");
-			response.sendRedirect(request.getContextPath() + "/facilityController");
+			response.sendRedirect(request.getContextPath() + "/host/facilityController");
 		} else {
 			System.out.println("삭제 실패");
-			response.sendRedirect(request.getContextPath() + "/facilityController?facilityNo="+facilityNo);
+			response.sendRedirect(request.getContextPath() + "/host/facilityController?facilityNo="+facilityNo);
 		}
 
 	}

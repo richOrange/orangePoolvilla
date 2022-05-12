@@ -3,26 +3,28 @@ package vo;
 public class PoolvillaPool {
 	private int poolNo;
 	private int pvNo;
+	private String poolName;
 	private double poolWidth;
 	private double poolLength;
 	private double depth;
 	private String hotWater;
-	private String inOut;
+	private String indoorOutdoor;
 	private String updateDate;
 	public PoolvillaPool() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public PoolvillaPool(int poolNo, int pvNo, double poolWidth, double poolLength, double depth, String hotWater,
-			String inOut, String updateDate) {
+	public PoolvillaPool(int poolNo, int pvNo, String poolName, double poolWidth, double poolLength, double depth,
+			String hotWater, String indoorOutdoor, String updateDate) {
 		super();
 		this.poolNo = poolNo;
 		this.pvNo = pvNo;
+		this.poolName = poolName;
 		this.poolWidth = poolWidth;
 		this.poolLength = poolLength;
 		this.depth = depth;
 		this.hotWater = hotWater;
-		this.inOut = inOut;
+		this.indoorOutdoor = indoorOutdoor;
 		this.updateDate = updateDate;
 	}
 	public int getPoolNo() {
@@ -36,6 +38,12 @@ public class PoolvillaPool {
 	}
 	public void setPvNo(int pvNo) {
 		this.pvNo = pvNo;
+	}
+	public String getPoolName() {
+		return poolName;
+	}
+	public void setPoolName(String poolName) {
+		this.poolName = poolName;
 	}
 	public double getPoolWidth() {
 		return poolWidth;
@@ -61,11 +69,11 @@ public class PoolvillaPool {
 	public void setHotWater(String hotWater) {
 		this.hotWater = hotWater;
 	}
-	public String getInOut() {
-		return inOut;
+	public String getIndoorOutdoor() {
+		return indoorOutdoor;
 	}
-	public void setInOut(String inOut) {
-		this.inOut = inOut;
+	public void setIndoorOutdoor(String indoorOutdoor) {
+		this.indoorOutdoor = indoorOutdoor;
 	}
 	public String getUpdateDate() {
 		return updateDate;
@@ -75,11 +83,9 @@ public class PoolvillaPool {
 	}
 	@Override
 	public String toString() {
-		return "PoolvillaPool [poolNo=" + poolNo + ", pvNo=" + pvNo + ", poolWidth=" + poolWidth + ", poolLength="
-				+ poolLength + ", depth=" + depth + ", hotWater=" + hotWater + ", inOut=" + inOut + ", updateDate="
-				+ updateDate + "]";
+		return "PoolvillaPool [poolNo=" + poolNo + ", pvNo=" + pvNo + ", poolName=" + poolName + ", poolWidth="
+				+ poolWidth + ", poolLength=" + poolLength + ", depth=" + depth + ", hotWater=" + hotWater
+				+ ", indoorOutdoor=" + indoorOutdoor + ", updateDate=" + updateDate + "]";
 	}
 	
-	
-
 }

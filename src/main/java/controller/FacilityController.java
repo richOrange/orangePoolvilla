@@ -15,7 +15,7 @@ import dao.FacilityDao;
 import vo.CookingTool;
 import vo.Facility;
 
-@WebServlet("/facilityController")
+@WebServlet("/host/facilityController")
 public class FacilityController extends HttpServlet {
 	
 	@Override
@@ -40,6 +40,6 @@ public class FacilityController extends HttpServlet {
 			facilityDao.insertFacility(facilityName);
 		}
 		
-		response.sendRedirect(request.getContextPath() + "/facilityController");
+		response.sendRedirect(request.getContextPath() + "/host/facilityController");
 	}
 }

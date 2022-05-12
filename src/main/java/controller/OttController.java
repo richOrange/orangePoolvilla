@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.OttDao;
 import vo.Ott;
 
-@WebServlet("/ottController")
+@WebServlet("/host/ottController")
 public class OttController extends HttpServlet {
 	
 	@Override
@@ -35,7 +35,7 @@ public class OttController extends HttpServlet {
 			ottDao.insertOtt(ottName);
 		}
 		
-		response.sendRedirect(request.getContextPath() + "/ottController");
+		response.sendRedirect(request.getContextPath() + "/host/ottController");
 	}
 
 }

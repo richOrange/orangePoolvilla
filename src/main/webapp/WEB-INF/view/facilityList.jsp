@@ -1,19 +1,14 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="vo.Facility"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
-<%
-	ArrayList<Facility> list = (ArrayList<Facility>)request.getAttribute("list");
-%>
 <head>
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Title -->
-    <title>Roberto - Hotel &amp; Resort HTML Template Template</title>
+    <title>OrangePoolvilla:facilityList</title>
 
     <!-- Favicon -->
     <link rel="icon" href="${pageContext.request.contextPath}/template/img/core-img/favicon.ico">
@@ -73,23 +68,19 @@
 											<th>Number</th>
 											<th>Facility Name</th>
 											<th>Update Date</th>
-											<th></th>
+											<th>&nbsp;</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<%
-												for(Facility f : list) {
-											%>
-													<tr>
-														<td><%= f.getFacilityNo() %></td>
-														<td><%= f.getFacilityName() %></td>
-														<td><%= f.getUpdateDate() %><td> 
-														<td><a href="${pageContext.request.contextPath}/deleteFacilityController?facilityNo=<%= f.getFacilityNo() %>" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
-													</tr>
-											<%		
-												}
-											%>
+											<c:forEach var = "f" items = "${list }">
+												<tr>
+													<td>${f.getFacilityNo()}</td>
+													<td>${f.getFacilityName()}</td>
+													<td>${f.getUpdateDate()}<td> 
+													<td><a href="${pageContext.request.contextPath}/host/deleteFacilityController?facilityNo=${ f.getFacilityNo()}" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+												</tr>
+											</c:forEach>
 										</tr>
 									</tbody>
 								</table>
@@ -100,7 +91,7 @@
                         <h2>Enter</h2>
 
                         <!-- Form -->
-                        <form action="${pageContext.request.contextPath}/facilityController" method="post">
+                        <form action="${pageContext.request.contextPath}/host/facilityController" method="post">
                             <div class="row">
                                 <div class="col-12">
                                     <input type="text" name="facilityName" class="form-control mb-30" placeholder="Please enter facility">
@@ -112,18 +103,6 @@
                         </form>
                     </div>
                 </div>
-
-    <!-- **** All JS Files ***** -->
-    <!-- jQuery 2.2.4 -->
-    <script src="${pageContext.request.contextPath}/template/js/jquery.min.js"></script>
-    <!-- Popper -->
-    <script src="${pageContext.request.contextPath}/template/js/popper.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="${pageContext.request.contextPath}/template/js/bootstrap.min.js"></script>
-    <!-- All Plugins -->
-    <script src="${pageContext.request.contextPath}/template/js/roberto.bundle.js"></script>
-    <!-- Active -->
-    <script src="${pageContext.request.contextPath}/template/js/default-assets/active.js"></script>
 
 </body>
 <script>
