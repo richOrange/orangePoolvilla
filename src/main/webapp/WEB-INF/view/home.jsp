@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Title -->
-    <title>Roberto - Hotel &amp; Resort HTML Template</title>
+    <title>OrangePoolvilla:home</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="${pageContext.request.contextPath}/template/img/core-img/favicon.png">
+    <link rel="icon" href="${pageContext.request.contextPath}/template/img/core-img/favicon.ico">
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/style.css">
@@ -66,6 +66,24 @@
                                     <h6 data-animation="fadeInUp" data-delay="200ms">Welcome To </h6>
                                     <h2 data-animation="fadeInUp" data-delay="500ms">OrangePoolvilla</h2>
                                     <a href="${pageContext.request.contextPath}/signupController" class="btn roberto-btn btn-2" data-animation="fadeInUp" data-delay="800ms">Sign Up Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Single Welcome Slide -->
+            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/18.jpg);" data-img-url="${pageContext.request.contextPath}/template/img/bg-img/18.jpg">
+                <!-- Welcome Content -->
+                <div class="welcome-content h-100">
+                    <div class="container h-100">
+                        <div class="row h-100 align-items-center">
+                            <!-- Welcome Text -->
+                            <div class="col-12">
+                                <div class="welcome-text text-center">
+                                    <h6 data-animation="fadeInDown" data-delay="200ms">Welcome To</h6>
+                                    <h2 data-animation="fadeInDown" data-delay="500ms">OrangePoolvilla</h2>
+                                    <a href="${pageContext.request.contextPath}/template/#" class="btn roberto-btn btn-2" data-animation="fadeInDown" data-delay="800ms">Login Now</a>
                                 </div>
                             </div>
                         </div>
@@ -149,103 +167,6 @@
     </section>
     <!-- About Us Area End -->
 
-    <!-- Service Area Start -->
-    <div class="roberto-service-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="service-content d-flex align-items-center justify-content-between">
-                        <!-- Single Service Area -->
-                        <div class="single-service--area mb-100 wow fadeInUp" data-wow-delay="100ms">
-                            <img src="${pageContext.request.contextPath}/template/img/core-img/icon-1.png" alt="">
-                            <h5>Transportion</h5>
-                        </div>
-
-                        <!-- Single Service Area -->
-                        <div class="single-service--area mb-100 wow fadeInUp" data-wow-delay="300ms">
-                            <img src="${pageContext.request.contextPath}/template/img/core-img/icon-2.png" alt="">
-                            <h5>Reiseservice</h5>
-                        </div>
-
-                        <!-- Single Service Area -->
-                        <div class="single-service--area mb-100 wow fadeInUp" data-wow-delay="500ms">
-                            <img src="${pageContext.request.contextPath}/template/img/core-img/icon-3.png" alt="">
-                            <h5>Spa Relaxtion</h5>
-                        </div>
-
-                        <!-- Single Service Area -->
-                        <div class="single-service--area mb-100 wow fadeInUp" data-wow-delay="700ms">
-                            <img src="${pageContext.request.contextPath}/template/img/core-img/icon-4.png" alt="">
-                            <h5>Restaurant</h5>
-                        </div>
-
-                        <!-- Single Service Area -->
-                        <div class="single-service--area mb-100 wow fadeInUp" data-wow-delay="900ms">
-                            <img src="${pageContext.request.contextPath}/template/img/core-img/icon-1.png" alt="">
-                            <h5>Bar &amp; Drink</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Service Area End -->
-
-    <!-- Our Room Area Start -->
-    <section class="roberto-rooms-area">
-        <div class="rooms-slides owl-carousel">
-            <!-- Single Room Slide -->
-            <div class="single-room-slide d-flex align-items-center">
-                <!-- Thumbnail -->
-                <div class="room-thumbnail h-100 bg-img" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/16.jpg);"></div>
-
-                <!-- Content -->
-                <div class="room-content">
-                    <h2 data-animation="fadeInUp" data-delay="100ms">Premium King Room</h2>
-                    <h3 data-animation="fadeInUp" data-delay="300ms">400$ <span>/ Day</span></h3>
-                    <ul class="room-feature" data-animation="fadeInUp" data-delay="500ms">
-                        <li><span><i class="fa fa-check"></i> Size</span> <span>: 30 ft</span></li>
-                        <li><span><i class="fa fa-check"></i> Capacity</span> <span>: Max persion 5</span></li>
-                        <li><span><i class="fa fa-check"></i> Bed</span> <span>: King Beds</span></li>
-                        <li><span><i class="fa fa-check"></i> Services</span> <span>: Wifi, Television, Bathroom</span></li>
-                    </ul>
-                    <a href="${pageContext.request.contextPath}/template/#" class="btn roberto-btn mt-30" data-animation="fadeInUp" data-delay="700ms">View Details</a>
-                </div>
-            </div>
-
-            <!-- Single Room Slide -->
-            <div class="single-room-slide d-flex align-items-center">
-                <!-- Thumbnail -->
-                <div class="room-thumbnail h-100 bg-img" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/17.jpg);"></div>
-
-                <!-- Content -->
-                <div class="room-content">
-                    <h2 data-animation="fadeInUp" data-delay="100ms">Best King Room</h2>
-                    <h3 data-animation="fadeInUp" data-delay="300ms">125$ <span>/ Day</span></h3>
-                    <ul class="room-feature" data-animation="fadeInUp" data-delay="500ms">
-                        <li><span><i class="fa fa-check"></i> Size</span> <span>: 30 ft</span></li>
-                        <li><span><i class="fa fa-check"></i> Capacity</span> <span>: Max persion 5</span></li>
-                        <li><span><i class="fa fa-check"></i> Bed</span> <span>: King Beds</span></li>
-                        <li><span><i class="fa fa-check"></i> Services</span> <span>: Wifi, Television, Bathroom</span></li>
-                    </ul>
-                    <a href="${pageContext.request.contextPath}/template/#" class="btn roberto-btn mt-30" data-animation="fadeInUp" data-delay="700ms">View Details</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Our Room Area End -->
-
-
-
-
-
-
-
-
-
-
- 
-   
 
 </body>
 <script>
