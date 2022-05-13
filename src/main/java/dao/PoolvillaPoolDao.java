@@ -12,23 +12,26 @@ import vo.PoolvillaPool;
 
 public class PoolvillaPoolDao {
 	// orangepoolvilla db의 poolvilla_pool 테이블 데이터 입력
-		public void insertPoolvillaPool(int pvNo, String poolName, double poolWidth, double poolLength, double depth, String hotWater, String inOut, String updateDate) { 
+		public int insertPoolvillaPool(PoolvillaPool pp) { 
+			// DB 자원 준비
+			
 			Connection conn = null;
 			PreparedStatement stmt = null;
-			
-			String sql = "INSERT INTO poolvilla_pool(pv_no, pool_name, pool_width, pool_length, depth, hot_water, in_out, update_date) VALUES(?, ?, ?, ?, ?, ?, ?, NOW());"; 
+			int row = -1;
+			String sql = "INSERT INTO poolvilla_pool(pv_no, pool_name, pool_width, pool_length, depth, hot_water, indoor_outdoor, update_date) VALUES(?, ?, ?, ?, ?, ?, ?, NOW());"; 
 			try {
 				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
 				stmt = conn.prepareStatement(sql);
-				stmt.setInt(1, pvNo);
-				stmt.setString(2, poolName);
-				stmt.setDouble(3, poolWidth);
-				stmt.setDouble(4, poolLength);
-				stmt.setDouble(5, depth);
-				stmt.setString(6, hotWater);
-				stmt.setString(7, inOut);
-				int row = stmt.executeUpdate();
-
+				stmt.setInt(1, pp.getPvNo());
+				stmt.setString(2, pp.getPoolName());
+				stmt.setDouble(3, pp.getPoolWidth());
+				stmt.setDouble(4, pp.getPoolLength());
+				stmt.setDouble(5, pp.getDepth());
+				stmt.setString(6, pp.getHotWater());
+				stmt.setString(7, pp.getIndoorOutdoor());
+				System.out.println("stmt :" );
+				row = stmt.executeUpdate();
+				System.out.println("row :" + row);
 				if (row == 1) {
 					System.out.println("입력 성공");
 				} else {
@@ -44,6 +47,7 @@ public class PoolvillaPoolDao {
 					e.printStackTrace();
 				}
 			}
+			return row;
 		}
 
 		// orangepoolvilla db의 poolvilla_pool 테이블 목록 가져오기
@@ -108,9 +112,9 @@ public class PoolvillaPoolDao {
 
 					// 디버깅 코드
 					if (row == 1) {
-						System.out.println("location 삭제 성공");
+						System.out.println("삭제 성공");
 					} else {
-						System.out.println("location 삭제 실패");
+						System.out.println("삭제 실패");
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
