@@ -9,64 +9,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.CookingToolDao;
 import dao.CustomerDao;
 import vo.Customer;
 
-@WebServlet("/deleteCustomerController")
+@WebServlet("/all/deleteCustomerController")
 public class DeleteCustomerController extends HttpServlet {
+
+	private CustomerDao customerDao;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//session 값 요청 
-		HttpSession session = request.getSession();
-	    String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
-	    //로그인이 안되어있을 경우 LoginController로 보냄
-	    if(sessionCustomerId == null) {
-	        response.sendRedirect(request.getContextPath()+"/loginController");
-	        System.out.println("noLogin");//디버깅
-	        return;
-	      }
-	    //id정보로 회원탈퇴 폼 호출
-	    request.setAttribute("CustomerId", sessionCustomerId);
-	    request.getRequestDispatcher("/WEB-INF/view/deleteCustomerForm.jsp").forward(request, response);
-			}	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//session 값 요청
-		HttpSession session = request.getSession();
-	    String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
-	    //로그인이 안되어있을 경우 LoginController로 보냄
-	    if(sessionCustomerId == null) {
-	        response.sendRedirect(request.getContextPath()+"/loginController");
-	        System.out.println("noLogin");//디버깅
-	        return;
-	      }
-		//널체크
-	    if(request.getParameter("CustomerPw")==null||request.getParameter("CustomerId")==null) {
-	    	//메세지와 함께 DeleteCustomerController 다시 요청
-	    	response.sendRedirect(request.getContextPath()+"/deleteCustomerController?msg=null");
-	    	return;
-	    }
-	    //요청값 처리
-	    Customer customer = new Customer();
-	    customer.setCustomerId(request.getParameter("customerId"));
-	    customer.setCustomerPw(request.getParameter("customerPw"));
-	    //디버깅
-	    System.out.println(customer.toString()+"deleteCustomerController.dopost");
-	    //Dao에 delete 요청
-	    CustomerDao CustomerDao = new CustomerDao();
-	    int row = CustomerDao.deleteCustomer(customer);
-	    if (row==1) { //성공시 로그 아웃 후에 Logincontroller으로 돌려보냄
-	    	System.out.println("삭제성공 DeleteCustomerController.dopost");
-	    	request.getSession().invalidate();//session 갱신 메서드-로그아웃
-	    	response.sendRedirect(request.getContextPath()+"/loginController");
-	    	return;
-	    }else if(row==0) {// row==0이면 영향받은 행이 없으므로 (row 기본값 -1), 삭제실패,비밀번호오류
-	    	System.out.println("삭제실패 deleteCustomerController.dopost");
-	    	response.sendRedirect(request.getContextPath()+"/deleteCustomerController?msg=wrongPw");
-	    	return;
-	    }else if (row==-1) {//row가 -1이면 sql이 작동 안함
-	    	System.out.println("예외 발생 DeleteCustomerController.dopost");
-	    	response.sendRedirect(request.getContextPath()+"/deleteCustomerController?msg=exception");
-	    	return;
-	    }
+		customerDao = new CustomerDao();
+
+		// 요청값 처리
+		String customerId = "";
+		String customerPw = "";
+		if (!request.getParameter("customerId").equals(0)) {
+			customerId = request.getParameter("customerId");
+		}
+
+		// 디버깅
+		System.out.println("[DeleteCustomerController.doGet()] customerNo : " + customerId);
+
+		customerDao.deleteCustomer(customerId, customerPw);
+
+		response.sendRedirect(request.getContextPath() + "/all/updateCustomerController");
 	}
 
 }

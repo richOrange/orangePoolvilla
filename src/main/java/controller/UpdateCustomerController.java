@@ -27,7 +27,7 @@ public class UpdateCustomerController extends HttpServlet {
 	    CustomerDao customerDao = new CustomerDao();
 	    //id정보로 DB의 상세보기 값 호출
 	    Customer Customer = new Customer();
-	    Customer  = customerDao.selectCustomerOne(sessionCustomerId);
+	    Customer  = customerDao.selectMyPage(sessionCustomerId);
 	    request.setAttribute("Customer", Customer);
 	    request.getRequestDispatcher("/WEB-INF/view/updateCustomerForm.jsp").forward(request, response);
 	}	
@@ -76,7 +76,7 @@ public class UpdateCustomerController extends HttpServlet {
 	    }
 	    //Dao에 update 요청
 	    CustomerDao CustomerDao = new CustomerDao();
-	    int row = CustomerDao.updateCustomerByIdPw(customer, newCustomerPw);
+	    int row = CustomerDao.updateCustomer(customer, newCustomerPw);
 	    System.out.println(row+"<-row UpdateCustomerController.dopost");
 	    if (row==1) { //성공시 SelectCustomerOnecontroller으로 돌려보냄
 	    	System.out.println("수정성공 UpdateCustomerController.dopost");

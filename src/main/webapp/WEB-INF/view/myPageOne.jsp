@@ -46,7 +46,7 @@
 				<div class="col-12">
 					<div class="breadcrumb-content text-center">
 						<div class="breadcrumb-post-content">
-							<h2 class="post-title">My Page Login</h2>
+							<h2 class="post-title">My Page</h2>
 						</div>
 					</div>
 				</div>
@@ -64,32 +64,70 @@
 				<div class="col-12 col-lg-8">
 					<!-- Leave A Reply -->
 					<div class="roberto-contact-form mt-80 mb-100">
-						<h2>My Page Login</h2>
-
-						<!-- Form -->
-						<form action="${pageContext.request.contextPath}/customer/myPageController"
-							method="post">
+						<h2>My Page</h2>
 							<div class="row">
 								<div class="col-12">
 									<table class="table table-hover">
+									
+									<c:forEach var = "m" items = "${ list }">
 										<tr>
-											<td>ID</td>
-											<td><input type="text" name="customerId"></td>
+											<td> ID :
+											</td>
+											<td>
+												${ m.CustomerId }
+											</td>
 										</tr>
 										<tr>
-											<td>PW</td>
-											<td><input type="password" name="customerPw"></td>
+											<td> NAME :
+											</td>
+											<td>
+												${ m.Name }
+											</td>
 										</tr>
+										<tr>
+											<td> GENDER :
+											</td>
+											<td>
+												${ m.Gender }
+											</td>
+										</tr>
+										<tr>
+											<td> BIRTHDATE :
+											</td>
+											<td>
+												${ m.BirthDate }
+											</td>
+										</tr>
+										<tr>
+											<td> EMAIL :
+											</td>
+											<td>
+												${ m.Email }
+											</td>
+										</tr>
+										<tr>
+											<td> PHONE :
+											</td>
+											<td>
+												${ m.Phone}
+											</td>
+										</tr>
+										</c:forEach>
 										
 										<tr>
 											<td>
-												<button type="submit" class="btn roberto-btn btn-3 mt-15">로그인</button>
+												<a href="${pageContext.request.contextPath}/customer/updateCustomerController" class="btn roberto-btn btn-3 mt-15">수정</a>
+											</td>
+											<td>
+												<a href="${pageContext.request.contextPath}/customer/deleteCustomerController" class="btn roberto-btn btn-3 mt-15">회원탈퇴</a>
+											</td>
+											<td>
+												<a href="${pageContext.request.contextPath}/all/homeController" class="btn roberto-btn btn-3 mt-15">홈으로</a>
 											</td>
 										</tr>
 									</table>
 								</div>
 							</div>
-						</form>
 					</div>
 				</div>
 			</div>

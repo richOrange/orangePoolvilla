@@ -22,11 +22,7 @@ public class LoginController extends HttpServlet {
 			HttpSession session = request.getSession();
 			String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
 			
-			if(sessionCustomerId != null) {
-				response.sendRedirect(request.getContextPath()+"/all/loginController");
-				System.out.println("[loginController.doPost()] notLogin");
-				return;
-			}
+			
 			request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
 		}
 		
@@ -35,21 +31,23 @@ public class LoginController extends HttpServlet {
 			
 			String customerId = request.getParameter("customerId");
 			String customerPw = request.getParameter("customerPw");
+			
 			System.out.println("[loginController.doPost()] CustomerId : " + customerId);
 			System.out.println("[loginController.doPost()] CustomerPw : " + customerPw);
 			Customer customer = new Customer();
 			customer.setCustomerId(customerId);
 			customer.setCustomerPw(customerPw);
+			customer.setLevel(3);
 			
-			
-			String returnCustomerId = customerDao.loginCustomer(customer);
-			if(returnCustomerId == null) { //로그인 실패시
-				System.out.println("[loginController.doPost()] returnCustomerId : " + returnCustomerId);
+			Customer returnCustomer = customerDao.loginCustomer(customer);
+			if(returnCustomer == null) { //로그인 실패시
+				System.out.println("[loginController.doPost()] returnCustomerId : " + returnCustomer);
 				response.sendRedirect(request.getContextPath()+"/all/loginController");
 				return;
 			}
 			HttpSession session = request.getSession();
-			session.setAttribute("sessionCustomerId", returnCustomerId);
+			session.setAttribute("sessionLogincustomer", returnCustomer);
+			
 			response.sendRedirect(request.getContextPath()+"/all/homeController");
 		}
 	}

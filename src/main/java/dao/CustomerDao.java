@@ -8,38 +8,92 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import vo.CookingTool;
 import vo.Customer;
 
 
 public class CustomerDao {
 	
-	public String loginCustomer(Customer customer) {
-		String customerId = null;
+	public ArrayList<Customer> myPageCustomer() {
+		ArrayList<Customer> list = new ArrayList<Customer>();
+		
+		// 데이터베이스 자원 준비
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT customer_id customerId FROM customer WHERE customer_id=? AND customer_pw=PASSWORD(?)";
+		
 		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[CustomerDao.myPageCustomer()] 드라이버 로딩 성공");
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			String sql = "SELECT customer_id customerId"
+					+ ", 			name"
+					+ ", 			gender"
+					+ ", 			birth_date birthDate"
+					+ ", 			email"
+					+ ", 			phone"
+					+ ", 			create_date createDate"
+					+ ", 			update_date updateDate FROM customer";
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, customer.getCustomerId());
-			stmt.setString(2, customer.getCustomerPw());
 			rs = stmt.executeQuery();
-			if(rs.next()) {
-				customerId = rs.getString("customerId");
+			
+			while(rs.next()) {
+				Customer co = new Customer();
+				co.setCustomerId(rs.getString("CustomerId"));
+				co.setName(rs.getString("Name"));
+				co.setGender(rs.getString("Gender"));
+				co.setBirthDate(rs.getString("BirthDate"));
+				co.setEmail(rs.getString("Email"));
+				co.setPhone(rs.getString("Phone"));
+				co.setCreateDate(rs.getString("CreateDate"));
+				co.setUpdateDate(rs.getString("updateDate"));
+				list.add(co);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
+				// 데이터베이스 자원 반환
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return customerId;
+		
+		return list;
 	}
+	
+	
+	public Customer loginCustomer(Customer customer) {
+	      Connection conn = null;
+	      PreparedStatement stmt = null;
+	      ResultSet rs = null;
+	      String sql = "SELECT customer_id customerId, level FROM customer WHERE customer_id=? AND customer_pw=PASSWORD(?)";
+	      try {
+	         
+	         conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+	         stmt = conn.prepareStatement(sql);
+	         stmt.setString(1, customer.getCustomerId());
+	         stmt.setString(2, customer.getCustomerPw());
+	         rs = stmt.executeQuery();
+	         if(rs.next()) {
+	            customer.setCustomerId( rs.getString("customerId"));
+	            customer.setLevel(rs.getInt("level"));
+	            
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            conn.close();
+	         } catch (SQLException e) {
+	            e.printStackTrace();
+	         }
+	      }
+	      return customer;
+	   }
 	
 	
 	public void deleteCustomer(String customerId, String customerPw) {

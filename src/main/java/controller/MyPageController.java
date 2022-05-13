@@ -19,34 +19,31 @@ public class MyPageController extends HttpServlet {
 		HttpSession session = request.getSession();
 		String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
 		
-		if(sessionCustomerId != null) {
-			response.sendRedirect(request.getContextPath()+"/customer/myPageController");
-			System.out.println("[loginController.doPost()] notLogin");
-			return;
-		}
-		request.getRequestDispatcher("/WEB-INF/view/myPage.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/openMyPage.jsp").forward(request, response);
 	}
 	
-	// 로그인 액션
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String customerId = request.getParameter("customerId");
+		
 		String customerPw = request.getParameter("customerPw");
-		System.out.println("[loginController.doPost()] CustomerId : " + customerId);
-		System.out.println("[loginController.doPost()] CustomerPw : " + customerPw);
+		System.out.println("[/customer/myPageController.doPost()] CustomerPw : " + customerPw);
+		HttpSession session = request.getSession();
+		Customer sessionLogincustomer =new Customer();
+		sessionLogincustomer = (Customer)session.getAttribute("sessionLogincustomer");
 		Customer customer = new Customer();
-		customer.setCustomerId(customerId);
+		customer.setCustomerId(sessionLogincustomer.getCustomerId());
 		customer.setCustomerPw(customerPw);
+		System.out.println(customer.toString());
 		
 		
-		String returnCustomerId = customerDao.loginCustomer(customer);
+		Customer returnCustomerId = customerDao.loginCustomer(customer);
 		if(returnCustomerId == null) { //로그인 실패시
-			System.out.println("[loginController.doPost()] returnCustomerId : " + returnCustomerId);
+			System.out.println("[/customer/MyPageController.doPost()] returnCustomerId : " + returnCustomerId);
 			response.sendRedirect(request.getContextPath()+"/customer/myPageController");
 			return;
 		}
-		HttpSession session = request.getSession();
-		session.setAttribute("sessionCustomerId", returnCustomerId);
+		
 		response.sendRedirect(request.getContextPath()+"/customer/myPageOneController");
 	}
 }
