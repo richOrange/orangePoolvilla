@@ -21,37 +21,37 @@ public class PoolvillaDao {
 		ResultSet rs = null;
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
-			String sql = "SELECT pv.pv_no pvNo "
-					+ "					, pv.location_no locationNo"
-					+ "					, pv.price price, pv.pv_size pvSize "
-					+ "					, pv.pv_people pvPeople "
-					+ "					, pv.pv_floor pvFloor"
-					+ "					, pv.pv_name pvName "
-					+ "					,COUNT(room.room_no) roomCnt "
+			String sql = "SELECT pv.pv_no pvNo"
+					+ "					,pv.location_no locationNo"
+					+ "					, pv.price price, pv.pv_size pvSize"
+					+ "					, pv.pv_people pvPeople, pv.pv_floor pvFloor"
+					+ "					, pv.pv_name pvName,COUNT(room.room_no) roomCnt"
 					+ "					, AVG(review.satisfaction) reviewSatisfaction "
 					+ "		FROM poolvilla pv "
-					+ "		INNER JOIN "
-					+ "								(SELECT res.pv_no pv_no, res.reservation_no reservation_no  FROM reservation res "
-					+ "									WHERE (res.reservation_begin_date >= STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_begin_date < STR_TO_DATE(?,'%Y-%m-%d')) "
-					+ "										OR (res.reservation_last_date > STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_last_date < STR_TO_DATE(?,'%Y-%m-%d'))) t "
-					+ "		ON NOT pv.pv_no = t.pv_no "
 					+ "		INNER JOIN poolvilla_location loc "
-					+ "		ON loc.location_no = ?"
+					+ "		ON pv.location_no = loc.location_no "
 					+ "		LEFT JOIN poolvilla_photo photo "
 					+ "		ON photo.pv_no = pv.pv_no "
 					+ "		LEFT JOIN poolvilla_room room "
 					+ "		ON pv.pv_no = room.pv_no "
+					+ "		LEFT JOIN reservation res "
+					+ "		ON res.pv_no = pv.pv_no "
 					+ "		LEFT JOIN review review "
-					+ "		ON t.reservation_no = review.reservation_no "
+					+ "		ON res.reservation_no = review.reservation_no "
+					+ "		WHERE pv.location_no = ?  "
+					+ "		AND pv.pv_no NOT IN ( select res.reservation_no "
+					+ "										from reservation res "
+					+ "										WHERE (res.reservation_begin_date >= STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_begin_date < STR_TO_DATE(?,'%Y-%m-%d'))  "
+					+ "													OR (res.reservation_last_date > STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_last_date < STR_TO_DATE(?,'%Y-%m-%d'))) "
 					+ "		GROUP BY pv.pv_no "
-					+ "		ORDER BY pv.update_date DESC "
+					+ "		ORDER BY pv.update_date DESC"
 					+ "		LIMIT ?, ?";
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1,reservationBeginDate);
-			stmt.setString(2,reservationLastDate);
-			stmt.setString(3,reservationBeginDate);
-			stmt.setString(4,reservationLastDate);
-			stmt.setInt(5, locationNo);
+			stmt.setInt(1, locationNo);
+			stmt.setString(2,reservationBeginDate);
+			stmt.setString(3,reservationLastDate);
+			stmt.setString(4,reservationBeginDate);
+			stmt.setString(5,reservationLastDate);
 			stmt.setInt(6, beginRow);
 			stmt.setInt(7, rowPerPage);
 			rs = stmt.executeQuery();
