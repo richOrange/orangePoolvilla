@@ -216,7 +216,8 @@ public class HostDao {
 		String sql = "SELECT host_id hostId, host_pw hostPw, level, name, email, phone"
 				+ ", create_date createDate, update_date updateDate"
 				+ " FROM host"
-				+ " WHERE LEVEL > 4";
+				+ " WHERE LEVEL > 4"
+				+ " ORDER BY level desc";
 		
 		try {
 			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
@@ -256,4 +257,67 @@ public class HostDao {
 
 		return hostList;
 	}
+	
+	public void insertHost(Host host) {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
+		String dbuser = "root";
+		// 연결하려는 DB의 아이디를 문자열 변수에 저장
+		String dbpw = "java1234";
+		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
+
+		String sql = "INSERT INTO host (host_id, host_pw, level, name, email, phone, create_date, update_date)"
+				+ " VALUES (?,PASSWORD(?),?,?,?,?,NOW(),NOW())";
+		
+		try {
+			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
+			System.out.println("[HostDao.insertHost()] conn:" + conn);
+			// 자동 커밋을 해제
+			conn.setAutoCommit(false);
+			
+			// 
+			stmt = conn.prepareStatement(sql);
+			
+			stmt.setString(1, host.getHostId());
+			stmt.setString(2, host.getHostPw());
+			stmt.setInt(3, host.getLevel());
+			stmt.setString(4, host.getName());
+			stmt.setString(5, host.getEmail());
+			stmt.setString(6, host.getPhone());
+			
+			int row = stmt.executeUpdate();
+			
+			if(row == 1) {
+				System.out.println("[HostDao.insertHost()] row : "+row+"행 입력 성공");
+			} else {
+				System.out.println("[HostDao.insertHost()] row : 입력 실패");
+			}
+			
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO: handle exception
+				e1.printStackTrace();
+			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.commit();
+				conn.close();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+		
+	}
+	
+	
 }

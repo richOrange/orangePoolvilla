@@ -14,6 +14,7 @@ import dao.HostDao;
 
 @WebServlet("/reservationController")
 public class ReservationController extends HttpServlet {
+	HostDao hostDao = new HostDao();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -31,8 +32,6 @@ public class ReservationController extends HttpServlet {
 		int beginRow = (currentPage-1) * rowPerPage;
 		System.out.println("[ReservationController.doGet()] beginRow : "+beginRow);
 		request.setAttribute("beginRow", beginRow);
-		
-		HostDao hostDao = new HostDao();
 
 		ArrayList<HashMap<String, Object>> reservationStatusList = hostDao.selectReservationStatusCount();
 		request.setAttribute("reservationStatusList", reservationStatusList);
@@ -42,10 +41,6 @@ public class ReservationController extends HttpServlet {
 		
 		int totalRow = hostDao.selectReservationTotalRow(); 
 		request.setAttribute("totalRow", totalRow);
-		/*
-		String reservationStatus = request.getParameter("reservationStatus");
-		System.out.println("[ReservationController.doGet()] reservationStatus : " + reservationStatus);
-		*/
 		
 		if(request.getParameter("reservationStatus") == null || request.getParameter("reservationStatus") =="") {
 			request.setAttribute("reservationStatus", reservationStatus);
@@ -69,39 +64,6 @@ public class ReservationController extends HttpServlet {
 					System.out.println("[ReservationController.doGet()] currentPage : "+currentPage);
 				}
 		}
-		
-		/*
-		if(request.getParameter("currentPage") != null) {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-			request.setAttribute("currentPage", currentPage);
-			request.getRequestDispatcher("/WEB-INF/view/reservationList.jsp?currentPage="+currentPage+"&reservationStatus="+reservationStatus).forward(request, response);
-			System.out.println("[ReservationController.doGet()] currentPage : "+currentPage);
-			return;
-		}
-		*/
-		
-		/*
-		
-		// 한 페이지당 보여줄 행의 개수 
-		int rowPerPage = 10; 
-		request.setAttribute("rowPerPage", rowPerPage);
-		
-		int beginRow = (currentPage-1) * rowPerPage;
-		System.out.println("[ReservationController.doGet()] beginRow : "+beginRow);
-		request.setAttribute("beginRow", beginRow);
-		
-		HostDao hostDao = new HostDao();
-
-		ArrayList<HashMap<String, Object>> reservationStatusList = hostDao.selectReservationStatusCount();
-		request.setAttribute("reservationStatusList", reservationStatusList);
-		
-		ArrayList<HashMap<String, Object>> reservationList = hostDao.selectReservationList(rowPerPage, beginRow, reservationStatus); 
-		request.setAttribute("reservationList", reservationList);
-		
-		int totalRow = hostDao.selectTotalRow(); 
-		request.setAttribute("totalRow", totalRow);
-		*/
-		// 
 		
 	}
 
