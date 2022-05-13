@@ -18,6 +18,7 @@ public class HostController extends HttpServlet {
 	HostDao hostDao = new HostDao();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		ArrayList<Host> hostList = hostDao.selectHostList();
 		
 		request.setAttribute("hostList", hostList);

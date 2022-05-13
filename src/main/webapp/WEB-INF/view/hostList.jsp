@@ -2,8 +2,9 @@
 <%@page import="vo.Host"%>
 <%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-	ArrayList<Host> hostList = (ArrayList<Host>)request.getAttribute("hostList");
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%	
+	// ArrayList<Host> hostList = (ArrayList<Host>)request.getAttribute("hostList");
 %>
 <!DOCTYPE html>
 <html>
@@ -31,28 +32,38 @@
 			</thead>
 			
 			<tbody>
-				<%
-					for(Host h : hostList) {
-				%>
-						<tr>
-							<td><%=h.getHostId() %></td>
-							<td><%=h.getHostPw() %></td>
-							<td><%=h.getLevel() %></td>
-							<td><%=h.getEmail() %></td>
-							<td><%=h.getPhone() %></td>
-							<td><%=h.getCreateDate() %></td>
-							<td><%=h.getUpdateDate() %></td>
-						</tr>
-				<%
-					}
-				%>
+				<c:forEach var="h" items="${hostList}">	
+					<tr>
+						<td>${h.hostId}</td>
+						<td>${h.hostPw}</td>
+						<td>${h.level}</td>
+						<td>${h.email}</td>
+						<td>${h.phone}</td>
+						<td>${h.createDate}</td>
+						<td>${h.updateDate}</td>
+						<td><a href="${pageContext.request.contextPath}/deleteHostController?hostId=${h.hostId}">관리자 정보 삭제</a></td>
+						<td><a href="${pageContext.request.contextPath}/updateHostController?hostId=${h.hostId}">관리자 정보 수정</a></td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>
 	
 	<div>
 		<button>
-			<a href="<%=request.getContextPath() %>/insertHostController">관리자 추가</a>
+			<a href="${pageContext.request.contextPath}/insertHostController">관리자 정보 추가</a>
+		</button>
+	</div>
+	
+	<div>
+		<button>
+			<a href="${pageContext.request.contextPath}/deleteHostController">관리자 정보 삭제</a>
+		</button>
+	</div>
+	
+	<div>
+		<button>
+			<a href="${pageContext.request.contextPath}/updateHostController">관리자 정보 수정</a>
 		</button>
 	</div>
 </body>

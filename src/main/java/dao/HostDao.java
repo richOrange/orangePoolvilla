@@ -272,7 +272,7 @@ public class HostDao {
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 		String sql = "INSERT INTO host (host_id, host_pw, level, name, email, phone, create_date, update_date)"
-				+ " VALUES (?,PASSWORD(?),?,?,?,?,NOW(),NOW())";
+				+ " VALUES (?,PASSWORD(?),5,?,?,?,NOW(),NOW())";
 		
 		try {
 			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
@@ -285,10 +285,10 @@ public class HostDao {
 			
 			stmt.setString(1, host.getHostId());
 			stmt.setString(2, host.getHostPw());
-			stmt.setInt(3, host.getLevel());
-			stmt.setString(4, host.getName());
-			stmt.setString(5, host.getEmail());
-			stmt.setString(6, host.getPhone());
+			
+			stmt.setString(3, host.getName());
+			stmt.setString(4, host.getEmail());
+			stmt.setString(5, host.getPhone());
 			
 			int row = stmt.executeUpdate();
 			
@@ -319,5 +319,114 @@ public class HostDao {
 		
 	}
 	
+	public void deleteHost(String hostId, String hostPw) {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+
+		// 관리자 삭제 쿼리가 적용이 되었는제 확인하기 위해 만든 정수형 변수 
+		int row = 0;
+		
+		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
+		String dbuser = "root";
+		// 연결하려는 DB의 아이디를 문자열 변수에 저장
+		String dbpw = "java1234";
+		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
+		
+		String sql = "DELETE FROM host WHERE host_id = ? AND host_pw = PASSWORD(?)";
+		
+		try {
+			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
+			// 자동 커밋을 해제 
+			conn.setAutoCommit(false);
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, hostId);
+			stmt.setString(2, hostPw);
+			
+			// 쿼리 실행 
+			row = stmt.executeUpdate();
+			if(row == 1) {
+				System.out.println("[HostDao.deleteHost()] row : "+row+"행 입력 성공");
+			} else {
+				System.out.println("[HostDao.deleteHost()] row : 입력 실패");
+			}
+			
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.commit();
+				conn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		 
+	}
 	
+	public void updateHost(Host host) {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		int row = 0;
+		
+		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
+		String dbuser = "root";
+		// 연결하려는 DB의 아이디를 문자열 변수에 저장
+		String dbpw = "java1234";
+		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
+		
+		String sql = "UPDATE host"
+				+ " SET host_pw = PASSWORD(?) AND `level` = ? AND `name` = ?"
+				+ " AND email = ? AND phone = ? AND create_date = NOW() AND update_date = NOW()"
+				+ " WHERE host_id = ?";
+		
+		try {
+			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
+			conn.setAutoCommit(false);
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, host.getHostPw());
+			stmt.setInt(2, host.getLevel());
+			stmt.setString(3, host.getName());
+			stmt.setString(4, host.getEmail());
+			stmt.setString(5, host.getPhone());
+			stmt.setString(6, host.getHostId());
+			
+			row = stmt.executeUpdate();
+			if(row == 1) {
+				System.out.println("[HostDao.updateHost()] row : "+row+"행 입력 성공");
+			} else {
+				System.out.println("[HostDao.updateHost()] row : 입력 실패");
+			}
+			
+			conn.commit();
+		} catch (SQLException e) { 
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO: handle exception
+				e1.printStackTrace();
+			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+	}
 }

@@ -42,6 +42,16 @@ public class ReservationController extends HttpServlet {
 		int totalRow = hostDao.selectReservationTotalRow(); 
 		request.setAttribute("totalRow", totalRow);
 		
+		int lastPage = 0;
+		
+		if(totalRow % rowPerPage == 0) {
+			lastPage = totalRow / rowPerPage;
+		} else {
+			lastPage = (totalRow / rowPerPage) + 1;
+		}
+		
+		request.setAttribute("lastPage", lastPage);
+		
 		if(request.getParameter("reservationStatus") == null || request.getParameter("reservationStatus") =="") {
 			request.setAttribute("reservationStatus", reservationStatus);
 

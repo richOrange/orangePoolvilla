@@ -22,7 +22,6 @@ public class InsertHostController extends HttpServlet {
 		
 		String hostId = request.getParameter("hostId");
 		String hostPw = request.getParameter("hostPw");
-		int level = Integer.parseInt(request.getParameter("level"));
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String phone = request.getParameter("phone");
@@ -31,7 +30,6 @@ public class InsertHostController extends HttpServlet {
 		
 		host.setHostId(hostId);
 		host.setHostPw(hostPw);
-		host.setLevel(level);
 		host.setName(name);
 		host.setEmail(email);
 		host.setPhone(phone);
