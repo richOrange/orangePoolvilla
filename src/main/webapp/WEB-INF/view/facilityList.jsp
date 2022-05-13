@@ -17,8 +17,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/style.css">
 
 </head>
-	<!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <body>
     <!-- Preloader -->
     <div id="preloader">
