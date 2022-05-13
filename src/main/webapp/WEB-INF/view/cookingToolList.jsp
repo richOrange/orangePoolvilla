@@ -3,127 +3,114 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orange-poolvilla</title>
+    <meta name="description" content="Free Bootstrap Theme by uicookies.com">
+    <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/styles-merged.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/style.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/custom.css">
 
-    <meta name="description" content="">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Title -->
-    <title>OrangePoolvilla:cookingToolList</title>
-
-    <!-- Favicon -->
-    <link rel="icon" href="${pageContext.request.contextPath}/template/img/core-img/favicon.ico">
-
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/template/style.css">
-
-</head>
-
-	<!-- jquery -->
+  </head>
+  
+  	<!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     
-<body>
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="loader"></div>
-    </div>
-    <!-- /Preloader -->
+  <body>
 
-    <!-- Header Area Start -->
-        <div id="includeHeader"> <!-- Insert your file here --></div>
-	<!-- Header Area End -->
+  	<!-- START: header -->
+	       <div id="includeHeader"></div>
+	<!-- END: header -->
+	
+  <section class="probootstrap-slider flexslider2 page-inner">
+    <div class="overlay"></div>
+    <div class="probootstrap-wrap-banner">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
 
-    <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-img bg-overlay jarallax" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/17.jpg);">
-        <div class="container h-100">
-            <div class="row h-100 align-items-center">
-                <div class="col-12">
-                    <div class="breadcrumb-content text-center">
-                        <div class="breadcrumb-post-content">
-                            <h2 class="post-title">Cooking Tool List</h2>
-                        </div>
-                    </div>
-                </div>
+            <div class="page-title probootstrap-animate">
+              <div class="probootstrap-breadcrumbs">
+                <a href="${pageContext.request.contextPath}/template/#">Home</a><span>About</span>
+              </div>
+              <h1>Cooking Tool List</h1>
             </div>
+
+          </div>
         </div>
+      </div>
     </div>
-    <!-- Breadcrumb Area End -->
+    <ul class="slides">
+      <li style="background-image: url(${pageContext.request.contextPath}/template/img/slider_1.jpg);"></li>
+      <li style="background-image: url(${pageContext.request.contextPath}/template/img/slider_4.jpg);"></li>
+      <li style="background-image: url(${pageContext.request.contextPath}/template/img/slider_2.jpg);"></li>
+    </ul>
+  </section>
+  <!-- END: slider  -->
+  
+  <section class="probootstrap-section">
+    <div class="container">
+      
+		<table class = "table table-hover">
+			<thead>
+				<tr>
+					<th>Number</th>
+					<th>Cooking Tool Name</th>
+					<th>Update Date</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<c:forEach var = "ck" items = "${ list }">
+							<tr>
+								<td>${ ck.cookingToolNo }</td>
+								<td>${ ck.cookingToolName }</td>
+								<td>${ ck.updateDate }</td> 
+								<td><a href="${pageContext.request.contextPath}/host/deleteCookingToolController?cookingToolNo=${ ck.cookingToolNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+							</tr>
+					</c:forEach>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<h2>Enter</h2>
+		<br>
+        <!-- Form -->
+        <form action="${pageContext.request.contextPath}/host/cookingToolController" method="post" class="probootstrap-form mb60">
+            <div class="row">
+            <div class="form-group">
+              <input type="text" name="cookingToolName" class="form-control" placeholder="Please enter the cooking tool">
+            </div>
+            <div class="form-group">
+              <input type="submit" class="btn btn-primary" id="submit" name="submit" value="Save">
+            </div>
+          </form>
 
-    <!-- Blog Area Start -->
-    <div class="roberto-news-area section-padding-100-0">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-12 col-lg-8">
-                
-                    <!-- Blog Details Text -->
-                    <div class="blog-details-text">
-                        <!-- Blockquote -->
-                        <blockquote class="roberto-blockquote d-flex">
-                            <div class="text">
-                                <h5>Cooking Tool List</h5>
-                            </div>
-                        </blockquote>
-         
-					        <div>
-								<table class = "table table-hover">
-									<thead>
-										<tr>
-											<th>Number</th>
-											<th>Cooking Tool Name</th>
-											<th>Update Date</th>
-											<th>&nbsp;</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<c:forEach var = "ck" items = "${ list }">
-													<tr>
-														<td>${ ck.cookingToolNo }</td>
-														<td>${ ck.cookingToolName }</td>
-														<td>${ ck.updateDate }</td> 
-														<td><a href="${pageContext.request.contextPath}/host/deleteCookingToolController?cookingToolNo=${ ck.cookingToolNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
-													</tr>
-											</c:forEach>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-                    </div>
-                    <!-- Leave A Reply -->
-                    <div class="roberto-contact-form mt-80 mb-100">
-                        <h2>Enter</h2>
+    </div>
+  </section>  
 
-                        <!-- Form -->
-                        <form action="${pageContext.request.contextPath}/host/cookingToolController" method="post">
-                            <div class="row">
-                                <div class="col-12">
-                                    <input type="text" name="cookingToolName" class="form-control mb-30" placeholder="Please enter the cooking tool">
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn roberto-btn btn-3 mt-15">Save</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+  	<!-- START: footer -->
+	       <div id="includeFooter"></div>
+	<!-- END: footer -->
 
-</body>
+  <div class="gototop js-top">
+    <a href="${pageContext.request.contextPath}/template/#" class="js-gotop"><i class="icon-chevron-thin-up"></i></a>
+  </div>
 
-<script>
-        $("#includeHeader").load('${pageContext.request.contextPath}/includeController');
-</script>
-
-    <!-- **** All JS Files ***** -->
-    <!-- jQuery 2.2.4 -->
-    <script src="${pageContext.request.contextPath}/template/js/jquery.min.js"></script>
-    <!-- Popper -->
-    <script src="${pageContext.request.contextPath}/template/js/popper.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="${pageContext.request.contextPath}/template/js/bootstrap.min.js"></script>
-    <!-- All Plugins -->
-    <script src="${pageContext.request.contextPath}/template/js/roberto.bundle.js"></script>
-    <!-- Active -->
-    <script src="${pageContext.request.contextPath}/template/js/default-assets/active.js"></script>
-    
+  </body>
+  
+  <script>
+        $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
+        $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+  </script>
+  
+  <script src="${pageContext.request.contextPath}/template/js/scripts.min.js"></script>
+  <script src="${pageContext.request.contextPath}/template/js/main.min.js"></script>
+  <script src="${pageContext.request.contextPath}/template/js/custom.js"></script>
+  
 </html>
