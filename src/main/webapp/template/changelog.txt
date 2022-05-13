@@ -1,2 +1,0 @@
-:: Version 1.0.0 (Feb 9, 2019)
-- Initial Release
