@@ -1,189 +1,87 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta name="description" content="">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Title -->
-    <title>OrangePoolvilla:home</title>
-
-    <!-- Favicon -->
-    <link rel="icon" href="${pageContext.request.contextPath}/template/img/core-img/favicon.ico">
-
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/template/style.css">
-
-</head>
-<!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<body>
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="loader"></div>
-    </div>
-    <!-- /Preloader -->
-
-    <!-- Header Area Start -->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orange-poolvilla:home</title>
+    <meta name="description" content="Free Bootstrap Theme by uicookies.com">
+    <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
     
-	<div id="includeHeader"> <!-- Insert your file here --></div>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/styles-merged.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/style.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/custom.css">
+
+  </head>
+  
+  	<!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+  <body>
+
+ 	<!-- START: header -->
+	       <div id="includeHeader"></div>
+	<!-- END: header -->
 	
-    <!-- Header Area End -->
+  <section class="probootstrap-slider flexslider">
+    <div class="probootstrap-wrap-banner">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2">
 
-    <!-- Welcome Area Start -->
-    <section class="welcome-area">
-        <div class="welcome-slides owl-carousel">
-            <!-- Single Welcome Slide -->
-            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/16.jpg);" data-img-url="${pageContext.request.contextPath}/template/img/bg-img/16.jpg">
-                <!-- Welcome Content -->
-                <div class="welcome-content h-100">
-                    <div class="container h-100">
-                        <div class="row h-100 align-items-center">
-                            <!-- Welcome Text -->
-                            <div class="col-12">
-                                <div class="welcome-text text-center">
-                                    <h6 data-animation="fadeInLeft" data-delay="200ms">Welcome To </h6>
-                                    <h2 data-animation="fadeInLeft" data-delay="500ms">OrangePoolvilla</h2>
-                                    <a href="${pageContext.request.contextPath}/LoginController" class="btn roberto-btn btn-2" data-animation="fadeInLeft" data-delay="800ms">Login Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="probootstrap-home-search probootstrap-animate">
+              <form action="${pageContext.request.contextPath}/all/poolvillaListController" method="get">
+                <h2 class="heading">날짜와 지역을 입력해 주세요</h2>
+                <div class="probootstrap-field-group">
+                  <div class="probootstrap-fields">
+                    
+                      
+                      <div>
+	                      체크인 :<input type="date" class="form-control" id="checkIn" name="reservationBeginDate">
+    	                  체크 아웃 :<input type="date" class="form-control" id="checkOut" name="reservationLastDate">
+                      </div>
+                      <!-- 지역검색부분 -->
+                      지역선택 : 
+                     <select name="locationNo" class="form-control">
+                     	<option value="-1">::지역선택::</option>
+                         <option value="1">가평</option>
+                         <option value="2">대부도</option>
+                     </select>
+                  <button class="btn btn-success" type="submit"><i class="icon-magnifying-glass t2"></i> Start Search</button>
+                  </div>
                 </div>
+              </form>
             </div>
-
-            <!-- Single Welcome Slide -->
-            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/17.jpg);" data-img-url="${pageContext.request.contextPath}/template/img/bg-img/17.jpg">
-                <!-- Welcome Content -->
-                <div class="welcome-content h-100">
-                    <div class="container h-100">
-                        <div class="row h-100 align-items-center">
-                            <!-- Welcome Text -->
-                            <div class="col-12">
-                                <div class="welcome-text text-center">
-                                    <h6 data-animation="fadeInUp" data-delay="200ms">Welcome To </h6>
-                                    <h2 data-animation="fadeInUp" data-delay="500ms">OrangePoolvilla</h2>
-                                    <a href="${pageContext.request.contextPath}/signupController" class="btn roberto-btn btn-2" data-animation="fadeInUp" data-delay="800ms">Sign Up Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Single Welcome Slide -->
-            <div class="single-welcome-slide bg-img bg-overlay" style="background-image: url(${pageContext.request.contextPath}/template/img/bg-img/18.jpg);" data-img-url="${pageContext.request.contextPath}/template/img/bg-img/18.jpg">
-                <!-- Welcome Content -->
-                <div class="welcome-content h-100">
-                    <div class="container h-100">
-                        <div class="row h-100 align-items-center">
-                            <!-- Welcome Text -->
-                            <div class="col-12">
-                                <div class="welcome-text text-center">
-                                    <h6 data-animation="fadeInDown" data-delay="200ms">Welcome To</h6>
-                                    <h2 data-animation="fadeInDown" data-delay="500ms">OrangePoolvilla</h2>
-                                    <a href="${pageContext.request.contextPath}/template/#" class="btn roberto-btn btn-2" data-animation="fadeInDown" data-delay="800ms">Login Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </section>
-    <!-- Welcome Area End -->
+      </div>
+    </div>
+    <ul class="slides">
+      <li style="background-image: url(${pageContext.request.contextPath}/template/img/slider_1.jpg);" class="overlay"></li>
+      <li style="background-image: url(${pageContext.request.contextPath}/template/img/slider_4.jpg);" class="overlay"></li>
+      <li style="background-image: url(${pageContext.request.contextPath}/template/img/slider_2.jpg);" class="overlay"></li>
+    </ul>
+  </section>
+  <!-- END: slider  -->
 
-    <!-- About Us Area Start -->
-    <section class="roberto-about-area section-padding-100-0">
-    
-        <!-- poolvilla Search Form Area -->
-        <div class="hotel-search-form-area">
-            <div class="container-fluid">
-                <div class="hotel-search-form">
-                    <form action="${pageContext.request.contextPath}/all/poolvillaListController" method="get">
-                        <div class="row justify-content-between align-items-end">
-                            <div class="col-6 col-md-2 col-lg-3">
-                                <label for="checkIn">Check In</label>
-                                <input type="date" class="form-control" id="checkIn" name="reservationBeginDate">
-                            </div>
-                            <div class="col-6 col-md-2 col-lg-3">
-                                <label for="checkOut">Check Out</label>
-                                <input type="date" class="form-control" id="checkOut" name="reservationLastDate">
-                            </div>
-                            <div class="col-4 col-md-1">
-                            	<!-- 지역검색 부분 -->
-                                <label for="room">Location</label>
-                                <select name="locationNo" id="room" class="form-control">
-                                    <option value="1">가평</option>
-                                    <option value="2">대부도</option>
-                                </select>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <button type="submit" class="form-control btn roberto-btn w-100">Check Availability</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+  	<!-- START: footer -->
+	       <div id="includeFooter"></div>
+	<!-- END: footer -->
 
-        <div class="container mt-100">
-            <div class="row align-items-center">
-                <div class="col-12 col-lg-6">
-                    <!-- Section Heading -->
-                    <div class="section-heading wow fadeInUp" data-wow-delay="100ms">
-                        <h6>About Us</h6>
-                        <h2>Welcome to <br>Roberto Hotel Luxury</h2>
-                    </div>
-                    <div class="about-us-content mb-100">
-                        <h5 class="wow fadeInUp" data-wow-delay="300ms">With over 340 hotels worldwide, NH Hotel Group offers a wide variety of hotels catering for a perfect stay no matter where your destination.</h5>
-                        <p class="wow fadeInUp" data-wow-delay="400ms">Manager: <span>Michen Taylor</span></p>
-                        <img src="${pageContext.request.contextPath}/template/img/core-img/signature.png" alt="" class="wow fadeInUp" data-wow-delay="500ms">
-                    </div>
-                </div>
+  <div class="gototop js-top">
+    <a href="${pageContext.request.contextPath}/template/#" class="js-gotop"><i class="icon-chevron-thin-up"></i></a>
+  </div>
 
-                <div class="col-12 col-lg-6">
-                    <div class="about-us-thumbnail mb-100 wow fadeInUp" data-wow-delay="700ms">
-                        <div class="row no-gutters">
-                            <div class="col-6">
-                                <div class="single-thumb">
-                                    <img src="${pageContext.request.contextPath}/template/img/bg-img/13.jpg" alt="">
-                                </div>
-                                <div class="single-thumb">
-                                    <img src="${pageContext.request.contextPath}/template/img/bg-img/14.jpg" alt="">
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="single-thumb">
-                                    <img src="${pageContext.request.contextPath}/template/img/bg-img/15.jpg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- About Us Area End -->
-
-
-</body>
-<script>
-	$("#includeHeader").load('${pageContext.request.contextPath}/includeController');
-</script>
-   <!-- **** All JS Files ***** -->
-    <!-- jQuery 2.2.4 -->
-    <script src="${pageContext.request.contextPath}/template/js/jquery.min.js"></script>
-    <!-- Popper -->
-    <script src="${pageContext.request.contextPath}/template/js/popper.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="${pageContext.request.contextPath}/template/js/bootstrap.min.js"></script>
-    <!-- All Plugins -->
-    <script src="${pageContext.request.contextPath}/template/js/roberto.bundle.js"></script>
-    <!-- Active -->
-    <script src="${pageContext.request.contextPath}/template/js/default-assets/active.js"></script>
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+  </body>
+  
+  <script>
+        $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
+        $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+  </script>
+  
+  <script src="${pageContext.request.contextPath}/template/js/scripts.min.js"></script>
+  <script src="${pageContext.request.contextPath}/template/js/main.min.js"></script>
+  <script src="${pageContext.request.contextPath}/template/js/custom.js"></script>
+  
 </html>

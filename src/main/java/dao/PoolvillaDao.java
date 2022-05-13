@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import vo.Poolvilla;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import vo.CookingTool;
 public class PoolvillaDao {
 	//지역과 날짜로만 검색 기능, homeController에서 호출
 	public List<Map<String,Object>> selectPoolvillaListByDateLocation(String reservationBeginDate, String reservationLastDate,int locationNo,int beginRow,int rowPerPage){
@@ -84,6 +83,67 @@ public class PoolvillaDao {
 		}
 		return list;
 	};
+	//플빌라 상세보기 기능
+	public Poolvilla selectPoolvillaOne(int poolvillaNo) {
+		Poolvilla poolvilla = new Poolvilla();
+		//DB자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			String sql = "SELECT pv.pv_no pvNo"
+					+ "					, pv.host_id hostId"
+					+ "					, loc.location_name locationName"
+					+ "					, CONCAT(addr.province,' ', addr.city,' ',addr.town,' ',addr.street,' ',addr.building1) address"
+					+ "					, pv.pv_detailaddr pvDetailadder"
+					+ "					, pv.pv_name pvName"
+					+ "					, pv.price"
+					+ "					, pv.pv_size pvSize"
+					+ "					, pv.pv_floor pvFloor"
+					+ "					, pv.pv_people pvPeople"
+					+ "					, pv.create_date createDate"
+					+ "					,pv.update_date updateDate "
+					+ "		FROM poolvilla pv "
+					+ "		INNER JOIN address addr "
+					+ "		ON addr.address_no = pv.address_no "
+					+ "		INNER JOIN poolvilla_location loc "
+					+ "		ON loc.location_no = pv.location_no "
+					+ "		WHERE pv.pv_no = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, poolvillaNo);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				poolvilla.setPvNo(rs.getInt("poolvillaNo"));
+				poolvilla.setHostId(rs.getString("poolvillaNo"));
+				poolvilla.setLocationName(rs.getString("locationName"));
+				poolvilla.setAddress(rs.getString("address"));
+				poolvilla.setPvDetailaddr(rs.getString("pvDetailadder"));
+				poolvilla.setPvName(rs.getString("pvName"));
+				poolvilla.setPrice(rs.getInt("price"));
+				poolvilla.setPvSize(rs.getDouble("pvSize"));
+				poolvilla.setPvFloor(rs.getInt("pvFloor"));
+				poolvilla.setPvPeaple(rs.getInt("pvPeople"));
+				poolvilla.setCreateDate(rs.getString("createDate"));
+				poolvilla.setUpdateDate("updateDate");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				rs.close();
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return poolvilla;
+	}
 	
 
 }

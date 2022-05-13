@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/styles-merged.css">
@@ -11,19 +12,25 @@
 
   <header role="banner" class="probootstrap-header">
     <div class="container">
-        <a href="${pageContext.request.contextPath}/template/index.html" class="probootstrap-logo">Orange-poolvilla</a>
+        <a href="${pageContext.request.contextPath}/all/homeController" class="probootstrap-logo">Orange-poolvilla</a>
         
-        <a href="${pageContext.request.contextPath}/template/#" class="probootstrap-burger-menu visible-xs" ><i>Menu</i></a>
-        <div class="mobile-menu-overlay"></div>
 
         <nav role="navigation" class="probootstrap-nav hidden-xs">
           <ul class="probootstrap-main-nav">
+          <!-- 로그인 정보가 있을 경우 -->
+          <c:if test="${not empty sessionLoginCustemer}">
           	<li><a href="${pageContext.request.contextPath}/customer/">OOO님 환영합니다</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myPageController">내정보보기</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myReservationController">예약내역보기</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myWishListController">찜목록보기</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myReviewController">리뷰</a></li>
             <li><a href="${pageContext.request.contextPath}/all/logoutController">로그아웃</a></li>
+          </c:if>
+          <!-- 로그인정보가 없을경우 -->
+          <c:if test="${empty sessionLoginCustemer}">
+          	<li><a href="${pageContext.request.contextPath}/all/insertCustomerController">회원가입</a></li>
+          	<li><a href="${pageContext.request.contextPath}/all/loginController">로그인</a></li>
+          </c:if>
           </ul>
           <div class="extra-text visible-xs"> 
             <a href="${pageContext.request.contextPath}/template/#" class="probootstrap-burger-menu"><i>Menu</i></a>
