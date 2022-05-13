@@ -6,17 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import java.util.List;
 
 import vo.Customer;
 
 
-
-
 public class CustomerDao {
 	
-	public String selectCustomerByIdPw(Customer customer) {
+	public String loginCustomer(Customer customer) {
 		String customerId = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -43,9 +40,9 @@ public class CustomerDao {
 		}
 		return customerId;
 	}
-
 	
-	public int deleteCustomer(Customer Customer) {
+	
+	public void deleteCustomer(String customerId, String customerPw) {
 		int row = -1;
 		
 		Connection conn = null;
@@ -62,7 +59,7 @@ public class CustomerDao {
 			conn.setAutoCommit(false); 
 			//0. select customer_id
 			stmt = conn.prepareStatement(selectCustomerNoSql);
-			stmt.setString(1, Customer.getCustomerId());
+			stmt.setString(1, customerId);
 			rs = stmt.executeQuery();
 			List<Integer> list = new ArrayList<>(); 
 			while(rs.next()) {
@@ -73,8 +70,8 @@ public class CustomerDao {
 
 			
 			stmt = conn.prepareStatement(deleteCustomerSql);
-			stmt.setString(1, Customer.getCustomerId());
-			stmt.setString(2, Customer.getCustomerPw());
+			stmt.setString(1, customerId);
+			stmt.setString(2, customerPw);
 			row = stmt.executeUpdate();
 			if (row == 1) {
 				conn.commit();
@@ -98,10 +95,9 @@ public class CustomerDao {
 				e.printStackTrace();
 			}
 		}
-		return row;
 	}
 	
-		public Customer selectCustomerOne(String CustomerId) {
+		public Customer selectMyPage(String CustomerId) {
 			Customer m = new Customer();
 			
 			Connection conn = null;
@@ -198,7 +194,7 @@ public class CustomerDao {
 		}
 		
 		
-		public int updateCustomerByIdPw(Customer customer,String newCustomerPw) {
+		public int updateCustomer(Customer customer,String newCustomerPw) {
 			int row = -1; 
 			String CustomerId =null; //
 			if(newCustomerPw.equals("")) {
@@ -211,6 +207,9 @@ public class CustomerDao {
 			String sql ="UPDATE Customer SET name = ? "
 					+ "									, gender=? "
 					+ "									,Birth_date=? "
+					+ "									,email=?"
+					+ "									,phone=?"
+					+ "									,update_date=NOW(?)"
 					+ "									,Customer_pw = PASSWORD(?) "
 					+ "									WHERE Customer_id = ? "
 					+ "									AND Customer_pw =PASSWORD(?)";

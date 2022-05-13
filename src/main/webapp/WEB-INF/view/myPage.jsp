@@ -46,7 +46,7 @@
 				<div class="col-12">
 					<div class="breadcrumb-content text-center">
 						<div class="breadcrumb-post-content">
-							<h2 class="post-title">Login</h2>
+							<h2 class="post-title">My Page Login</h2>
 						</div>
 					</div>
 				</div>
@@ -64,10 +64,10 @@
 				<div class="col-12 col-lg-8">
 					<!-- Leave A Reply -->
 					<div class="roberto-contact-form mt-80 mb-100">
-						<h2>Login</h2>
+						<h2>My Page Login</h2>
 
 						<!-- Form -->
-						<form action="${pageContext.request.contextPath}/all/loginController"
+						<form action="${pageContext.request.contextPath}/customer/myPageController"
 							method="post">
 							<div class="row">
 								<div class="col-12">
@@ -80,17 +80,10 @@
 											<td>PW</td>
 											<td><input type="password" name="customerPw"></td>
 										</tr>
-										<tr>
-											<td>
-												<a href="${pageContext.request.contextPath}/all/loginHostController" class="btn roberto-btn btn-3 mt-15">관리자 접속 페이지</a>
-											</td>
-										</tr>
+										
 										<tr>
 											<td>
 												<button type="submit" class="btn roberto-btn btn-3 mt-15">로그인</button>
-											</td>
-											<td>
-												<a href="${pageContext.request.contextPath}/all/insertCustomerController" class="btn roberto-btn btn-3 mt-15">회원가입</a>
 											</td>
 										</tr>
 									</table>
