@@ -11,21 +11,23 @@ import java.util.List;
 import vo.PoolvillaRoom;
 
 public class PoolvillaRoomDao {
-	// orangepoolvilla db의 poolvilla_pool 테이블 데이터 입력
-		public void insertPoolvillaRoom(int pvNo, String roomType, String roomName, String roomInfo, double roomSize, String updateDate) { 
+	// orangepoolvilla db의 poolvilla_room 테이블 데이터 입력
+		public int insertPoolvillaRoom(PoolvillaRoom pr) { 
+			
 			Connection conn = null;
 			PreparedStatement stmt = null;
+			int row = -1;
 			
 			String sql = "INSERT INTO poolvilla_room(pv_no, room_type, room_name, room_info, room_size, update_date) VALUES(?, ?, ?, ?, ?, NOW());"; 
 			try {
 				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
 				stmt = conn.prepareStatement(sql);
-				stmt.setInt(1, pvNo);
-				stmt.setString(2, roomType);
-				stmt.setString(3, roomName);
-				stmt.setString(4, roomInfo);
-				stmt.setDouble(5, roomSize);
-				int row = stmt.executeUpdate();
+				stmt.setInt(1, pr.getPvNo());
+				stmt.setString(2, pr.getRoomType()); 
+				stmt.setString(3, pr.getRoomName());
+				stmt.setString(4, pr.getRoomInfo());
+				stmt.setDouble(5, pr.getRoomSize());
+				row = stmt.executeUpdate();
 
 				if (row == 1) {
 					System.out.println("입력 성공");
@@ -43,9 +45,10 @@ public class PoolvillaRoomDao {
 					e.printStackTrace();
 				}
 			}
+			return row;
 		}
 
-		// orangepoolvilla db의 poolvilla_pool 테이블 목록 가져오기
+		// orangepoolvilla db의 poolvilla_room 테이블 목록 가져오기
 		public List<PoolvillaRoom> selectPoolvillaRoomList() {
 			List<PoolvillaRoom> list = new ArrayList<>();
 			// DB 자원준비
@@ -107,9 +110,9 @@ public class PoolvillaRoomDao {
 
 					// 디버깅 코드
 					if (row == 1) {
-						System.out.println("location 삭제 성공");
+						System.out.println("삭제 성공");
 					} else {
-						System.out.println("location 삭제 실패");
+						System.out.println("삭제 실패");
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
