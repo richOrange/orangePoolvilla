@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -64,7 +65,9 @@
       <div class="row">
       <form method="get" id="reservationForm" action="${pageContext.request.contextPath}/insertReservationController">
       <!-- 고객 정보 -->
-      	<input type ="hidden" id="customerId" name ="customerId" value = "${sessionLoginMember.customerId}" readonly="readonly" >
+      <c:if test="${not empty sessionLoginMember}">
+      	<input type ="hidden" id="memberId" name ="memberId" value = "${sessionLoginMember.memberId}" readonly="readonly">
+      </c:if>
       <!-- 방정보 -->
       	<input type ="hidden" id="pvNo" name ="pvNo" value = "${selectPoolvillaOne.pvNo}" readonly="readonly" >
       <!-- 예약날짜 정보 -->
