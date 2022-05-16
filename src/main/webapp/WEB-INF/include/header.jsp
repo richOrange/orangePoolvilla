@@ -17,9 +17,18 @@
 
         <nav role="navigation" class="probootstrap-nav hidden-xs">
           <ul class="probootstrap-main-nav">
-          <!-- 로그인 정보가 있을 경우 -->
-          <c:if test="${not empty sessionLoginCustemer}">
-          	<li><a href="${pageContext.request.contextPath}/customer/">OOO님 환영합니다</a></li>
+          <!-- customer 로그인 정보가 있을 경우 -->
+          <c:if test="${sessionLoginMember.level >2 && sessionLoginMember.level < 4}">
+          	<li><a href="${pageContext.request.contextPath}/customer/">${sessionLoginMember.customerId}님 환영합니다</a></li>
+            <li><a href="${pageContext.request.contextPath}/customer/myPageController">내정보보기</a></li>
+            <li><a href="${pageContext.request.contextPath}/customer/myReservationController">예약내역보기</a></li>
+            <li><a href="${pageContext.request.contextPath}/customer/myWishListController">찜목록보기</a></li>
+            <li><a href="${pageContext.request.contextPath}/customer/myReviewController">리뷰</a></li>
+            <li><a href="${pageContext.request.contextPath}/all/logoutController">로그아웃</a></li>
+          </c:if>
+          <!-- host 로그인 정보가 있을 경우 -->
+          <c:if test="${sessionLoginMember.level > 4}">
+          	<li><a href="${pageContext.request.contextPath}/host/">${sessionLoginHost.hostId}님 환영합니다</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myPageController">내정보보기</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myReservationController">예약내역보기</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myWishListController">찜목록보기</a></li>
@@ -27,9 +36,9 @@
             <li><a href="${pageContext.request.contextPath}/all/logoutController">로그아웃</a></li>
           </c:if>
           <!-- 로그인정보가 없을경우 -->
-          <c:if test="${empty sessionLoginCustemer}">
+          <c:if test="${empty sessionLoginMember}">
           	<li><a href="${pageContext.request.contextPath}/all/insertCustomerController">회원가입</a></li>
-          	<li><a href="${pageContext.request.contextPath}/all/loginController">로그인</a></li>
+          	<li><a href="${pageContext.request.contextPath}/all/loginController" id="login">로그인</a></li>
           </c:if>
           </ul>
           <div class="extra-text visible-xs"> 

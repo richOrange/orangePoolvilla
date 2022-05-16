@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import vo.Poolvilla;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import vo.Poolvilla;
 public class PoolvillaDao {
 	//지역과 날짜로만 검색 기능, homeController에서 호출
 	public List<Map<String,Object>> selectPoolvillaListByDateLocation(String reservationBeginDate, String reservationLastDate,int locationNo,int beginRow,int rowPerPage){
@@ -21,7 +22,9 @@ public class PoolvillaDao {
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
 			String sql = "SELECT pv.pv_no pvNo"
-					+ "					,pv.location_no locationNo"
+					+ "					, pv.location_no locationNo"
+					+ "					, loc.location_name locationName"
+					+ "					, CONCAT(addr.province,' ', addr.city,' ',addr.town,' ',addr.street,' ',addr.building1) address"
 					+ "					, pv.price price, pv.pv_size pvSize"
 					+ "					, pv.pv_people pvPeople, pv.pv_floor pvFloor"
 					+ "					, pv.pv_name pvName,COUNT(room.room_no) roomCnt"
@@ -29,6 +32,8 @@ public class PoolvillaDao {
 					+ "		FROM poolvilla pv "
 					+ "		INNER JOIN poolvilla_location loc "
 					+ "		ON pv.location_no = loc.location_no "
+					+ "		INNER JOIN address addr "
+					+ "		ON addr.address_no = pv.address_no "
 					+ "		LEFT JOIN poolvilla_photo photo "
 					+ "		ON photo.pv_no = pv.pv_no "
 					+ "		LEFT JOIN poolvilla_room room "
@@ -58,7 +63,9 @@ public class PoolvillaDao {
 			while(rs.next()) {
 				Map<String,Object> m = new HashMap<>();
 				m.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
-				m.put("locationNo", rs.getString("locationNo"));//풀빌라 지역 정보
+				m.put("locationNo", rs.getString("locationNo"));//풀빌라 검색 지역 정보
+				m.put("locationName", rs.getString("locationName"));//풀빌라 검색 지역 이름
+				m.put("address", rs.getString("address"));//풀빌라 기본주소
 				m.put("pvSize", rs.getDouble("pvSize"));//풀빌라 면적
 				m.put("pvPeople", rs.getInt("pvPeople"));//풀빌라 인원수
 				m.put("price", rs.getInt("price"));//1박당가격
@@ -84,7 +91,7 @@ public class PoolvillaDao {
 		return list;
 	};
 	//플빌라 상세보기 기능
-	public Poolvilla selectPoolvillaOne(int poolvillaNo) {
+	public Poolvilla selectPoolvillaOne(int pvNo) {
 		Poolvilla poolvilla = new Poolvilla();
 		//DB자원 준비
 		Connection conn = null;
@@ -111,12 +118,12 @@ public class PoolvillaDao {
 					+ "		ON loc.location_no = pv.location_no "
 					+ "		WHERE pv.pv_no = ?";
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, poolvillaNo);
+			stmt.setInt(1, pvNo);
 			rs = stmt.executeQuery();
 			
 			if(rs.next()) {
-				poolvilla.setPvNo(rs.getInt("poolvillaNo"));
-				poolvilla.setHostId(rs.getString("poolvillaNo"));
+				poolvilla.setPvNo(rs.getInt("pvNo"));
+				poolvilla.setHostId(rs.getString("hostId"));
 				poolvilla.setLocationName(rs.getString("locationName"));
 				poolvilla.setAddress(rs.getString("address"));
 				poolvilla.setPvDetailaddr(rs.getString("pvDetailadder"));

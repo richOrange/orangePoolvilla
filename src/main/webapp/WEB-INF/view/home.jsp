@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,8 +32,9 @@
           <div class="col-md-8 col-md-offset-2">
 
             <div class="probootstrap-home-search probootstrap-animate">
-              <form action="${pageContext.request.contextPath}/all/poolvillaListController" method="get">
-                <h2 class="heading">날짜와 지역을 입력해 주세요</h2>
+              <form id ="searchForm" action="${pageContext.request.contextPath}/all/poolvillaListController" method="get">
+              <!-- 유효성 메세지 출력 부분-->
+              		<h2 id="searchHelper" class="heading"></h2>
                 <div class="probootstrap-field-group">
                   <div class="probootstrap-fields">
                     
@@ -43,12 +45,13 @@
                       </div>
                       <!-- 지역검색부분 -->
                       지역선택 : 
-                     <select name="locationNo" class="form-control">
+                     <select id="locationNo" name="locationNo" class="form-control">
                      	<option value="-1">::지역선택::</option>
-                         <option value="1">가평</option>
-                         <option value="2">대부도</option>
+                      <c:forEach var ="m" items="${locationList}">
+                         <option value="${m.locationNo}">${m.locationName}</option>
+                      </c:forEach>
                      </select>
-                  <button class="btn btn-success" type="submit"><i class="icon-magnifying-glass t2"></i> Start Search</button>
+                  <button type="button" id="search" class="btn btn-success" style="margin-top: 20px"><i class="icon-magnifying-glass t2"></i> Start Search</button>
                   </div>
                 </div>
               </form>
@@ -75,10 +78,29 @@
 
   </body>
   
-  <script>
-        $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
-        $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
-  </script>
+<script>
+	//include
+	$("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
+  	$("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+  	//유효성검사
+  	$('#search').click(function(){
+		if($('#checkIn').val() == ''){
+			$('#searchHelper').text('체크인 날짜를 선택해주세요');
+			$('#checkIn').focus();
+			
+		}else if($('#checkOut').val() == ''){
+			$('#searchHelper').text('체크아웃 날짜를 선택해주세요');
+			$('#checkOut').focus();
+			
+		}else if($('#locationNo').val() == '-1') {
+			$('#searchHelper').text('지역을 선택해주세요');
+			$('#locationNo').focus();
+		} else {
+			$('#searchForm').submit();
+		}
+	});
+  
+</script>
   
   <script src="${pageContext.request.contextPath}/template/js/scripts.min.js"></script>
   <script src="${pageContext.request.contextPath}/template/js/main.min.js"></script>
