@@ -68,8 +68,6 @@ public class PoolvillaPoolController extends HttpServlet {
 			indoorOutdoor = request.getParameter("indoorOutdoor");
 		}
 		
-		System.out.println("1111111111");
-		
 		PoolvillaPool pp = new PoolvillaPool();
 		pp.setPvNo(pvNo);
 		pp.setPoolName(poolName);
@@ -79,29 +77,9 @@ public class PoolvillaPoolController extends HttpServlet {
 		pp.setHotWater(hotWater);
 		pp.setIndoorOutdoor(indoorOutdoor);
 		
-		
 		PoolvillaPoolDao poolvillaPoolDao= new PoolvillaPoolDao();
 		poolvillaPoolDao.insertPoolvillaPool(pp);
 		
-		
-
-		/*
-		 * PoolvillaPoolDao poolvillaPoolDao = new PoolvillaPoolDao(); PoolvillaPool pp
-		 * = new PoolvillaPool();
-		 * 
-		 * pp.setPvNo(Integer.parseInt(request.getParameter("pvNo")));
-		 * pp.setPoolName(request.getParameter("poolName"));
-		 * pp.setPoolWidth(Double.parseDouble(request.getParameter("poolWidth")));
-		 * pp.setPoolLength(Double.parseDouble(request.getParameter("poolLength")));
-		 * pp.setDepth(Double.parseDouble(request.getParameter("depth")));
-		 * pp.setHotWater(request.getParameter("hotWater"));
-		 * pp.setIndoorOutdoor(request.getParameter("indoorOutdoor"));
-		 * 
-		 * 
-		 * System.out.println("pool : " + pp.toString());
-		 * 
-		 * poolvillaPoolDao.insertPoolvillaPool(pp);
-		 */
 		response.sendRedirect(request.getContextPath() + "/host/poolvillaPoolController");
 	}
 
