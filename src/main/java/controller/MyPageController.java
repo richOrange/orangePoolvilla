@@ -1,8 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -20,7 +19,7 @@ public class MyPageController extends HttpServlet {
 	private CustomerDao customerDao;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		List<Map<String,Object>> sessionLoginMember = (List<Map<String,Object>>)session.getAttribute("sessionLoginMember");
+		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
 		
 		request.getRequestDispatcher("/WEB-INF/view/openMyPage.jsp").forward(request, response);
 	}
@@ -36,7 +35,7 @@ public class MyPageController extends HttpServlet {
 		//Dao호출
 		customerDao = new CustomerDao();
 		//로그인 정보를 넣을 리스트 선언
-		List<Map<String,Object>> sessionLoginMember = new ArrayList<>();
+		Map<String,Object> sessionLoginMember = new HashMap<>();
 		//고객만 사용가능한 기능이니 고객만
 		Customer customer = new Customer();
 		customer.setCustomerId(memberId);

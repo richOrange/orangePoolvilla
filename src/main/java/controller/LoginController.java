@@ -27,7 +27,7 @@ public class LoginController extends HttpServlet {
 	
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			HttpSession session = request.getSession();
-			List<Map<String,Object>> sessionLoginMember = (List<Map<String,Object>>)session.getAttribute("sessionLoginMember");
+			Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
 			
 			if(sessionLoginMember != null) {
 				// 이미 로그인이 되어 있는 상태라면
@@ -50,9 +50,10 @@ public class LoginController extends HttpServlet {
 			customerDao = new CustomerDao();
 			hostDao = new HostDao();
 			//로그인 정보를 넣을 리스트 선언
-			List<Map<String,Object>> sessionLoginMember = new ArrayList<>();
+			Map<String,Object> sessionLoginMember = new HashMap<>();
 			//관리자 로그인이 체크 되어 있을경우
-			if(request.getParameter("hostlogin") != null) {
+			if(request.getParameter("hostLogin") != null) {
+				System.out.println("[loginController.doPost()] hostLogin : 관리자로그인 " + request.getParameter("hostLogin"));
 				Host host = new Host();
 				host.setHostId(memberId);
 				host.setHostPw(memberPw);
@@ -66,8 +67,8 @@ public class LoginController extends HttpServlet {
 				
 			}
 			
-			if(sessionLoginMember.size() == 0) { //로그인 실패시
-				System.out.println("[loginController.doPost()] sessionLoginMember : " + sessionLoginMember);
+			if(sessionLoginMember.get("memberId") == null) { //로그인 실패시
+				System.out.println("[loginController.doPost()] sessionLoginMember : 로그인실패 " + sessionLoginMember);
 				response.sendRedirect(request.getContextPath()+"/all/loginController");
 				return;
 			}

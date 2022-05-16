@@ -17,8 +17,8 @@ import vo.Reservation;
 public class HostDao {
 	
 	// 호스트 로그인용 메서드 (3306으로 설정되어있음[나재선])
-	public List<Map<String,Object>> loginHost(Host host) {
-		List<Map<String,Object>> sessionLoginMember = new ArrayList<>();
+	public Map<String,Object> loginHost(Host host) {
+		Map<String,Object> sessionLoginMember = new HashMap<String,Object>();
 		
 	      Connection conn = null;
 	      PreparedStatement stmt = null;
@@ -32,10 +32,8 @@ public class HostDao {
 	         stmt.setString(2, host.getHostPw());
 	         rs = stmt.executeQuery();
 	         if(rs.next()) {
-	        Map<String,Object> m = new HashMap<String,Object>();
-	            m.put("memberId", rs.getString("hostId"));
-	            m.put("level", rs.getInt("level"));
-	            sessionLoginMember.add(m);
+	        	 sessionLoginMember.put("memberId", rs.getString("hostId")); //memberId에 hostId저장
+	        	 sessionLoginMember.put("level", rs.getInt("level"));//level저장
 	         }
 	      } catch (Exception e) {
 	         e.printStackTrace();

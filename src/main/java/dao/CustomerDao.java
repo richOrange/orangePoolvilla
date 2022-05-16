@@ -65,9 +65,9 @@ public class CustomerDao {
 		return customer;
 	}
 	
-	
-	public List<Map<String,Object>> loginCustomer(Customer customer) {
-		List<Map<String,Object>> sessionLoginMember = new ArrayList<>();
+	//회원로그인 기능
+	public Map<String,Object> loginCustomer(Customer customer) {
+		Map<String,Object> sessionLoginMember = new HashMap<>();
 		
 	      Connection conn = null;
 	      PreparedStatement stmt = null;
@@ -81,10 +81,8 @@ public class CustomerDao {
 	         stmt.setString(2, customer.getCustomerPw());
 	         rs = stmt.executeQuery();
 	         if(rs.next()) {
-	        	 Map<String,Object> m = new HashMap<String,Object>();
-		            m.put("memberId", rs.getString("customerId"));
-		            m.put("level", rs.getInt("level"));
-		            sessionLoginMember.add(m);	            
+	        	 sessionLoginMember.put("memberId", rs.getString("customerId"));
+	        	 sessionLoginMember.put("level", rs.getInt("level"));
 	         }
 	      } catch (Exception e) {
 	         e.printStackTrace();
