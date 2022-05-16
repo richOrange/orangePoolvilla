@@ -64,7 +64,7 @@ public class HostDao {
 		String sql = "SELECT reservation_status reservationStatus, COUNT(*) cnt FROM reservation GROUP BY reservationStatus";
 
 		// #### 3306 포트로 변경하기 ! ####
-		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 		String dbuser = "root";
 		String dbpw = "java1234";
 
@@ -113,7 +113,7 @@ public class HostDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
@@ -192,7 +192,7 @@ public class HostDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
@@ -240,7 +240,7 @@ public class HostDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
@@ -298,7 +298,7 @@ public class HostDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
@@ -361,7 +361,7 @@ public class HostDao {
 		// 관리자 삭제 쿼리가 적용이 되었는제 확인하기 위해 만든 정수형 변수 
 		int row = 0;
 		
-		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
@@ -413,7 +413,7 @@ public class HostDao {
 		
 		int row = 0;
 		
-		String dburl = "jdbc:mariadb://localhost:3307/orangepoolvilla";
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
@@ -479,7 +479,7 @@ public class HostDao {
 				+ " WHERE customer_id = ?"; 
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3307/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 		
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customerId);
@@ -527,7 +527,7 @@ public class HostDao {
 					+ " ORDER BY update_date DESC"; 
 			
 			try {
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3307/orangepoolvilla","root","java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 			
 				stmt = conn.prepareStatement(sql);
 				
