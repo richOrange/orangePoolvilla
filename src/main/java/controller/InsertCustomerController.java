@@ -29,25 +29,6 @@ public class InsertCustomerController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		/*
-		HttpSession session = request.getSession();
-		if(session.getAttribute("sessionCustomerId") != null) {
-			return;
-		}
-	    // Dao에 insert 요청
-	    int row = customerDao.insertCustomer(customer);
-	    if (row == 1) { // 성공 시 Logincontroller로 돌려보냄
-	    	System.out.println("[InsertCustomerController.doPost()] 가입 성공");
-	    	response.sendRedirect(request.getContextPath()+"/loginController");
-	    } else if(row == 0) {// row == 0이면 영향받은 행이 없으므로 (row 기본값 -1), 가입실패
-	    	System.out.println("[InsertCustomerController.doPost()] 가입 실패");
-	    	response.sendRedirect(request.getContextPath()+"/insertCustomerController");
-	    } else if (row == -1) {//row가 -1이면 sql이 작동 안함
-	    	System.out.println("[InsertCustomerController.doPost()] 예외 발생");
-	    	response.sendRedirect(request.getContextPath()+"/insertCustomerController");
-	    }
-	    */
-		
 		// 요청값 처리
 		String customerId = null;
 		String customerPw = null;
@@ -94,6 +75,8 @@ public class InsertCustomerController extends HttpServlet {
 	    
 	    customerDao = new CustomerDao();
 	    customerDao.insertCustomer(customer);
+	    
+	    response.sendRedirect(request.getContextPath() + "/all/loginController");
 	    
 	}
 }

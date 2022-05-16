@@ -7,12 +7,47 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import vo.Customer;
 import vo.Host;
 import vo.Reservation;
 
 public class HostDao {
+	
+	// 호스트 로그인용 메서드 (3306으로 설정되어있음[나재선])
+	public List<Map<String,Object>> loginHost(Host host) {
+		List<Map<String,Object>> sessionLoginMember = new ArrayList<>();
+		
+	      Connection conn = null;
+	      PreparedStatement stmt = null;
+	      ResultSet rs = null;
+	      String sql = "SELECT host_id hostId, level FROM host WHERE host_id=? AND host_pw=PASSWORD(?)";
+	      try {
+	         
+	         conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+	         stmt = conn.prepareStatement(sql);
+	         stmt.setString(1, host.getHostId());
+	         stmt.setString(2, host.getHostPw());
+	         rs = stmt.executeQuery();
+	         if(rs.next()) {
+	        Map<String,Object> m = new HashMap<String,Object>();
+	            m.put("memberId", rs.getString("hostId"));
+	            m.put("level", rs.getInt("level"));
+	            sessionLoginMember.add(m);
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            conn.close();
+	         } catch (SQLException e) {
+	            e.printStackTrace();
+	         }
+	      }
+	      return sessionLoginMember;
+	   }
 
 	// RESERVATION 테이블의 예약 상태별 갯수 가져오는 메서드
 	public ArrayList<HashMap<String, Object>> selectReservationStatusCount() {

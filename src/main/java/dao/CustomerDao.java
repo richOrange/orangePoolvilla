@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import vo.CookingTool;
 import vo.Customer;
@@ -66,7 +68,9 @@ public class CustomerDao {
 	}
 	
 	
-	public Customer loginCustomer(Customer customer) {
+	public List<Map<String,Object>> loginCustomer(Customer customer) {
+		List<Map<String,Object>> sessionLoginMember = new ArrayList<>();
+		
 	      Connection conn = null;
 	      PreparedStatement stmt = null;
 	      ResultSet rs = null;
@@ -79,9 +83,10 @@ public class CustomerDao {
 	         stmt.setString(2, customer.getCustomerPw());
 	         rs = stmt.executeQuery();
 	         if(rs.next()) {
-	            customer.setCustomerId( rs.getString("customerId"));
-	            customer.setLevel(rs.getInt("level"));
-	            
+	        	 Map<String,Object> m = new HashMap<String,Object>();
+		            m.put("memberId", rs.getString("customerId"));
+		            m.put("level", rs.getInt("level"));
+		            sessionLoginMember.add(m);	            
 	         }
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -92,7 +97,7 @@ public class CustomerDao {
 	            e.printStackTrace();
 	         }
 	      }
-	      return customer;
+	      return sessionLoginMember;
 	   }
 	
 	
@@ -201,7 +206,7 @@ public class CustomerDao {
 			return m;
 		}
 	
-		public int insertCustomer(Customer customer) {
+		public void insertCustomer(Customer customer) {
 			int row = -1; 
 			String CustomerId =null;
 			
@@ -231,12 +236,20 @@ public class CustomerDao {
 				stmt.setString(5, customer.getBirthDate());
 				stmt.setString(6, customer.getEmail());
 				stmt.setString(7, customer.getPhone());
-				row =stmt.executeUpdate();
+				row = stmt.executeUpdate();
 				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}finally {
 				try {
+					// 디버깅
+					if (row == 1) { // row가 1이면 sql 가입 성공
+				    	System.out.println("[InsertCustomerController.doPost()] 가입 성공");
+				    } else if(row == 0) {// row == 0이면 영향받은 행이 없으므로 (row 기본값 -1), 가입실패
+				    	System.out.println("[InsertCustomerController.doPost()] 가입 실패");
+				    } else if (row == -1) {//row가 -1이면 sql이 작동 안함
+				    	System.out.println("[InsertCustomerController.doPost()] 예외 발생");
+				    }
 					
 					stmt.close();
 					conn.close();
@@ -244,7 +257,6 @@ public class CustomerDao {
 					e.printStackTrace();
 				}
 			}
-			return row;
 		}
 		
 		
