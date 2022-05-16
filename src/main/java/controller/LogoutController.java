@@ -16,6 +16,7 @@ public class LogoutController extends HttpServlet {
 		request.getSession().invalidate(); // session 갱신 메서드 : 기존 세션을 지우고 새로운 세션공간을 부여
 		
 		response.sendRedirect(request.getContextPath()+"/all/loginController");
+		System.out.println("[LogoutController.doGet()] 로그아웃 완료");
 	}
 
 	
