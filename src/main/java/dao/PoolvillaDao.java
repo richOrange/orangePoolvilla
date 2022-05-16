@@ -12,6 +12,7 @@ import java.util.Map;
 
 import vo.CookingTool;
 import vo.Poolvilla;
+import vo.PoolvillaPool;
 public class PoolvillaDao {
 	//지역과 날짜로만 검색 기능, homeController에서 호출
 	public List<Map<String,Object>> selectPoolvillaListByDateLocation(String reservationBeginDate, String reservationLastDate,int locationNo,int beginRow,int rowPerPage){
@@ -367,4 +368,92 @@ public class PoolvillaDao {
 		
 		return list;
 	}
+	
+	// pvNo에 따른 pool 정보 출력
+		public List<PoolvillaPool> selectPoolvillaPoolListByPvNo(int pvNo) {
+			List<PoolvillaPool> list = new ArrayList<>();
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			try {
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				String sql = "SELECT pool_no poolNo"
+						+ "		, pv_no pvNo"
+						+ "		, pool_name poolName"
+						+ "		, pool_width poolWidth"
+						+ "		, pool_length poolLength"
+						+ "		, depth, hot_water hotWater"
+						+ "		, indoor_outdoor indoorOutdoor"
+						+ "		, update_date updateDate"
+						+ " FROM poolvilla_pool"
+						+ " WHERE pv_no = ?;";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, pvNo);
+				
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					PoolvillaPool pp = new PoolvillaPool();
+					pp.setPoolNo(rs.getInt("poolNo"));
+					pp.setPvNo(rs.getInt("pvNo"));
+					pp.setPoolName(rs.getString("poolName"));
+					pp.setPoolWidth(rs.getDouble("poolWidth"));
+					pp.setPoolLength(rs.getDouble("poolLength"));
+					pp.setDepth(rs.getDouble("depth"));
+					pp.setHotWater(rs.getString("hotWater"));
+					pp.setIndoorOutdoor(rs.getString("indoorOutdoor"));
+					pp.setUpdateDate(rs.getString("updateDate"));
+					list.add(pp);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return list;
+		}
+		
+		// pvNo에 따른 facility정보 출력
+		public List<Map<String, Object>> selectPoolvillaFacilityListByPvNo(int pvNo){
+			List<Map<String, Object>> list = new ArrayList<>();
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			try {
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				String sql = "SELECT pf.pv_no pvNo"
+						+ "		, pf.facility_no facilityNo"
+						+ "		, pf.update_date updateDate"
+						+ "		, pf.facility_cnt facilityCnt"
+						+ "		, f.facility_name facilityName"
+						+ " FROM poolvilla_facility pf INNER join facility f"
+						+ " ON pf.facility_no = f.facility_no"
+						+ " WHERE pv_no = ?;";
+				
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, pvNo);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					Map<String,Object> map = new HashMap<>();
+					map.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
+					map.put("facilityNo", rs.getInt("facilityNo"));
+					map.put("updateDate", rs.getString("updateDate"));
+					map.put("facilityCnt", rs.getInt("facilityCnt"));
+					map.put("facilityName", rs.getString("facilityName"));
+					list.add(map);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return list;
+		}
 }

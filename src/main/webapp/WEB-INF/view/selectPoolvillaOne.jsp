@@ -294,6 +294,62 @@
 				</tr>
 			</tbody>
 		</table>
+		<table class = "table table-hover">
+					<thead>
+						<tr>
+							<th>pvNo</th>
+							<th>facilityNo</th>
+							<th>updateDate</th>
+							<th>facilityCnt</th>
+							<th>facilityName</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<c:forEach var="list" items="${selectPoolvillaFacilityListByPvNo}">
+								<tr>
+									<td>${list.pvNo }</td>
+									<td>${list.facilityNo }</td>
+									<td>${list.updateDate }</td>
+									<td>${list.facilityCnt }</td>
+									<td>${list.facilityName }</td>
+								</tr>
+							</c:forEach>
+						</tr>
+					</tbody>
+				</table>
+				<table class = "table table-hover">
+					<thead>
+						<tr>
+							<th>poolNo</th>
+							<th>pvNo</th>
+							<th>poolName</th>
+							<th>poolWidth</th>
+							<th>poolLength</th>
+							<th>depth</th>
+							<th>hotWater</th>
+							<th>indoorOutdoor</th>
+							<th>updateDate</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<c:forEach var="list" items="${selectPoolvillaPoolListByPvNo}">
+								<tr>
+									<td>${list.poolNo }</td>
+									<td>${list.pvNo }</td>
+									<td>${list.poolName }</td>
+									<td>${list.poolWidth }</td>
+									<td>${list.poolLength }</td>
+									<td>${list.depth }</td>
+									<td>${list.hotWater }</td>
+									<td>${list.indoorOutdoor }</td>
+									<td>${list.updateDate }</td>
+								</tr>
+							</c:forEach>
+						</tr>
+					</tbody>
+				</table>
 
       </div>
     </div>
