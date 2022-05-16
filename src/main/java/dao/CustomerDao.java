@@ -10,14 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import vo.CookingTool;
 import vo.Customer;
 
 
 public class CustomerDao {
 	
-	public ArrayList<Customer> myPageCustomer() {
-		ArrayList<Customer> list = new ArrayList<Customer>();
+	public Customer myPageCustomer(String customerId) {
+		Customer customer = null;
 		
 		// 데이터베이스 자원 준비
 		Connection conn = null;
@@ -30,7 +29,7 @@ public class CustomerDao {
 			System.out.println("[CustomerDao.myPageCustomer()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT customer_id customerId"
-					+ ", 			name"
+					+ ", 			'name'"
 					+ ", 			gender"
 					+ ", 			birth_date birthDate"
 					+ ", 			email"
@@ -50,7 +49,6 @@ public class CustomerDao {
 				co.setPhone(rs.getString("Phone"));
 				co.setCreateDate(rs.getString("CreateDate"));
 				co.setUpdateDate(rs.getString("updateDate"));
-				list.add(co);
 			}
 			
 		} catch (Exception e) {
@@ -64,7 +62,7 @@ public class CustomerDao {
 			}
 		}
 		
-		return list;
+		return customer;
 	}
 	
 	
