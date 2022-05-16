@@ -66,7 +66,7 @@ public class LoginController extends HttpServlet {
 				
 			}
 			
-			if(sessionLoginMember == null) { //로그인 실패시
+			if(sessionLoginMember.size() == 0) { //로그인 실패시
 				System.out.println("[loginController.doPost()] sessionLoginMember : " + sessionLoginMember);
 				response.sendRedirect(request.getContextPath()+"/all/loginController");
 				return;

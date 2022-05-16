@@ -204,7 +204,7 @@ public class CustomerDao {
 			return m;
 		}
 	
-		public void insertCustomer(Customer customer) {
+		public int insertCustomer(Customer customer) {
 			int row = -1; 
 			String CustomerId =null;
 			
@@ -240,21 +240,13 @@ public class CustomerDao {
 				e.printStackTrace();
 			}finally {
 				try {
-					// 디버깅
-					if (row == 1) { // row가 1이면 sql 가입 성공
-				    	System.out.println("[InsertCustomerController.doPost()] 가입 성공");
-				    } else if(row == 0) {// row == 0이면 영향받은 행이 없으므로 (row 기본값 -1), 가입실패
-				    	System.out.println("[InsertCustomerController.doPost()] 가입 실패");
-				    } else if (row == -1) {//row가 -1이면 sql이 작동 안함
-				    	System.out.println("[InsertCustomerController.doPost()] 예외 발생");
-				    }
-					
 					stmt.close();
 					conn.close();
 				}catch(SQLException e) {
 					e.printStackTrace();
 				}
 			}
+			return row;
 		}
 		
 		
@@ -303,4 +295,43 @@ public class CustomerDao {
 			}
 			return row;
 		}
+	//아이디 중복 체크 기능
+	public int checkIdInCustomer(String customerId) {
+		int row = -1; //쿼리가 정상적으로 작동 되지 않으면 -1
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
+			
+			String sql = "SELECT * FROM customer WHERE customer_id = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				//rs.next()에 값이 있으면 row = 1
+				row = 1;
+				System.out.println("[CustomerDao.checkIdInCustomer()] 중복아이디가 존재합니다");
+			}else {//없으면 row = 0
+				row=0;
+				System.out.println("[CustomerDao.checkIdInCustomer()] 가입가능한 아이디입니다");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return row;
+	}
 }

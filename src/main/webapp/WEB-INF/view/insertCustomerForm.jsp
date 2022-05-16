@@ -57,21 +57,25 @@
   </section>
   <!-- END: slider  -->
   
-  <section class="probootstrap-section">
-    <div class="container">
-      
-		<form method="post" action="${pageContext.request.contextPath}/all/insertCustomerController" id="form">
-			<div>
+	<section class="probootstrap-section">
+ 		<div class="container">
+		<!-- 아이디 중복 체크 폼 -->
+		<c:if test="${empty customerId}">
+			사용하실 ID를 입력해 주세요 :
+			<form method="get" action="${pageContext.request.contextPath}/all/insertCustomerController" id="checkIdForm">
+				<input type="text" name="checkId" id="checkId">
+				<button type ="button" id="check" class="btn btn-outline-secondary btn-sm" >중복 확인</button>
+				<span id="checkIdHelper" class="helper"></span>
+				<span class="helper">${msg}</span>
+			</form>
+		</c:if>
+		<c:if test="${not empty customerId }">
+			<form method="post" action="${pageContext.request.contextPath}/all/insertCustomerController" id="insertForm">
 				<table class="table table-bordered">
 					<tr>
 						<td>ID</td>
 						<td>
-							<div>
-								<input type="text" name="customerId" id="customerId">
-								<a href="${pageContext.request.contextPath}/all/Controller?customerId=${ customerId }" class="btn btn-outline-secondary btn-sm">중복 확인</a>
-								&nbsp; 
-								<span id="customerIdHelper" class="helper"></span>
-							</div>
+							<input type="text" name="customerId" id="customerId" value ="${customerId}" readonly="readonly" >
 						</td>
 					</tr>
 					<tr>
@@ -143,10 +147,10 @@
 					
 					<!-- 폼 text, radio, checkbox 공백이 있는지 체크 -->
 					<button type = "button" id = "signup" class="btn btn-3 mt-15">sign up</button>
-					<button type = "reset" class="btn btn-3 mt-15">reset</button>
+					<a href="${pageContext.request.contextPath}/all/insertCustomerController" type = "button" class="btn btn-3 mt-15">reset</button>
 					<a href="${pageContext.request.contextPath}/loginController" type="button" class="btn btn-outline-secondary float-right">cancle</a>
-			</div>
 		</form>
+		</c:if>
 	</div>
   </section>  
 
@@ -164,18 +168,26 @@
         $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
         $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
         
-		$("#includeHeader").load('${pageContext.request.contextPath}/includeController');
-        
-    	$('#customerId').focus();
+        //아이디 체크 부분
+    	$('#checkId').focus();
     	
-    	$('#customerId').blur(function() {
-    		if($('#customerId').val().length < 4) {
-    			$('#customerIdHelper').text('id는 4자 이상 입력해주세요');
-    			$('#customerId').focus();
+    	$('#checkId').blur(function() {
+    		if($('#checkId').val().length < 4) {
+    			$('#checkIdHelper').text('id는 4자 이상 입력해주세요');
+    			$('#checkId').focus();
     		} else {
-    			$('#customerIdHelper').text('');
+    			$('#checkIdHelper').text('');
     		}
     	});
+    	$('#check').click(function() {
+    		if($('#checkId').val()==''){
+    			$('#checkIdHelper').text('id는 4자 이상 입력해주세요');
+    			$('#checkId').focus();
+    		}else{
+    			$('#checkIdForm').submit();
+    		}
+    	});    	
+    	
     	
     	$('#customerPw2').blur(function() {
     		if($('#customerPw1').val().length < 4) {
@@ -185,7 +197,7 @@
     		} else if($('#customerPw1').val() != $('#customerPw2').val()) {
     			$('#customerPwHelper1').text('');
     			$('#customerPwHelper2').text('pw가 일치하지 않습니다');
-    			$('#customerPw2').focus();
+    			$('#customerPw1').focus();
     		} else {
     			$('#customerPwHelper2').text('');
     		}
@@ -219,17 +231,15 @@
     	});
     	
     	$('#signup').click(function() {
-    		if($('#customerId').val() == '') {
-    			$('#idHelper').text('id는 4자 이상 입력해주세요');
-    			$('#customerId').focus();
-    		} else if($('#customerPw1').val() == '') {
-    			$('#customerIdHelper').text('');
-    			
+    		if($('#customerId').val()==''){
+    			$('#checkIdHelper').text('id 중복체크를 해주세요');
+    			$('#checkId').focus();
+    		}else if($('#customerPw1').val() == '') {
+    			$('#checkIdHelper').text('');
     			$('#customerPwHelper1').text('pw는 4자 이상 입력해주세요');
     			$('#customerPw1').focus();
     		} else if($('#customerPw1').val() != $('#customerPw2').val()) {
     			$('#customerPwHelper1').text('');
-    			
     			$('#customerPwHelper2').text('pw가 일치하지 않습니다.');
     			$('#customerPw2').focus();
     		} else if($('#name').val() == '') {
@@ -258,7 +268,7 @@
     			$('#phoneHelper').text('phone number를 입력하세요');
     			$('#phone').focus();
     		} else {
-    			$('#form').submit();
+    			$('#insertForm').submit();
     		}
     	});
   </script>

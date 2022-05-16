@@ -62,7 +62,7 @@
 									</tr>
 									<tr>
 										<td>PW</td>
-										<td><input type="password" name="MemberPw" id="memberPw"></td>
+										<td><input type="password" name="memberPw" id="memberPw"></td>
 									</tr>
 									<tr>
 										<td colspan="2">

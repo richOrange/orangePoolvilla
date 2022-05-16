@@ -554,4 +554,44 @@ public class HostDao {
 			
 			return customerList;
 		}
+		
+		//아이디 중복 체크 기능
+		public int checkIdInHost(String hostId) {
+			int row = -1; //쿼리가 정상적으로 작동 되지 않으면 -1
+			// 데이터베이스 자원 준비
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			
+			try {
+				// 데이터베이스 드라이버 연결
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				System.out.println("[HostDao.checkIdInHost()] 드라이버 로딩 성공");
+				
+				String sql = "SELECT * FROM host WHERE host_id = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, hostId);
+				rs = stmt.executeQuery();
+				
+				if(rs.next()) {
+					//rs.next()에 값이 있으면 row = 1
+					row = 1;
+					System.out.println("[HostDao.checkIdInHost()] 중복아이디가 존재합니다");
+				}else {//없으면 row = 0
+					row=0;
+					System.out.println("[HostDao.checkIdInHost()] 가입가능한 아이디입니다");
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					// 데이터베이스 자원 반환
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return row;
+		}
 }
