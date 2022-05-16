@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.HostDao;
 
-@WebServlet("/deleteHostController")
+@WebServlet("/host/deleteHostController")
 public class DeleteHostController extends HttpServlet {
 	
 	HostDao hostDao = new HostDao();
@@ -29,7 +29,7 @@ public class DeleteHostController extends HttpServlet {
 		
 		hostDao.deleteHost(hostId, hostPw);
 		
-		response.sendRedirect(request.getContextPath()+"/hostController");
+		response.sendRedirect(request.getContextPath()+"/host/hostController");
 	}
 
 }

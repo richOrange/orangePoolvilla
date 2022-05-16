@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.HostDao;
 
-@WebServlet("/reservationController")
+@WebServlet("/host/reservationController")
 public class ReservationController extends HttpServlet {
 	HostDao hostDao = new HostDao();
 	

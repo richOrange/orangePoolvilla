@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.HostDao;
 import vo.Host;
 
-@WebServlet("/updateHostController")
+@WebServlet("/host/updateHostController")
 public class UpdateHostController extends HttpServlet {
 	
 	HostDao hostDao = new HostDao();
@@ -57,7 +57,7 @@ public class UpdateHostController extends HttpServlet {
 		
 		hostDao.updateHost(host);
 		
-		response.sendRedirect(request.getContextPath()+"/hostController");
+		response.sendRedirect(request.getContextPath()+"/host/hostController");
 	}
 
 }

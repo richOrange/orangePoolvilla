@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.HostDao;
 import vo.Host;
 
-@WebServlet("/insertHostController")
+@WebServlet("/host/insertHostController")
 public class InsertHostController extends HttpServlet {
 	HostDao hostDao = new HostDao();
 	
@@ -36,7 +36,7 @@ public class InsertHostController extends HttpServlet {
 		
 		hostDao.insertHost(host);
 		
-		response.sendRedirect(request.getContextPath()+"/hostController");
+		response.sendRedirect(request.getContextPath()+"/host/hostController");
 	}
 
 }

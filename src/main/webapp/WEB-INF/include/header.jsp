@@ -19,7 +19,7 @@
           <ul class="probootstrap-main-nav">
           <!-- customer 로그인 정보가 있을 경우 -->
           <c:if test="${sessionLoginMember.level >2 && sessionLoginMember.level < 4}">
-          	<li><a href="${pageContext.request.contextPath}/customer/">${sessionLoginMember.customerId}님 환영합니다</a></li>
+          	<li><a href="${pageContext.request.contextPath}/customer/">${sessionLoginMember.memberId}님 환영합니다</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myPageController">내정보보기</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myReservationController">예약내역보기</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myWishListController">찜목록보기</a></li>
@@ -28,11 +28,11 @@
           </c:if>
           <!-- host 로그인 정보가 있을 경우 -->
           <c:if test="${sessionLoginMember.level > 4}">
-          	<li><a href="${pageContext.request.contextPath}/host/">${sessionLoginHost.hostId}님 환영합니다</a></li>
-            <li><a href="${pageContext.request.contextPath}/customer/myPageController">내정보보기</a></li>
-            <li><a href="${pageContext.request.contextPath}/customer/myReservationController">예약내역보기</a></li>
-            <li><a href="${pageContext.request.contextPath}/customer/myWishListController">찜목록보기</a></li>
-            <li><a href="${pageContext.request.contextPath}/customer/myReviewController">리뷰</a></li>
+          	<li><a href="${pageContext.request.contextPath}/host/">${sessionLoginMember.memberId}님 환영합니다</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/customerCheckController">회원 관리 페이지</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/reservationController">거래 목록 관리 페이지</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/hostController">관리자 계정 리스트 관리 페이지</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/myReviewController">추가 기능 구현 대기중</a></li>
             <li><a href="${pageContext.request.contextPath}/all/logoutController">로그아웃</a></li>
           </c:if>
           <!-- 로그인정보가 없을경우 -->
