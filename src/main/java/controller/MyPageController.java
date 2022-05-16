@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +17,10 @@ import vo.Customer;
 
 @WebServlet("/customer/myPageController")
 public class MyPageController extends HttpServlet {
-	CustomerDao customerDao = new CustomerDao();
+	private CustomerDao customerDao;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
+		List<Map<String,Object>> sessionLoginMember = (List<Map<String,Object>>)session.getAttribute("sessionLoginMember");
 		
 		request.getRequestDispatcher("/WEB-INF/view/openMyPage.jsp").forward(request, response);
 	}
@@ -26,20 +29,24 @@ public class MyPageController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		String customerPw = request.getParameter("customerPw");
-		System.out.println("[/customer/myPageController.doPost()] CustomerPw : " + customerPw);
-		HttpSession session = request.getSession();
-		Customer sessionLogincustomer =new Customer();
-		sessionLogincustomer = (Customer)session.getAttribute("sessionLogincustomer");
+		String memberId = request.getParameter("memberId");
+		String memberPw = request.getParameter("memberPw");
+		System.out.println("[/customer/myPageController.doPost()] memberId : " + memberId);
+		System.out.println("[/customer/myPageController.doPost()] memberPw : " + memberPw);
+		//Dao호출
+		customerDao = new CustomerDao();
+		//로그인 정보를 넣을 리스트 선언
+		List<Map<String,Object>> sessionLoginMember = new ArrayList<>();
+		//고객만 사용가능한 기능이니 고객만
 		Customer customer = new Customer();
-		customer.setCustomerId(sessionLogincustomer.getCustomerId());
-		customer.setCustomerPw(customerPw);
-		System.out.println(customer.toString());
+		customer.setCustomerId(memberId);
+		customer.setCustomerPw(memberPw);
+		sessionLoginMember = customerDao.loginCustomer(customer);
 		
 		
-		Customer returnCustomerId = customerDao.loginCustomer(customer);
-		if(returnCustomerId == null) { //로그인 실패시
-			System.out.println("[/customer/MyPageController.doPost()] returnCustomerId : " + returnCustomerId);
+		
+		if(sessionLoginMember == null) { //로그인 실패시
+			System.out.println("[/customer/MyPageController.doPost()] sessionLoginMember : " + sessionLoginMember);
 			response.sendRedirect(request.getContextPath()+"/customer/myPageController");
 			return;
 		}
