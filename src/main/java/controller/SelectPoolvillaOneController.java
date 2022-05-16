@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,11 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.PoolvillaDao;
+import vo.CookingTool;
 import vo.Poolvilla;
 
 @WebServlet("/all/selectPoolvillaOneController")
 public class SelectPoolvillaOneController extends HttpServlet {
+	
 	private PoolvillaDao poolvillaDao;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//널체크 null일경우 home으로 response
 		if(request.getParameter("pvNo")==null||request.getParameter("reservationBeginDate")==null||request.getParameter("reservationLastDate")==null) {
@@ -31,12 +37,21 @@ public class SelectPoolvillaOneController extends HttpServlet {
 		poolvillaDao = new PoolvillaDao();
 		//풀빌라 정보 호출
 		Poolvilla selectPoolvillaOne = poolvillaDao.selectPoolvillaOne(pvNo);
+		List<Map<String, Object>> poolvillaCookingToolList = poolvillaDao.selectPoolvillaCookingToolByPvNo(pvNo);
+		List<Map<String, Object>> poolvillaOttList = poolvillaDao.selectPoolvillaOttByPvNo(pvNo);
+		List<Map<String, Object>> poolvillaSuppliesList = poolvillaDao.selectPoolvillaSuppliesByPvNo(pvNo);
+		List<Map<String, Object>> poolvillaRoomNBedList = poolvillaDao.selectPoolvillaRoomNBedByPvNo(pvNo);
+		
 		//디버깅
 		System.out.println("[/all/selectPoolvillaOneController.doget()] selectPoolvillaOne : " + selectPoolvillaOne.toString());
 		//모델값 setAttiribute
 		request.setAttribute("reservationBeginDate", reservationBeginDate);//체크인날짜
 		request.setAttribute("reservationLastDate", reservationLastDate);//체크아웃날짜
 		request.setAttribute("selectPoolvillaOne", selectPoolvillaOne);//poolvillaOne 정보
+		request.setAttribute("poolvillaCookingToolList", poolvillaCookingToolList); // 해당 풀빌라의 cooking_tool 정보
+		request.setAttribute("poolvillaOttList", poolvillaOttList); // 해당 풀빌라의 ott 정보
+		request.setAttribute("poolvillaSuppliesList", poolvillaSuppliesList); // 해당 풀빌라의 supplies 정보
+		request.setAttribute("poolvillaRoomNBedList", poolvillaRoomNBedList); // 해당 풀빌라의 room_info 정보와 bed 정보 
 		//jsp 호출
 		request.getRequestDispatcher("/WEB-INF/view/selectPoolvillaOne.jsp").forward(request, response);
 		

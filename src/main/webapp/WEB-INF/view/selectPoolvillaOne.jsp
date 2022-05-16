@@ -185,6 +185,115 @@
           </div>
         </div>
 
+		<table class = "table table-hover">
+			<thead>
+				<tr>
+					<th>pv_no</th>
+					<th>Number</th>
+					<th>Cooking Tool Name</th>
+					<th>Update Date</th>
+					<th>cookingToolCnt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<c:forEach var = "ck" items = "${ poolvillaCookingToolList }">
+							<tr>
+								<td>${ ck.pvNo }</td>
+								<td>${ ck.cookingToolNo }</td>
+								<td>${ ck.cookingToolName }</td>
+								<td>${ ck.updateDate }</td> 
+								<td>${ ck.cookingToolCnt }</td>
+							</tr>
+					</c:forEach>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table class = "table table-hover">
+			<thead>
+				<tr>
+					<th>pv_no</th>
+					<th>ott no</th>
+					<th>ott Name</th>
+					<th>Update Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<c:forEach var = "po" items = "${ poolvillaOttList }">
+							<tr>
+								<td>${ po.pvNo }</td>
+								<td>${ po.ottNo }</td>
+								<td>${ po.ottName }</td>
+								<td>${ po.updateDate }</td> 
+							</tr>
+					</c:forEach>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table class = "table table-hover">
+			<thead>
+				<tr>
+					<th>pv_no</th>
+					<th>supplies no</th>
+					<th>supplies Name</th>
+					<th>supplies cnt</th>
+					<th>Update Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<c:forEach var = "ps" items = "${ poolvillaSuppliesList }">
+							<tr>
+								<td>${ ps.pvNo }</td>
+								<td>${ ps.suppliesNo }</td>
+								<td>${ ps.suppliesName }</td>
+								<td>${ ps.suppliesCnt }</td>
+								<td>${ ps.updateDate }</td> 
+							</tr>
+					</c:forEach>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table class = "table table-hover">
+			<thead>
+				<tr>
+					<th>pv_no</th>
+					<th>bed no</th>
+					<th>room no</th>
+					<th>bed size</th>
+					<th>bed cnt</th>
+					<th>updateDateRB</th>
+					<th>roomType</th>
+					<th>roomName</th>
+					<th>roomInfo</th>
+					<th>roomSize</th>
+					<th>Update Date PR</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<c:forEach var = "prb" items = "${ poolvillaRoomNBedList }">
+							<tr>
+								<td>${ prb.pvNo }</td>
+								<td>${ prb.bedNo }</td>
+								<td>${ prb.roomNo }</td>
+								<td>${ prb.bedSize }</td>
+								<td>${ prb.bedCnt }</td>
+								<td>${ prb.updateDateRB }</td>
+								<td>${ prb.roomType }</td>
+								<td>${ prb.roomName }</td>
+								<td>${ prb.roomInfo }</td>
+								<td>${ prb.roomSize }</td>
+								<td>${ prb.updateDatePR }</td>
+							</tr>
+					</c:forEach>
+				</tr>
+			</tbody>
+		</table>
 
       </div>
     </div>

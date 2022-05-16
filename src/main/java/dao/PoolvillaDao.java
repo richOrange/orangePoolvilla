@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import vo.CookingTool;
 import vo.Poolvilla;
 public class PoolvillaDao {
 	//지역과 날짜로만 검색 기능, homeController에서 호출
@@ -90,7 +91,8 @@ public class PoolvillaDao {
 		}
 		return list;
 	};
-	//플빌라 상세보기 기능
+	
+	// 풀빌라 상세보기 기능
 	public Poolvilla selectPoolvillaOne(int pvNo) {
 		Poolvilla poolvilla = new Poolvilla();
 		//DB자원 준비
@@ -152,5 +154,217 @@ public class PoolvillaDao {
 		return poolvilla;
 	}
 	
-
+	// orangepoolvilla db의 해당 풀빌라의 cookingtool 테이블 목록 가져오기
+	public List<Map<String,Object>> selectPoolvillaCookingToolByPvNo(int pvNo) {
+		List<Map<String,Object>> list = new ArrayList<>();
+		
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[PoolvillaDao.selectPoolvillaCookingToolByPvNo()] 드라이버 로딩 성공");
+			
+			String sql = "SELECT pct.pv_no pvNo"
+					+ "			, pct.cooking_tool_no cookingToolNo"
+					+ "			, pct.cooking_tool_cnt cookingToolCnt"
+					+ "			, pct.update_date updateDate"
+					+ "			, ct.cooking_tool_name cookingToolName"
+					+ "		FROM poolvilla_cooking_tool pct"
+					+ "		INNER JOIN cooking_tool ct"
+					+ "		ON pct.cooking_tool_no = ct.cooking_tool_no"
+					+ "		WHERE pct.pv_no = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, pvNo);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Map<String,Object> m = new HashMap<>();
+				m.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
+				m.put("cookingToolNo", rs.getInt("cookingToolNo")); // 취사 시설 번호
+				m.put("cookingToolCnt", rs.getInt("cookingToolCnt")); // 취사 시설 개수
+				m.put("updateDate", rs.getString("updateDate")); // 취사 시설 글 수정 날짜
+				m.put("cookingToolName", rs.getString("cookingToolName")); // 취사 시설 이름
+				list.add(m);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	
+	// orangepoolvilla db의 해당 풀빌라의 supplies 테이블 목록 가져오기
+	public List<Map<String,Object>> selectPoolvillaSuppliesByPvNo(int pvNo) {
+		List<Map<String,Object>> list = new ArrayList<>();
+		
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[PoolvillaDao.selectPoolvillaSuppliesByPvNo()] 드라이버 로딩 성공");
+			
+			String sql = "SELECT ps.pv_no pvNo"
+					+ "			, ps.supplies_no suppliesNo"
+					+ "			, ps.supplies_cnt suppliesCnt"
+					+ "			, ps.update_date updateDate"
+					+ "			, s.supplies_name suppliesName"
+					+ "		FROM poolvilla_supplies ps"
+					+ "		INNER JOIN supplies s"
+					+ "		ON ps.supplies_no = s.supplies_no"
+					+ "		WHERE ps.pv_no = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, pvNo);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Map<String,Object> m = new HashMap<>();
+				m.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
+				m.put("suppliesNo", rs.getInt("suppliesNo")); // 구비 물품 번호
+				m.put("suppliesCnt", rs.getInt("suppliesCnt")); // 구비 물품 개수
+				m.put("updateDate", rs.getString("updateDate")); // 구비 물품 글 수정 날짜
+				m.put("suppliesName", rs.getString("suppliesName")); // 구비 물품 이름
+				list.add(m);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	
+	// orangepoolvilla db의 해당 풀빌라의 ott 테이블 목록 가져오기
+	public List<Map<String,Object>> selectPoolvillaOttByPvNo(int pvNo) {
+		List<Map<String,Object>> list = new ArrayList<>();
+		
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[PoolvillaDao.selectPoolvillaOttByPvNo()] 드라이버 로딩 성공");
+			
+			String sql = "SELECT po.pv_no pvNo"
+					+ "			, po.ott_no ottNo"
+					+ "			, po.update_date updateDate"
+					+ "			, o.ott_name ottName"
+					+ "		FROM poolvilla_ott po"
+					+ "		INNER JOIN ott o"
+					+ "		ON po.ott_no = o.ott_no"
+					+ "		WHERE po.pv_no = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, pvNo);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Map<String,Object> m = new HashMap<>();
+				m.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
+				m.put("ottNo", rs.getInt("ottNo")); // ott 번호
+				m.put("updateDate", rs.getString("updateDate")); // ott 글 수정 날짜
+				m.put("ottName", rs.getString("ottName")); // ott 이름
+				list.add(m);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	
+	// orangepoolvilla db의 해당 풀빌라의 room과 bed 테이블 목록 가져오기
+	public List<Map<String,Object>> selectPoolvillaRoomNBedByPvNo(int pvNo) {
+		List<Map<String,Object>> list = new ArrayList<>();
+		
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[PoolvillaDao.selectPoolvillaRoomNBedByPvNo()] 드라이버 로딩 성공");
+			
+			String sql = "SELECT rb.bed_no bedNo"
+					+ "			, rb.room_no roomNo"
+					+ "			, rb.bed_size bedSize"
+					+ "			, rb.bed_cnt bedCnt"
+					+ "			, rb.update_date updateDateRB"
+					+ "			, pr.pv_no pvNo"
+					+ "			, pr.room_type roomType"
+					+ "			, pr.room_name roomName"
+					+ "			, pr.room_info roomInfo"
+					+ "			, pr.room_size roomSize"
+					+ "			, pr.update_date updateDatePR"
+					+ "		FROM room_bed rb"
+					+ "		INNER JOIN poolvilla_room pr"
+					+ "		ON pr.room_no = rb.room_no"
+					+ "		WHERE pr.pv_no = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, pvNo);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Map<String,Object> m = new HashMap<>();
+				m.put("bedNo", rs.getInt("bedNo")); // 침대 번호
+				m.put("roomNo", rs.getInt("roomNo")); // 방 번호
+				m.put("bedSize", rs.getString("bedSize")); // 침대 사이즈
+				m.put("bedCnt", rs.getInt("bedCnt")); // 침대 개수
+				m.put("updateDateRB", rs.getString("updateDateRB")); // room_bed 테이블의 글 수정 날짜
+				m.put("pvNo", rs.getInt("pvNo")); // 풀빌라 번호
+				m.put("roomType", rs.getString("roomType")); // 방 유형
+				m.put("roomName", rs.getString("roomName")); // 방 이름
+				m.put("roomInfo", rs.getString("roomInfo")); // 방 정보
+				m.put("roomSize", rs.getInt("roomSize")); // 방 사이즈
+				m.put("updateDatePR", rs.getString("updateDatePR")); // poolvilla_room 테이블의 글 수정 날짜
+				list.add(m);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
 }
