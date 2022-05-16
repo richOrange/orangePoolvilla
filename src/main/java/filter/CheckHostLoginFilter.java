@@ -14,17 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter("/customer/*")
-public class CheckCustomerLoginFilter implements Filter {
+@WebFilter("/host/*")
+public class CheckHostLoginFilter implements Filter {
 
-    public CheckCustomerLoginFilter() {
+    public CheckHostLoginFilter() {
     }
 
 	public void destroy() {
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		//customer 페이지에 일반회원을 막는 기능
+		//host 페이지에 관리자 이외의 접근을 막는 기능
 		HttpServletRequest req=(HttpServletRequest)request;
 		HttpServletResponse res=(HttpServletResponse)response;
 		HttpSession session = req.getSession();
@@ -35,9 +35,9 @@ public class CheckCustomerLoginFilter implements Filter {
 		}
 		//세션에서 로그인 정보 요청
 		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
-	    //level이 3이 안되는 경우 HomeController로 보냄
-	    if((int)sessionLoginMember.get("level") < 3) {
-	        res.sendRedirect(req.getContextPath()+"/all/homeController?msg=needLevel");
+	    //level이 5가 안되는 경우 HomeController로 보냄
+	    if((int)sessionLoginMember.get("level")< 5) {
+	    	 res.sendRedirect(req.getContextPath()+"/all/homeController?msg=needLevel");
 	        return;
 	      }
 		chain.doFilter(request, response);

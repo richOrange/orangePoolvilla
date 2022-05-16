@@ -34,6 +34,9 @@
             <div class="probootstrap-home-search probootstrap-animate">
               <form id ="searchForm" action="${pageContext.request.contextPath}/all/poolvillaListController" method="get">
               <!-- 유효성 메세지 출력 부분-->
+              <c:if test="${msg = needLevel}">
+              		<h2>권한이 없는 페이지 입니다.</h2>
+              </c:if>
               		<h2 id="searchHelper" class="heading"></h2>
                 <div class="probootstrap-field-group">
                   <div class="probootstrap-fields">
