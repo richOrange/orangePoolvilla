@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orange-poolvilla:poolvillaList</title>
+<title>Orange-poolvilla:insertHost</title>
 <meta name="description" content="Free Bootstrap Theme by uicookies.com">
 <meta name="keywords"
 	content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
@@ -31,11 +31,38 @@
 	<div id="includeHeader"></div>
 	<!-- END: header -->
 
+	<section class="probootstrap-slider flexslider2 page-inner">
+		<div class="overlay"></div>
+		<div class="probootstrap-wrap-banner">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8">
+
+						<div class="page-title probootstrap-animate">
+							<div class="probootstrap-breadcrumbs"></div>
+							<h1>ADMIN PAGE</h1>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<ul class="slides">
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_1.jpg);"></li>
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_4.jpg);"></li>
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_2.jpg);"></li>
+		</ul>
+	</section>
+
 	<h1>관리자 추가</h1>
 
 	<form method="post"
 		action="${pageContext.request.contextPath}/host/insertHostController">
-		<table border="1">
+		<table class = "table table-hover">
 			<tr>
 				<td>관리자 아이디</td>
 				<td><input type="text" name="hostId"></td>
@@ -63,5 +90,25 @@
 			</tr>
 		</table>
 	</form>
+
+
+	<!-- START: footer -->
+	<div id="includeFooter"></div>
+	<!-- END: footer -->
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-chevron-thin-up"></i></a>
+	</div>
+
 </body>
+
+<script>
+        $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
+        $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+  </script>
+
+<script src="js/scripts.min.js"></script>
+<script src="js/main.min.js"></script>
+<script src="js/custom.js"></script>
+
 </html>

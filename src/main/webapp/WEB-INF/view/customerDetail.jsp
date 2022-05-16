@@ -31,14 +31,41 @@
 	<div id="includeHeader"></div>
 	<!-- END: header -->
 
+	<section class="probootstrap-slider flexslider2 page-inner">
+		<div class="overlay"></div>
+		<div class="probootstrap-wrap-banner">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8">
+
+						<div class="page-title probootstrap-animate">
+							<div class="probootstrap-breadcrumbs"></div>
+							<h1>ADMIN PAGE</h1>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<ul class="slides">
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_1.jpg);"></li>
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_4.jpg);"></li>
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_2.jpg);"></li>
+		</ul>
+	</section>
+
 	<h1>고객 상세보기</h1>
 
 	<div>
-		<table border="1">
+		<table class = "table table-hover">
 			<thead>
 				<tr>
 					<th>아이디</th>
-					<th>비밀번호</th>
+					
 					<th>이름</th>
 					<th>성별</th>
 					<th>생일</th>
@@ -54,7 +81,7 @@
 
 				<tr>
 					<td>${customer.customerId }</td>
-					<td>${customer.customerPw }</td>
+					
 					<td>${customer.name }</td>
 					<td>${customer.gender }</td>
 					<td>${customer.birthDate}</td>
@@ -70,10 +97,27 @@
 	</div>
 
 	<div>
-		<a
-			href="${pageContext.request.contextPath}/host/customerCheckController">관리자
-			목록</a>
+		<a href="${pageContext.request.contextPath}/host/customerCheckController" type="button" class="btn btn-primary">관리자 목록</a>
 	</div>
+
+
+	<!-- START: footer -->
+	<div id="includeFooter"></div>
+	<!-- END: footer -->
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-chevron-thin-up"></i></a>
+	</div>
+
 </body>
+
+<script>
+        $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
+        $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+  </script>
+
+<script src="js/scripts.min.js"></script>
+<script src="js/main.min.js"></script>
+<script src="js/custom.js"></script>
 
 </html>
