@@ -24,9 +24,9 @@
 				</td>
 			</tr>
 			<tr>
-				<td>랭크</td>
+				<td>랭크 (5이상 7이하 입력)</td>
 				<td>
-					<input type="number" name="level">
+					<input type="text" name="level">
 				</td>
 			</tr>
 			<tr>

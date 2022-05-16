@@ -50,11 +50,14 @@ public class UpdateHostController extends HttpServlet {
 		
 		host.setHostId(hostId);
 		host.setHostPw(hostPw);
+		host.setLevel(level);
 		host.setName(name);
 		host.setEmail(email);
 		host.setPhone(phone);
 		
 		hostDao.updateHost(host);
+		
+		response.sendRedirect(request.getContextPath()+"/hostController");
 	}
 
 }

@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.HostDao;
-import vo.Host;
 
-@WebServlet("/hostController")
-public class HostController extends HttpServlet {
+@WebServlet("/customerCheckController")
+public class CustomerCheckController extends HttpServlet {
 	HostDao hostDao = new HostDao();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		// 
 		int currentPage = 1;
 		if(request.getParameter("currentPage") != null) {
@@ -46,16 +46,15 @@ public class HostController extends HttpServlet {
 		request.setAttribute("lastPage", lastPage);
 		// 
 		
-		ArrayList<Host> hostList = hostDao.selectHostList();
+		ArrayList<HashMap<String, Object>> customerList = hostDao.selectCustomerList();
 		
-		request.setAttribute("hostList", hostList);
+		request.setAttribute("customerList", customerList);
 		
-		request.getRequestDispatcher("/WEB-INF/view/hostList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/customerList.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
 	}
 
 }

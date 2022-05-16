@@ -56,9 +56,7 @@
 				<li>
 					<button> <!-- controller 이동 안되면 소문자 확인 --> <!-- m.get() 해당 값 어떻게 Controller로 넘길지 ?  -->
 						<a href="${pageContext.request.contextPath}/reservationController?reservationStatus=${m.reservationStatus}">${m.reservationStatus}
-							<button>
 								(${m.cnt})
-							</button>
 						</a>
 					</button>	
 				</li>
