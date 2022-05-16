@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orange-poolvilla:poolvillaList</title>
+<title>Orange-poolvilla:reservationList</title>
 <meta name="description" content="Free Bootstrap Theme by uicookies.com">
 <meta name="keywords"
 	content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
@@ -31,7 +31,32 @@
 	<div id="includeHeader"></div>
 	<!-- END: header -->
 
+	<section class="probootstrap-slider flexslider2 page-inner">
+		<div class="overlay"></div>
+		<div class="probootstrap-wrap-banner">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8">
 
+						<div class="page-title probootstrap-animate">
+							<div class="probootstrap-breadcrumbs"></div>
+							<h1>ADMIN PAGE</h1>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<ul class="slides">
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_1.jpg);"></li>
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_4.jpg);"></li>
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_2.jpg);"></li>
+		</ul>
+	</section>
 
 	<h1>거래 목록 관리 페이지</h1>
 
@@ -54,7 +79,7 @@
 
 	<!-- 예약(reservation) 테이블의 전체 컬럼을 가져오는 코드-->
 	<div>
-		<table border="1">
+		<table class = "table table-hover">
 			<thead>
 				<tr>
 					<th>회원 아이디</th>
@@ -86,19 +111,38 @@
 		<!-- 페이지 나누는 코드 -->
 
 		<c:if test="${currentPage > 1}">
-			<button>
-				<a
-					href="${pageContext.request.contextPath}/host/reservationController?currentPage=${currentPage - 1}&reservationStatus=${reservationStatus}">이전</a>
-			</button>
+			
+			<a
+				href="${pageContext.request.contextPath}/host/reservationController?currentPage=${currentPage - 1}&reservationStatus=${reservationStatus}">이전
+			</a>
+			
 		</c:if>
 
 		<c:if test="${currentPage < lastPage}">
-			<button>
-				<a
-					href="${pageContext.request.contextPath}/host/reservationController?currentPage=${currentPage + 1}&reservationStatus=${reservationStatus}">다음</a>
-			</button>
+			<a
+				href="${pageContext.request.contextPath}/host/reservationController?currentPage=${currentPage + 1}&reservationStatus=${reservationStatus}">다음
+			</a>
 		</c:if>
 
 	</div>
+
+	<!-- START: footer -->
+	<div id="includeFooter"></div>
+	<!-- END: footer -->
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-chevron-thin-up"></i></a>
+	</div>
+
 </body>
+
+<script>
+        $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
+        $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+  </script>
+
+<script src="js/scripts.min.js"></script>
+<script src="js/main.min.js"></script>
+<script src="js/custom.js"></script>
+
 </html>
