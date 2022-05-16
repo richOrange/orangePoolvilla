@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import vo.CookingTool;
 import vo.Customer;
@@ -66,7 +68,9 @@ public class CustomerDao {
 	}
 	
 	
-	public Customer loginCustomer(Customer customer) {
+	public List<Map<String,Object>> loginCustomer(Customer customer) {
+		List<Map<String,Object>> sessionLoginMember = new ArrayList<>();
+		
 	      Connection conn = null;
 	      PreparedStatement stmt = null;
 	      ResultSet rs = null;
@@ -79,9 +83,10 @@ public class CustomerDao {
 	         stmt.setString(2, customer.getCustomerPw());
 	         rs = stmt.executeQuery();
 	         if(rs.next()) {
-	            customer.setCustomerId( rs.getString("customerId"));
-	            customer.setLevel(rs.getInt("level"));
-	            
+	        	 Map<String,Object> m = new HashMap<String,Object>();
+		            m.put("memberId", rs.getString("customerId"));
+		            m.put("level", rs.getInt("level"));
+		            sessionLoginMember.add(m);	            
 	         }
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -92,7 +97,7 @@ public class CustomerDao {
 	            e.printStackTrace();
 	         }
 	      }
-	      return customer;
+	      return sessionLoginMember;
 	   }
 	
 	
