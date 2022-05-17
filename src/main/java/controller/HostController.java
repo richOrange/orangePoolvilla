@@ -32,7 +32,7 @@ public class HostController extends HttpServlet {
 		System.out.println("[HostController.doGet()] beginRow : "+beginRow);
 		request.setAttribute("beginRow", beginRow);
 
-        int totalRow = hostDao.selectReservationTotalRow(); 
+        int totalRow = hostDao.selectHostTotalRow(); 
 		request.setAttribute("totalRow", totalRow);
 		
 		int lastPage = 0;
