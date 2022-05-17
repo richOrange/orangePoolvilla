@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,25 +13,32 @@ import javax.servlet.http.HttpSession;
 
 import dao.CustomerDao;
 import vo.Customer;
-@WebServlet("/updateCustomerController")
+@WebServlet("/customer/updateCustomerController")
 public class UpdateCustomerController extends HttpServlet {
+	
+	private CustomerDao customerDao;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//session 값 요청 
 		HttpSession session = request.getSession();
-	    String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
-	    //로그인이 안되어있을 경우 LoginController로 보냄
-	    if(sessionCustomerId == null) {
-	        response.sendRedirect(request.getContextPath()+"/LoginController");
-	        System.out.println("noLogin");//디버깅
-	        return;
-	      }
-	    //Dao 호출
-	    CustomerDao customerDao = new CustomerDao();
+		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
+		
+		// 요청값 호출
+			String memberId = (String)sessionLoginMember.get("memberId");
+			//디버깅
+			System.out.println("[/customer/updateCustomerController.doget()] memberId : " + memberId);
+				
+	    //모델값 호출
+		customerDao = new CustomerDao();
 	    //id정보로 DB의 상세보기 값 호출
 	    Customer Customer = new Customer();
-	    Customer  = customerDao.selectMyPage(sessionCustomerId);
-	    request.setAttribute("Customer", Customer);
-	    request.getRequestDispatcher("/WEB-INF/view/updateCustomerForm.jsp").forward(request, response);
+	    Customer myPageCustomer = customerDao.myPageCustomer(memberId);
+		// 디버깅
+		System.out.println("[/customer/updateCustomerController.doget()] myPageCustomer : " + myPageCustomer.toString());
+		
+		// 모델값 setAttiribute
+		request.setAttribute("myPageCustomer", myPageCustomer); // 해당 고객의	
+				
+	    request.getRequestDispatcher("/WEB-INF/view/updateCustomer.jsp").forward(request, response);
 	}	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,16 +46,11 @@ public class UpdateCustomerController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		//session 값 요청
 		HttpSession session = request.getSession();
-	    String sessionCustomerId = (String)session.getAttribute("sessionCustomerId");
-	    //로그인이 안되어있을 경우 LoginController로 보냄
-	    if(sessionCustomerId == null) {
-	        response.sendRedirect(request.getContextPath()+"/LoginController");
-	        System.out.println("noLogin");//디버깅
-	        return;
-	      }
+		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
+		
 	    //널 체크
 	    if(request.getParameter("name")==null||request.getParameter("age")==null||request.getParameter("CustomerPw")==null||request.getParameter("CustomerId")==null||request.getParameter("gender")==null) {
-	    	System.out.println("null UpdateCustomercontroller.dopost");
+	    	System.out.println("[/customer/updateCustomerController.doget()] sessionLoginMember null" + sessionLoginMember.toString());
 	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController");//요청값에 null있으면 UpdateCustomerController로 돌려보냄
 	    	return;
 	    }
@@ -75,8 +79,8 @@ public class UpdateCustomerController extends HttpServlet {
 	    	}
 	    }
 	    //Dao에 update 요청
-	    CustomerDao CustomerDao = new CustomerDao();
-	    int row = CustomerDao.updateCustomer(customer, newCustomerPw);
+	    customerDao = new CustomerDao();
+	    int row = customerDao.updateCustomer(customer, newCustomerPw);
 	    System.out.println(row+"<-row UpdateCustomerController.dopost");
 	    if (row==1) { //성공시 SelectCustomerOnecontroller으로 돌려보냄
 	    	System.out.println("수정성공 UpdateCustomerController.dopost");

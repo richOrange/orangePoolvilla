@@ -59,33 +59,33 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
-					<form action="${pageContext.request.contextPath}/customer/myPageOneController" method="post">
+					<form action="${pageContext.request.contextPath}/customer/myPageOneController" method="post" class="probootstrap-form mb60">
 						<div class="row">
 							<div class="col-12">
 								<table class="table table-hover">
 									<tr>
 										<td>ID :</td>
-										<td>${ customer.CustomerId }</td>
+										<td><input type="text" name="memberid" id="memberid" value="${myPageCustomer.customerId}" readonly></td>
 									</tr>
 									<tr>
 										<td>NAME :</td>
-										<td>${ customer.Name }</td>
+										<td><input type="text" name="membername" id="membername" value="${myPageCustomer.name}" readonly></td>
 									</tr>
 									<tr>
 										<td>GENDER :</td>
-										<td>${ customer.Gender }</td>
+										<td><input type="text" name="membergender" id="membergender" value="${myPageCustomer.gender}" readonly></td>
 									</tr>
 									<tr>
 										<td>BIRTHDATE :</td>
-										<td>${ customer.BirthDate }</td>
+										<td><input type="text" name="memberbirthdate" id="memberbirthdate" value="${myPageCustomer.birthDate}" readonly></td>
 									</tr>
 									<tr>
 										<td>EMAIL :</td>
-										<td>${ customer.Email }</td>
+										<td><input type="text" name="memberemail" id="memberemail" value="${myPageCustomer.email}" readonly></td>
 									</tr>
 									<tr>
 										<td>PHONE :</td>
-										<td>${ customer.Phone}</td>
+										<td><input type="text" name="memberphone" id="memberphone" value="${myPageCustomer.phone}" readonly></td>
 									</tr>
 									<tr>
 										<td><a href="${pageContext.request.contextPath}/customer/updateCustomerController" class="btn btn-primary">회원 정보 수정</a></td>

@@ -127,8 +127,8 @@
 	//include
 	$("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
   	$("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
-  	//
-  		$('#reservation').click(function(){
+  	//유효성검사
+  	$('#reservation').click(function(){
   		if ($('#checkIn').val == ''){
   			$('#reservationHelper').text('체크인 날짜를 선택해주세요');
   		} else if ( $('#checkOut').val == '' ) {

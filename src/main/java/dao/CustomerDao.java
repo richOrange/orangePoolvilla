@@ -31,6 +31,7 @@ public class CustomerDao {
 			System.out.println("[CustomerDao.myPageCustomer()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT customer_id customerId"
+					+ "				,costomer_pw customerPw"
 					+ " 			,name"
 					+ " 			,gender"
 					+ " 			,birth_date birthDate"
@@ -46,6 +47,7 @@ public class CustomerDao {
 			
 			while(rs.next()) {
 				customer.setCustomerId(rs.getString("customerId"));
+				customer.setCustomerPw(rs.getString("customerPw"));
 				customer.setName(rs.getString("name"));
 				customer.setGender(rs.getString("gender"));
 				customer.setBirthDate(rs.getString("birthDate"));
@@ -262,13 +264,14 @@ public class CustomerDao {
 			Connection conn = null;
 			PreparedStatement stmt = null;
 			
-			String sql ="UPDATE Customer SET name = ? "
-					+ "									, gender=? "
+			String sql ="UPDATE Customer SET Customer_pw = PASSWORD(?) "
+					+ "									,gender=? "
 					+ "									,Birth_date=? "
 					+ "									,email=?"
 					+ "									,phone=?"
 					+ "									,update_date=NOW(?)"
-					+ "									,Customer_pw = PASSWORD(?) "
+					+ "									,name = ?"
+					+ "									FROM customer"
 					+ "									WHERE Customer_id = ? "
 					+ "									AND Customer_pw =PASSWORD(?)";
 			
@@ -276,12 +279,12 @@ public class CustomerDao {
 				
 				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 				stmt = conn.prepareStatement(sql);
-				stmt.setString(1, customer.getName());
-				stmt.setString(2, customer.getGender());
-				stmt.setString(3, customer.getBirthDate());
-				stmt.setString(4, newCustomerPw);
-				stmt.setString(5, customer.getCustomerId());
-				stmt.setString(6, customer.getCustomerPw());
+				stmt.setString(1, customer.getCustomerPw());
+				stmt.setString(2, customer.getName());
+				stmt.setString(3, customer.getGender());
+				stmt.setString(4, customer.getBirthDate());
+				stmt.setString(5, newCustomerPw);
+				stmt.setString(6, customer.getCustomerId());
 				row =stmt.executeUpdate();
 						
 			} catch (Exception e) {
