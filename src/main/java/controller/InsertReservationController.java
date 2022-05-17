@@ -93,6 +93,7 @@ public class InsertReservationController extends HttpServlet {
 	      reservationDao = new ReservationDao();
 	      //예약 기능
 	      int row = reservationDao.insertReservation(insertReservation);
+	      System.out.println("[insertReservationController.doPost()] row : " + row);
 	      if(row == 0) {//중복은 없지만 입력이 안된 경우, 홈으로 보냄
 	    	  response.sendRedirect(request.getContextPath()+"/all/homeController");
 	    	  return;

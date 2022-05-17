@@ -89,8 +89,8 @@ public class ReservationDao {
 				//예약가능한지 검색하는 쿼리
 				String checkReservationsql = "SELECT COUNT(*) cnt  "
 						+ "								FROM reservation res "
-						+ "								WHERE (res.reservation_begin_date >= STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_begin_date < STR_TO_DATE(?,'%Y-%m-%d')) "
-						+ "								OR (res.reservation_last_date > STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_last_date < STR_TO_DATE(?,'%Y-%m-%d')) "
+						+ "								WHERE ((res.reservation_begin_date >= STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_begin_date < STR_TO_DATE(?,'%Y-%m-%d')) "
+						+ "								OR (res.reservation_last_date > STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_last_date < STR_TO_DATE(?,'%Y-%m-%d'))) "
 						+ "								AND res.pv_no = ?";
 				stmt = conn.prepareStatement(checkReservationsql);
 				stmt.setString(1, reservation.getReservationBeginDate());//checkIn 입력
