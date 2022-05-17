@@ -33,8 +33,8 @@ public class InsertReservationController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/all/homeController?msg=null");
 			return;
 		}
-		poolvillaDao = new PoolvillaDao();
-
+		
+		
 		// 요청값 호출
 		int pvNo = Integer.parseInt(request.getParameter("pvNo"));
 		String reservationBeginDate = request.getParameter("reservationBeginDate");
@@ -55,8 +55,7 @@ public class InsertReservationController extends HttpServlet {
 		List<Map<String, Object>> selectPoolvillaFacilityListByPvNo = poolvillaDao.selectPoolvillaFacilityListByPvNo(pvNo);
 
 		// 디버깅
-		System.out.println(
-				"[/all/selectPoolvillaOneController.doget()] selectPoolvillaOne : " + selectPoolvillaOne.toString());
+		System.out.println("[customer/insertReservationcontroller.doget()] selectPoolvillaOne : " + selectPoolvillaOne.toString());
 		// 모델값 setAttiribute
 		request.setAttribute("reservationBeginDate", reservationBeginDate);// 체크인날짜
 		request.setAttribute("reservationLastDate", reservationLastDate);// 체크아웃날짜

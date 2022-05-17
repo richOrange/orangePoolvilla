@@ -86,16 +86,15 @@
 							<!-- 풀빌라정보 -->
 							<input type="hidden" id="pvNo" name="pvNo" value="${selectPoolvillaOne.pvNo}" readonly="readonly">
 
-							체크인 :<input type="date" class="form-control" id="checkIn" name="reservationBeginDate" value="${reservationBeginDate}">
-							체크 아웃 :<input type="date" class="form-control" id="checkOut" name="reservationLastDate" value="${reservationLastDate}">
+							체크인 :<input type="date" class="form-control" id="checkIn" name="checkIn" value="${reservationBeginDate}">
+							체크 아웃 :<input type="date" class="form-control" id="checkOut" name="checkOut" value="${reservationLastDate}">
 
 							<div id="reservationHelper"></div>
 						</div>
 						<table class="table table-hover">
 							<tr>
 								<td>이름</td>
-								<td><input type="text" name="memberName" id="memberName"
-									readonly></td>
+								<td><input type="text" name="memberName" id="memberName" readonly></td>
 							</tr>
 							<tr>
 								<td>email</td>
@@ -126,7 +125,7 @@
 	$("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
   	$("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
   	//
-  		$('#reservation').click(function() {
+  		$('#reservation').click(function(){
   		if ($('#checkIn').val == ''){
   			$('#reservationHelper').text('체크인 날짜를 선택해주세요');
   		} else if ( $('#checkOut').val == '' ) {
