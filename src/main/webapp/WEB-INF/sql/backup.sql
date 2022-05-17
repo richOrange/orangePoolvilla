@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `cooking_tool` (
   `cooking_tool_name` varchar(100) NOT NULL,
   `update_date` datetime NOT NULL,
   PRIMARY KEY (`cooking_tool_no`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
@@ -83,25 +83,6 @@ CREATE TABLE IF NOT EXISTS `host` (
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
--- 테이블 orangepoolvilla.order 구조 내보내기
-CREATE TABLE IF NOT EXISTS `order` (
-  `order_no` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_id` varchar(100) NOT NULL,
-  `pv_no` int(11) NOT NULL,
-  `reservation_begin_date` date NOT NULL,
-  `reservation_last_date` date NOT NULL,
-  `order_status` enum('결제대기','결제완료','취소대기','취소','이용완료') NOT NULL,
-  `create_date` datetime NOT NULL,
-  `update_date` datetime NOT NULL,
-  PRIMARY KEY (`order_no`),
-  KEY `FK_customer_TO_order_1` (`customer_id`),
-  KEY `FK_poolvilla_TO_order_1` (`pv_no`),
-  CONSTRAINT `FK_customer_TO_order_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
-  CONSTRAINT `FK_poolvilla_TO_order_1` FOREIGN KEY (`pv_no`) REFERENCES `poolvilla` (`pv_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
--- 내보낼 데이터가 선택되어 있지 않습니다.
-
 -- 테이블 orangepoolvilla.ott 구조 내보내기
 CREATE TABLE IF NOT EXISTS `ott` (
   `ott_no` int(11) NOT NULL AUTO_INCREMENT,
@@ -120,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `poolvilla` (
   `address_no` int(11) NOT NULL,
   `pv_detailaddr` varchar(255) NOT NULL,
   `pv_name` varchar(100) NOT NULL,
-  `price` int(11) NOT NULL DEFAULT 0,
+  `price` int(11) NOT NULL,
   `pv_size` double NOT NULL,
   `pv_floor` int(11) NOT NULL,
   `pv_people` int(11) NOT NULL,
@@ -129,11 +110,11 @@ CREATE TABLE IF NOT EXISTS `poolvilla` (
   PRIMARY KEY (`pv_no`,`host_id`),
   KEY `FK_host_TO_poolvilla_1` (`host_id`),
   KEY `FK_address_TO_poolvilla_1` (`address_no`) USING BTREE,
-  KEY `FK_location_TO_poolvilla_1` (`location_no`),
+  KEY `FK_poolvilla_poolvilla_location` (`location_no`),
   CONSTRAINT `FK_address_TO_poolvilla_1` FOREIGN KEY (`address_no`) REFERENCES `address` (`address_no`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_host_TO_poolvilla_1` FOREIGN KEY (`host_id`) REFERENCES `host` (`host_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_location_TO_poolvilla_1` FOREIGN KEY (`location_no`) REFERENCES `poolvilla_location` (`location_no`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  CONSTRAINT `FK_poolvilla_poolvilla_location` FOREIGN KEY (`location_no`) REFERENCES `poolvilla_location` (`location_no`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
@@ -167,11 +148,11 @@ CREATE TABLE IF NOT EXISTS `poolvilla_facility` (
 
 -- 테이블 orangepoolvilla.poolvilla_location 구조 내보내기
 CREATE TABLE IF NOT EXISTS `poolvilla_location` (
-  `location_no` int(11) NOT NULL AUTO_INCREMENT,
+  `location_no` int(11) NOT NULL,
   `location_name` varchar(100) NOT NULL,
   `update_date` datetime NOT NULL,
   PRIMARY KEY (`location_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
@@ -211,10 +192,11 @@ CREATE TABLE IF NOT EXISTS `poolvilla_pool` (
   `pool_no` int(11) NOT NULL AUTO_INCREMENT,
   `pv_no` int(11) NOT NULL,
   `pool_width` double NOT NULL,
+  `pool_name` varchar(100) NOT NULL DEFAULT '0',
   `pool_length` double NOT NULL,
   `depth` double NOT NULL,
   `hot_water` enum('Y','N') NOT NULL,
-  `in_out` enum('실내','야외') NOT NULL,
+  `indoor_outdoor` enum('실내','야외') NOT NULL,
   `update_date` datetime NOT NULL,
   PRIMARY KEY (`pool_no`,`pv_no`),
   KEY `FK_poolvilla_TO_pool_1` (`pv_no`),
@@ -252,6 +234,25 @@ CREATE TABLE IF NOT EXISTS `poolvilla_supplies` (
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
+-- 테이블 orangepoolvilla.reservation 구조 내보내기
+CREATE TABLE IF NOT EXISTS `reservation` (
+  `reservation_no` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` varchar(100) NOT NULL,
+  `pv_no` int(11) NOT NULL,
+  `reservation_begin_date` date NOT NULL,
+  `reservation_last_date` date NOT NULL,
+  `reservation_status` enum('결제대기','결제완료','취소대기','취소','이용완료') NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  PRIMARY KEY (`reservation_no`) USING BTREE,
+  KEY `FK_customer_TO_order_1` (`customer_id`),
+  KEY `FK_poolvilla_TO_order_1` (`pv_no`),
+  CONSTRAINT `FK_customer_TO_order_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
+  CONSTRAINT `FK_poolvilla_TO_order_1` FOREIGN KEY (`pv_no`) REFERENCES `poolvilla` (`pv_no`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- 내보낼 데이터가 선택되어 있지 않습니다.
+
 -- 테이블 orangepoolvilla.review 구조 내보내기
 CREATE TABLE IF NOT EXISTS `review` (
   `review_no` int(11) NOT NULL AUTO_INCREMENT,
@@ -263,10 +264,10 @@ CREATE TABLE IF NOT EXISTS `review` (
   `create_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `review_active` enum('Y','N') NOT NULL,
-  `order_no` int(11) NOT NULL,
+  `reservation_no` int(11) NOT NULL,
   PRIMARY KEY (`review_no`),
-  KEY `FK_order_TO_review_1` (`order_no`),
-  CONSTRAINT `FK_order_TO_review_1` FOREIGN KEY (`order_no`) REFERENCES `order` (`order_no`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `FK_order_TO_review_1` (`reservation_no`) USING BTREE,
+  CONSTRAINT `FK_review_reservation` FOREIGN KEY (`reservation_no`) REFERENCES `reservation` (`reservation_no`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
