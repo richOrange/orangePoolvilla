@@ -21,12 +21,12 @@ public class InsertHostPoolvillaOneController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		int pvNo = 0;
-		if(request.getParameter("pvNo") != null || request.getParameter("pvNo") !="") {
-	         pvNo = Integer.parseInt(request.getParameter("pvNo"));
-	         System.out.println("pvNo : " + pvNo);
-	         poolvillaDao.selectPoolvillaOne(pvNo);
-		}
+//		int pvNo = 0;
+//		if(request.getParameter("pvNo") != null || request.getParameter("pvNo") != "") {
+//	         pvNo = Integer.parseInt(request.getParameter("pvNo"));
+//	         System.out.println("pvNo : " + pvNo);
+//	         poolvillaDao.selectPoolvillaOne(pvNo);
+//		}
 		
 		//jsp 호출
 		request.getRequestDispatcher("/WEB-INF/view/insertHostPoolvillaOne.jsp").forward(request, response);
