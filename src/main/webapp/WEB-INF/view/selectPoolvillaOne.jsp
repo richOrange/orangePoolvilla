@@ -82,7 +82,7 @@
 			<!-- 예약 기능 -->
 			<div class="row">
 				<form method="get" id="reservationForm"
-					action="${pageContext.request.contextPath}/insertReservationController">
+					action="${pageContext.request.contextPath}/customer/insertReservationController">
 					<!-- 고객 정보 -->
 					<c:if test="${not empty sessionLoginMember}">
 						<input type="hidden" id="memberId" name="memberId"
@@ -374,13 +374,9 @@
 			'${pageContext.request.contextPath}/includeHeaderController');
 	$("#includeFooter").load(
 			'${pageContext.request.contextPath}/includeFooterController');
-	//유효성검사
-	console.log(document.querySelector('#customerId').value, '<-#customerId');
-	$('#reservation')
-			.click(
-					function() {
+	$('#reservation').click(function() {
 						//로그인정보가 없으면 로그인 페이지로 이동
-						if ($('#customerId').val() == '') {
+						if ($('#memberId').val() == '') {
 							location.href = '${pageContext.request.contextPath}/all/loginController';
 							//상품 정보가 없으면 home으로 이동
 						} else if ($('#pvNo').val() == '') {
