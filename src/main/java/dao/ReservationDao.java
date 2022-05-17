@@ -104,7 +104,7 @@ public class ReservationDao {
 				}
 				if(row==1) { // row가 1이면 예약날짜 중복이 있으므로 예약불가
 					System.out.println("[ReservationDao.insertReservation] 예약불가, 중복");
-					row = 3; //row가 3이면 중복 오류임을 알수 있음
+					row = 2; //row가 2이면 중복 오류임을 알수 있음
 				}else if(row==0) {
 					//row가 0이면 중복 값이 없으므로 insert
 					PreparedStatement stmt2 = null;
