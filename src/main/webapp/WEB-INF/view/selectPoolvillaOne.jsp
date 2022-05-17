@@ -107,10 +107,54 @@
 	</section>
 	<br>
 	<section class="probootstrap-section probootstrap-section-lighter">
+		
 		<div class="container">
+		
 			<div class="row heading">
 				<h2 class="mt0 mb50 text-center">풀빌라 정보</h2>
 			</div>
+			
+			<div class="probootstrap-card probootstrap-person text-left">
+
+						<div class="probootstrap-card-text">
+							<h2 class="probootstrap-card-heading mb0">풀빌라 정보</h2>
+							<p>
+								<small>poolvilla info</small>
+							</p>
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th class="text text-center">판매자</th>
+										<th class="text text-center">지역 이름</th>
+										<th class="text text-center">주소</th>
+										<th class="text text-center">상세 주소</th>
+										<th class="text text-center">풀빌라 이름</th>
+										<th class="text text-center">가격</th>
+										<th class="text text-center">면적</th>
+										<th class="text text-center">층수</th>
+										<th class="text text-center">최대 인원</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<tr>
+											<td>${ selectPoolvillaOne.hostId }</td>
+											<td>${ selectPoolvillaOne.locationName }</td>
+											<td>${ selectPoolvillaOne.address }</td>
+											<td>${ selectPoolvillaOne.pvDetailaddr }</td>
+											<td>${ selectPoolvillaOne.pvName }</td>
+											<td>${ selectPoolvillaOne.price }</td>
+											<td>${ selectPoolvillaOne.pvSize }</td>
+											<td>${ selectPoolvillaOne.pvFloor }</td>
+											<td>${ selectPoolvillaOne.pvPeople }</td>
+										</tr>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				
+				
 			<div class="row">
 				<div class="col-md-6 col-sm-6">
 					<div class="probootstrap-card probootstrap-person text-center">

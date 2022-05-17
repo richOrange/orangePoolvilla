@@ -12,14 +12,14 @@ public class Poolvilla {
 	private int price;
 	private double pvSize;
 	private int pvFloor;
-	private int pvPeaple;
+	private int pvPeople;
 	private String createDate;
 	private String updateDate;
 	
 	public Poolvilla() {}
 	
 	public Poolvilla(int pvNo, String hostId, int locationNo, String locationName, int addressNo, String address,
-			String pvDetailaddr, String pvName, int price, double pvSize, int pvFloor, int pvPeaple, String createDate,
+			String pvDetailaddr, String pvName, int price, double pvSize, int pvFloor, int pvPeople, String createDate,
 			String updateDate) {
 		super();
 		this.pvNo = pvNo;
@@ -33,7 +33,7 @@ public class Poolvilla {
 		this.price = price;
 		this.pvSize = pvSize;
 		this.pvFloor = pvFloor;
-		this.pvPeaple = pvPeaple;
+		this.pvPeople = pvPeople;
 		this.createDate = createDate;
 		this.updateDate = updateDate;
 	}
@@ -43,7 +43,7 @@ public class Poolvilla {
 		return "Poolvilla [pvNo=" + pvNo + ", hostId=" + hostId + ", locationNo=" + locationNo + ", locationName="
 				+ locationName + ", addressNo=" + addressNo + ", address=" + address + ", pvDetailaddr=" + pvDetailaddr
 				+ ", pvName=" + pvName + ", price=" + price + ", pvSize=" + pvSize + ", pvFloor=" + pvFloor
-				+ ", pvPeaple=" + pvPeaple + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
+				+ ", pvPeople=" + pvPeople + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
 	}
 
 	public int getPvNo() {
@@ -134,12 +134,12 @@ public class Poolvilla {
 		this.pvFloor = pvFloor;
 	}
 
-	public int getPvPeaple() {
-		return pvPeaple;
+	public int getPvPeople() {
+		return pvPeople;
 	}
 
-	public void setPvPeaple(int pvPeaple) {
-		this.pvPeaple = pvPeaple;
+	public void setPvPeople(int pvPeople) {
+		this.pvPeople = pvPeople;
 	}
 
 	public String getCreateDate() {

@@ -106,7 +106,7 @@ public class PoolvillaDao {
 					+ "					, pv.host_id hostId"
 					+ "					, loc.location_name locationName"
 					+ "					, CONCAT(addr.province,' ', addr.city,' ',addr.town,' ',addr.street,' ',addr.building1) address"
-					+ "					, pv.pv_detailaddr pvDetailadder"
+					+ "					, pv.pv_detailaddr pvDetailaddr"
 					+ "					, pv.pv_name pvName"
 					+ "					, pv.price"
 					+ "					, pv.pv_size pvSize"
@@ -129,12 +129,12 @@ public class PoolvillaDao {
 				poolvilla.setHostId(rs.getString("hostId"));
 				poolvilla.setLocationName(rs.getString("locationName"));
 				poolvilla.setAddress(rs.getString("address"));
-				poolvilla.setPvDetailaddr(rs.getString("pvDetailadder"));
+				poolvilla.setPvDetailaddr(rs.getString("pvDetailaddr"));
 				poolvilla.setPvName(rs.getString("pvName"));
 				poolvilla.setPrice(rs.getInt("price"));
 				poolvilla.setPvSize(rs.getDouble("pvSize"));
 				poolvilla.setPvFloor(rs.getInt("pvFloor"));
-				poolvilla.setPvPeaple(rs.getInt("pvPeople"));
+				poolvilla.setPvPeople(rs.getInt("pvPeople"));
 				poolvilla.setCreateDate(rs.getString("createDate"));
 				poolvilla.setUpdateDate("updateDate");
 			}
