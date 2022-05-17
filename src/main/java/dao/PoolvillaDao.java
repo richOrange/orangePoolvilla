@@ -456,4 +456,69 @@ public class PoolvillaDao {
 			}
 			return list;
 		}
+		
+	// orangepoolvilla db의 poolvilla 테이블 데이터 입력
+	public int insertPoolvilla(Poolvilla p) {
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int row = 0;
+		int pvNo = -1;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[PoolvillaDao.insertPoolvilla()] 드라이버 로딩 성공");
+			
+			String sql = "INSERT INTO poolvilla( host_id"
+					+ "							, location_no"
+					+ "							, address_no"
+					+ "							, pv_detailaddr"
+					+ "							, pv_name"
+					+ "							, price"
+					+ "							, pv_size"
+					+ "							, pv_floor"
+					+ "							, pv_people"
+					+ "							, create_date"
+					+ "							, update_date)"
+					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());";
+			stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			stmt.setString(1, p.getHostId());
+			stmt.setInt(2, p.getLocationNo());
+			stmt.setInt(3, p.getAddressNo());
+			stmt.setString(4, p.getPvDetailaddr());
+			stmt.setString(5, p.getPvName());
+			stmt.setInt(6, p.getPrice());
+			stmt.setDouble(7, p.getPvSize());
+			stmt.setInt(8, p.getPvFloor());
+			stmt.setInt(9, p.getPvPeople());
+			row = stmt.executeUpdate();
+			
+			rs = stmt.getGeneratedKeys();
+			if(rs.next()) {
+				pvNo = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+				
+				// -디버깅 코드
+				if(row == 1) {
+					System.out.println("[PoolvillaDao.insertPoolvilla()] insertPoolvilla 입력 성공");
+				} else {
+					System.out.println("[PoolvillaDao.insertPoolvilla()] insertPoolvilla 입력 실패");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return pvNo;
+	}
 }

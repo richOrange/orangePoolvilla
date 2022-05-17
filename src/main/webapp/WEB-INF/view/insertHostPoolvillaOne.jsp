@@ -168,7 +168,7 @@
 					<tr>
 						<td>insert image</td>
 						<td><input type = "file" name = "photo" class = "custom-file"></td>
-						<td><button type = "submit" class = "btn btn-dark">insert</button></td>
+						<td><button type = "button" class = "btn btn-dark">insert</button></td>
 					</tr>
 				</table>
 			</form>
