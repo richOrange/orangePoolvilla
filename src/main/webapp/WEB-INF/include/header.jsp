@@ -21,7 +21,7 @@
           <c:if test="${sessionLoginMember.level >2 && sessionLoginMember.level < 4}">
           	<li><a href="${pageContext.request.contextPath}/customer/">${sessionLoginMember.memberId}님 환영합니다</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myPageController">내정보보기</a></li>
-            <li><a href="${pageContext.request.contextPath}/customer/myReservationController">예약내역보기</a></li>
+            <li><a href="${pageContext.request.contextPath}/customer/myReservationListController">예약내역보기</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myWishListController">찜목록보기</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/myReviewController">리뷰</a></li>
             <li><a href="${pageContext.request.contextPath}/all/logoutController">로그아웃</a></li>
