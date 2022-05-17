@@ -76,16 +76,19 @@
 				</tr>
 				<tr>
 					<td>주소</td>
-					<td><input type="text" name="addressNo" class="form-control" value="1" readonly="readonly">
-					<!-- 
-						<select id="locationNo" name="locationNo" class="form-control">
-	                     	<option value="-1">:: 주소 선택 ::</option>
-		                      <c:forEach var ="m" items="${ addressList }">
-		                         <option value="${ m.addressNo }">${ m.address }</option>
-		                      </c:forEach>
-	                    </select>
-	                     -->
+					<td><input class="form-control" name="searchAddress" placeholder="please enter the address" type="text"/>
+		          	<button class="btn btn-primary" type="submit">주소검색</button><br>
+					
+					<c:if test="${searchAddressList != null}">
+	            		<select class="form-control" id="addressNo" name="addressNo">
+		       		    	<option value = "" style="text-align:center;">:: 주소 선택 ::</option>
+				            <c:forEach var="s" items="${searchAddressList}">
+				            		<option value="${s.addressNo}" style="text-align:center;">${s.addressName}</option>
+				            </c:forEach>
+		            	</select>
+	            	</c:if>
 					</td>
+					
 				</tr>
 				<tr>
 					<td>상세 주소</td>
