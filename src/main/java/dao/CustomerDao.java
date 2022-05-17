@@ -16,8 +16,8 @@ import vo.Customer;
 
 public class CustomerDao {
 	
-	public ArrayList<Customer> myPageCustomer() {
-		ArrayList<Customer> list = new ArrayList<Customer>();
+	public Customer myPageCustomer(String memberId) {
+		Customer customer = new Customer();
 		
 		
 		// 데이터베이스 자원 준비
@@ -31,26 +31,28 @@ public class CustomerDao {
 			System.out.println("[CustomerDao.myPageCustomer()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT customer_id customerId"
-					+ ", 			name"
-					+ ", 			gender"
-					+ ", 			birth_date birthDate"
-					+ ", 			email"
-					+ ", 			phone"
-					+ ", 			create_date createDate"
-					+ ", 			update_date updateDate FROM customer";
+					+ " 			,name"
+					+ " 			,gender"
+					+ " 			,birth_date birthDate"
+					+ " 			,email"
+					+ " 			,phone"
+					+ " 			,create_date createDate"
+					+ " 			,update_date updateDate "
+					+ "	  FROM customer"
+					+ "		WHERE customer_id = ?";
 			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,memberId);
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
-				Customer co = new Customer();
-				co.setCustomerId(rs.getString("CustomerId"));
-				co.setName(rs.getString("Name"));
-				co.setGender(rs.getString("Gender"));
-				co.setBirthDate(rs.getString("BirthDate"));
-				co.setEmail(rs.getString("Email"));
-				co.setPhone(rs.getString("Phone"));
-				co.setCreateDate(rs.getString("CreateDate"));
-				co.setUpdateDate(rs.getString("updateDate"));
+				customer.setCustomerId(rs.getString("customerId"));
+				customer.setName(rs.getString("name"));
+				customer.setGender(rs.getString("gender"));
+				customer.setBirthDate(rs.getString("birthDate"));
+				customer.setEmail(rs.getString("email"));
+				customer.setPhone(rs.getString("phone"));
+				customer.setCreateDate(rs.getString("createDate"));
+				customer.setUpdateDate(rs.getString("updateDate"));
 			}
 			
 		} catch (Exception e) {
@@ -64,7 +66,7 @@ public class CustomerDao {
 			}
 		}
 		
-		return list;
+		return customer;
 	}
 	
 	//회원로그인 기능

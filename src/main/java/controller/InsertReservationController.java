@@ -9,9 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import dao.CustomerDao;
 import dao.PoolvillaDao;
 import dao.ReservationDao;
+import vo.Customer;
 import vo.Poolvilla;
 import vo.PoolvillaPool;
 import vo.Reservation;
@@ -23,6 +26,7 @@ import vo.Reservation;
 public class InsertReservationController extends HttpServlet {
 	private PoolvillaDao poolvillaDao;
 	private ReservationDao reservationDao;
+	private CustomerDao customerDao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -39,12 +43,15 @@ public class InsertReservationController extends HttpServlet {
 		int pvNo = Integer.parseInt(request.getParameter("pvNo"));
 		String reservationBeginDate = request.getParameter("reservationBeginDate");
 		String reservationLastDate = request.getParameter("reservationLastDate");
+		String memberId = request.getParameter("memberId");
 		// 디버깅
 		System.out.println("[/customer/insertReservationcontroller.doget()] pvNo : " + pvNo);
 		System.out.println("[/customer/insertReservationcontroller.doget()] reservationBeginDate : " + reservationBeginDate);
 		System.out.println("[/customer/insertReservationcontroller.doget()] reservationLastDate : " + reservationLastDate);
+		System.out.println("[/customer/insertReservationcontroller.doget()] memberId : " + memberId);
 		// 모델값 호출
 		poolvillaDao = new PoolvillaDao();
+		customerDao = new CustomerDao();
 		// 풀빌라 정보 호출
 		Poolvilla selectPoolvillaOne = poolvillaDao.selectPoolvillaOne(pvNo);
 		List<Map<String, Object>> poolvillaCookingToolList = poolvillaDao.selectPoolvillaCookingToolByPvNo(pvNo);
@@ -53,9 +60,13 @@ public class InsertReservationController extends HttpServlet {
 		List<Map<String, Object>> poolvillaRoomNBedList = poolvillaDao.selectPoolvillaRoomNBedByPvNo(pvNo);
 		List<PoolvillaPool> selectPoolvillaPoolListByPvNo = poolvillaDao.selectPoolvillaPoolListByPvNo(pvNo);
 		List<Map<String, Object>> selectPoolvillaFacilityListByPvNo = poolvillaDao.selectPoolvillaFacilityListByPvNo(pvNo);
-
+		// 고객 정보 호출
+		Customer myPageCustomer = customerDao.myPageCustomer(memberId);
+		
+		
 		// 디버깅
 		System.out.println("[customer/insertReservationcontroller.doget()] selectPoolvillaOne : " + selectPoolvillaOne.toString());
+		System.out.println("[customer/insertReservationcontroller.doget()] myPageCustomer : " + myPageCustomer.toString());
 		// 모델값 setAttiribute
 		request.setAttribute("reservationBeginDate", reservationBeginDate);// 체크인날짜
 		request.setAttribute("reservationLastDate", reservationLastDate);// 체크아웃날짜
@@ -66,7 +77,7 @@ public class InsertReservationController extends HttpServlet {
 		request.setAttribute("poolvillaRoomNBedList", poolvillaRoomNBedList); // 해당 풀빌라의 room_info 정보와 bed 정보
 		request.setAttribute("selectPoolvillaPoolListByPvNo", selectPoolvillaPoolListByPvNo); // 해당 풀빌라의 pool 정보
 		request.setAttribute("selectPoolvillaFacilityListByPvNo", selectPoolvillaFacilityListByPvNo); // 해당 풀빌라의
-																										// facility 정보
+		request.setAttribute("myPageCustomer", myPageCustomer); // 해당 고객의																						// facility 정보
 		// jsp 호출
 		request.getRequestDispatcher("/WEB-INF/view/insertReservation.jsp").forward(request, response);
 

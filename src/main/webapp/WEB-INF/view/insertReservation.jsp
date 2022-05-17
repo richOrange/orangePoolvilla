@@ -91,20 +91,23 @@
 
 							<div id="reservationHelper"></div>
 						</div>
+						<h2>투숙객 정보</h2>
+						<div>
+							투숙객 이름은 체크인 시 제시할 유효한 신분증 이름과 정확히 일치해야 합니다.
+						</div>
 						<table class="table table-hover">
+						
 							<tr>
 								<td>이름</td>
-								<td><input type="text" name="memberName" id="memberName" readonly></td>
+								<td><input type="text" name="memberName" id="memberName" value="${myPageCustomer.name}" readonly></td>
 							</tr>
 							<tr>
 								<td>email</td>
-								<td><input type="text" name="memberEmail" id="memberEmail"
-									readonly></td>
+								<td><input type="text" name="memberEmail" id="memberEmail" value="${myPageCustomer.email}" readonly></td>
 							</tr>
 							<tr>
 								<td>휴대폰번호</td>
-								<td><input type="text" name="memberPhone" id="memberPhone"
-									readonly></td>
+								<td><input type="text" name="memberPhone" id="memberPhone" value="${myPageCustomer.phone}" readonly></td>
 							</tr>
 							<tr>
 								<td colspan="2">
