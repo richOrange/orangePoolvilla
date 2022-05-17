@@ -64,7 +64,7 @@
 	        		<!-- 상품 img 부분 -->
 	        			<div class="probootstrap-card-media">
 	        				<img src="${pageContext.request.contextPath}/template/img/slider_1.jpg" class="img-responsive" alt="Free HTML5 Template by uicookies.com">
-	          				<a href="${pageContext.request.contextPath}/template/insertWishListController" class="probootstrap-love"><i class="icon-heart"></i></a>
+	          				<a href="${pageContext.request.contextPath}/customer/insertWishListController?pvNo=${m.pvNo}&customerId=${sessionLoginMember}" class="probootstrap-love"><i class="icon-heart"></i></a>
 	        			</div>
 	        		<!-- 이미지 내 상품설명부분 -->
 	        			<div class="probootstrap-card-text"> 
