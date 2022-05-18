@@ -96,7 +96,7 @@
 	    		</div>
 	    		<!-- 한줄에 2개씩 나오게 하는 if문 -->
 	    	</c:forEach>
-	      <a href="${pageContext.request.contextPath}/host/insertHostPoolvillaOneController" class = "btn btn-primary btn-sm">상품 추가</a>
+	      <a href="${pageContext.request.contextPath}/host/insertPoolvillaController" class = "btn btn-primary btn-sm">상품 추가</a>
 		</div>
 	      <!-- poolvillaList 부분 끝 -->
 	    </div>

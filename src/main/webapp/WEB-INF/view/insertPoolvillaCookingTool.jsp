@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Orange-poolvilla:cookingToolList</title>
+    <title>Orange-poolvilla:insertPoolvillaCookingTool</title>
     <meta name="description" content="Free Bootstrap Theme by uicookies.com">
     <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
     
@@ -37,7 +37,7 @@
               <div class="probootstrap-breadcrumbs">
                 <a href="${pageContext.request.contextPath}/template/#">Home</a><span>About</span>
               </div>
-              <h1>Cooking Tool List</h1>
+              <h1>Insert Poolvilla Cooking Tool</h1>
             </div>
 
           </div>
@@ -54,43 +54,65 @@
   
   <section class="probootstrap-section">
     <div class="container">
-      
-		<table class = "table table-hover">
+    
+    		<table class = "table table-hover">
 			<thead>
 				<tr>
 					<th>Number</th>
 					<th>Cooking Tool Name</th>
-					<th>Update Date</th>
+					<th>Count</th>
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<c:forEach var = "ck" items = "${ list }" varStatus = "status">
+						<form method="post" action="${pageContext.request.contextPath}/host/insertPoolvillaCookingToolController">
+						<input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
 							<tr>
-								<td>${ status.count }</td>
-								<td>${ ck.cookingToolName }</td>
-								<td>${ ck.updateDate }</td> 
-								<td><a href="${pageContext.request.contextPath}/host/deleteCookingToolController?cookingToolNo=${ ck.cookingToolNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+								<td><input type = "hidden" name = "cookingToolNo" value = "${ ck.cookingToolNo }" readonly>${ status.count }</td>
+								<td><input type = "hidden" name = "cookingToolName" value = "${ ck.cookingToolName }" readonly>${ ck.cookingToolName }</td>
+								<td>
+									<input type = "number" name = "cookingToolCnt">
+								</td> 
+								<td><input type="submit" class="btn btn-outline-secondary btn-sm" id="submit" name="submit" value="추가"></td>
 							</tr>
+						</form>
 					</c:forEach>
 				</tr>
 			</tbody>
 		</table>
+		
 		<hr>
-		<h2>Enter</h2>
-		<br>
-        <!-- Form -->
-        <form action="${pageContext.request.contextPath}/host/cookingToolController?pvNo=${ param.pvNo }" method="post" class="probootstrap-form mb60">
-            <div class="row">
-            <div class="form-group">
-              <input type="text" name="cookingToolName" class="form-control" placeholder="Please enter the cooking tool">
-            </div>
-            <div class="form-group">
-              <input type="submit" class="btn btn-primary" id="submit" name="submit" value="Save">
-              <a href="${pageContext.request.contextPath}/host/insertPoolvillaCookingToolController?pvNo=${ pvNo }" class = "btn btn-primary float-right">Back</a>
-            </div>
-          </form>
+      
+		<table class = "table table-hover">
+			<thead>
+				<tr>
+					<th>Cooking Tool Name</th>
+					<th>Count</th>
+					<th>Update Date</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<c:if test="${ not empty pctList }">
+						<c:forEach var = "pct" items = "${ pctList }">
+								<tr>
+									<td>${ pct.cookingToolName }</td>
+									<td>${ pct.cookingToolCnt }</td>
+									<td>${ pct.updateDate }</td> 
+									<td><a href="${pageContext.request.contextPath}/host/#?cookingToolNo=${ pct.cookingToolNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+								</tr>
+						</c:forEach>
+					</c:if>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		
+		<a href="${pageContext.request.contextPath}/host/cookingToolController?pvNo=${ pvNo }" class = "btn btn-primary btn-sm">다른 cooking tool 목록 추가하러 가기</a>
+		<a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${ pvNo }" class = "btn btn-primary btn-sm">update완료</a>
 
     </div>
   </section>  

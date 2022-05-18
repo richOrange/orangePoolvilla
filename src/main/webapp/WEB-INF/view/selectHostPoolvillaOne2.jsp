@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orange-poolvilla:insertPoolvillaOne</title>
+<title>Orange-poolvilla:selectPoolvillaOne</title>
 <meta name="description" content="Free Bootstrap Theme by uicookies.com">
 <meta name="keywords"
 	content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
@@ -44,7 +44,7 @@
 							<div class="probootstrap-breadcrumbs">
 								<a href="${pageContext.request.contextPath}/template/#">Home</a><span>About</span>
 							</div>
-							<h1>Insert Poolvilla</h1>
+							<h1>${selectPoolvillaOne.pvName}</h1>
 						</div>
 
 					</div>
@@ -62,6 +62,26 @@
 	</section>
 	<!-- END: slider  -->
 
+	<section class="probootstrap-section">
+		<div class="container">
+			<div class="row heading">
+				<div class="col-md-12">
+					<h2 class="mt0 mb50 text-center">${selectPoolvillaOne.pvName}</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<p>
+						<img
+							src="${pageContext.request.contextPath}/template/img/slider_5.jpg"
+							class="img-responsive"
+							alt="Free Bootstrap Template by uicookies.com">
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<br>
 	<section class="probootstrap-section probootstrap-section-lighter">
 		
 		<div class="container">
@@ -107,7 +127,6 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/insertPoolvillaController" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				
@@ -139,7 +158,6 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/insertPoolvillaCookingToolController?pvNo=${ selectPoolvillaOne.pvNo }" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				</div>
@@ -170,7 +188,6 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/#" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				</div>
@@ -203,7 +220,6 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/#" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				</div>
@@ -234,7 +250,6 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/#" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				</div>
@@ -274,7 +289,6 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/#" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				</div>
@@ -313,21 +327,10 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/#" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-			<form action="#" method="post" enctype="multipart/form-data">
-				<table class = "table table-active">
-					<tr>
-						<td>insert image</td>
-						<td><input type = "file" name = "photo" class = "custom-file"></td>
-						<td><button type = "button" class = "btn btn-dark">insert</button></td>
-					</tr>
-				</table>
-			</form>
 		</div>
 	</section>
 
@@ -347,6 +350,26 @@
 			'${pageContext.request.contextPath}/includeHeaderController');
 	$("#includeFooter").load(
 			'${pageContext.request.contextPath}/includeFooterController');
+	$('#reservation').click(function() {
+						//로그인정보가 없으면 로그인 페이지로 이동
+						if ($('#memberId').val() == '') {
+							location.href = '${pageContext.request.contextPath}/all/loginController';
+							//상품 정보가 없으면 home으로 이동
+						} else if ($('#pvNo').val() == '') {
+							location.href = '${pageContext.request.contextPath}/all/homeController';
+							//체크인정보가 없는 경우 체크인 입력으로 커서 이동
+						} else if ($('#checkIn').val() == '') {
+							$('#reservationHelper').text('체크인 날짜를 선택해주세요');
+							$('#checkIn').focus();
+							//체크아웃 정보가 없는경우 체크아웃 입력으로 커서 이동
+						} else if ($('#checkOut').val() == '') {
+							$('#reservationHelper').text('체크아웃 날짜를 선택해주세요');
+							$('#checkOut').focus();
+							//유효성 검사 끝 submit
+						} else {
+							$('#reservationForm').submit();
+						}
+					});
 </script>
 
 <script
