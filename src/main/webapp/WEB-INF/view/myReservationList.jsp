@@ -97,7 +97,7 @@
 								<td>${m.updateDate}</td>
 								<c:if test="${m.reservationStatus=='결제대기'||m.reservationStatus=='결제완료'}">
 									<td>
-										<a href="${pageContext.request.contextPath}/customer/cancelReservationController?rreservationNo=${ m.reservationNo}" type="button" class="btn btn-secondary btn-sm">예약취소</a>
+										<a href="${pageContext.request.contextPath}/customer/myReservationListController?reservationNo=${ m.reservationNo}&checkStatus=취소대기" type="button" class="btn btn-secondary btn-sm">예약취소</a>
 									</td>
 								</c:if>
 								<c:if test="${m.reservationStatus=='취소대기'||m.reservationStatus=='취소'||m.reservationStatus=='이용완료'}">

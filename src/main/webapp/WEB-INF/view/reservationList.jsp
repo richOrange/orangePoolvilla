@@ -72,7 +72,6 @@
 	<!-- 예약(reservation) 테이블의 전체 컬럼을 가져오는 코드-->
 	<div>
 	<!-- 예약상태 변경 form -->
-	<form method ="post" action ="${pageContext.request.contextPath}/host/reservationController">
 		<table class = "table table-hover">
 			<thead>
 				<tr>
@@ -98,22 +97,21 @@
 						<td>
 							<!-- 입금 확인시, 결제 대기상태를 결제 완료로 변경하는 버튼 -->
 							<c:if test="${m.reservationStatus=='결제대기'}">
-								<button type ="submit" name="checkStatus" value = "결제완료">결제 확인</button>
+								<a type ="button" href ="${pageContext.request.contextPath}/host/reservationController?reservationNo=${m.reservationNo}&checkStatus=결제완료">결제 확인</a>
 							</c:if>
 							<!-- 환불 완료시, 취소 대기상태를 취소 완료로 변경하는 버튼 -->
 							<c:if test="${m.reservationStatus=='취소대기'}">
-								<button type ="submit" name="checkStatus" value = "취소완료">취소확인</button>
+								<a type ="button" href ="${pageContext.request.contextPath}/host/reservationController?reservationNo=${m.reservationNo}&checkStatus=취소완료">취소확인</a>
 							</c:if>
 							<!-- 이용 완료시, 결제완료 상태를 이용 완료로 변경하는 버튼 -->
 							<c:if test="${m.reservationStatus=='결제완료'}">
-								<button type ="submit" name="checkStatus" value = "이용완료">이용확인</button>
+								<a type ="button" href ="${pageContext.request.contextPath}/host/reservationController?reservationNo=${m.reservationNo}&checkStatus=이용완료">이용확인</a>
 							</c:if>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-	</form>
 	</div>
 	<div>
 

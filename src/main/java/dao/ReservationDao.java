@@ -11,8 +11,58 @@ import java.util.List;
 import java.util.Map;
 import vo.Reservation;
 
-/*-----------------------------------------개인 관련 영역-------------------------------------------*/	
 public class ReservationDao {
+	
+	
+	/*-----------------------------------------공통 영역-------------------------------------------*/
+	//요청값으로 예약상태 변경하는 메서드
+	public int updateReservationStatus(String reservationStatus,int reservationNo) {
+		int row = -1; // 쿼리문 실패시 -1 반환
+		//DB 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//DB에 요청
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			//쿼리
+			String checkReservationsql = "UPDATE reservation"
+					+ "					 SET reservation_status =	 ? "
+					+ "					WHERE reservation_no = ? ";
+			stmt = conn.prepareStatement(checkReservationsql);
+			stmt.setString(1, reservationStatus);//reservationStatus 입력
+			stmt.setInt(2, reservationNo);//reservationStatus 입력
+			row =stmt.executeUpdate();//check
+			if(row==0) { // 수정실패
+				System.out.println("[ReservationDao.updateReservationStatus] 수정실패");
+			}else if(row==1) { //수정성공
+				System.out.println("[ReservationDao.updateReservationStatus] 수정성공");
+			}
+		} catch (Exception e) {
+			try {
+				conn.rollback(); //예외가 발생하면 롤백
+			} catch(SQLException e1) {
+			e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				//DB자원반납
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				}
+			}
+		return row; //성공여부 반환
+	}
+	
+	
+	
+	
+	/*-----------------------------------------개인 관련 영역-------------------------------------------*/
+	
+	
 	//customer 개인 예약 목록 보기 메서드
 	//myReservationController에서 호출
 	public List<Map<String,Object>> selectMyReservationList (String customerId,String reservationStatus){
@@ -228,17 +278,27 @@ public class ReservationDao {
 			System.out.println("[HostDao.selectReservationList()] conn:" + conn);
 
 			if (reservationStatus.equals("")) {
-				sql = "SELECT customer_id customerId, pv_no pvNo, concat(reservation_begin_date,' ~ ',reservation_last_date) AS reservationDate"
-						+ ", reservation_status reservationStatus, create_date createDate, update_date updateDate"
-						+ "	FROM reservation" + "	ORDER BY reservationDate DESC" + " LIMIT ?,?";
+				sql = "SELECT reservation_no reservationNo"
+						+ "			,customer_id customerId"
+						+ "			,pv_no pvNo"
+						+ "			, concat(reservation_begin_date,' ~ ',reservation_last_date) AS reservationDate"
+						+ "			, reservation_status reservationStatus, create_date createDate, update_date updateDate"
+						+ "		FROM reservation"
+						+ " 	ORDER BY reservationDate DESC" 
+						+ "    LIMIT ?,?";
 				stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, beginRow);
 				stmt.setInt(2, rowPerPage);
 			} else {
-				sql = "SELECT customer_id customerId, pv_no pvNo, concat(reservation_begin_date,' ~ ',reservation_last_date) AS reservationDate"
-						+ ", reservation_status reservationStatus, create_date createDate, update_date updateDate"
-						+ "	FROM reservation" + " WHERE reservationStatus = ?" + "	ORDER BY reservationDate DESC"
-						+ " LIMIT ?,?";
+				sql = "SELECT reservation_no reservationNo"
+						+ "			, customer_id customerId"
+						+ "			, pv_no pvNo, concat(reservation_begin_date,' ~ ',reservation_last_date) AS reservationDate"
+						+ "			, reservation_status reservationStatus"
+						+ "			, create_date createDate, update_date updateDate"
+						+ "		FROM reservation"
+						+ " 	WHERE reservationStatus = ?"
+						+ "		ORDER BY reservationDate DESC"
+						+ " 	LIMIT ?,?";
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, reservationStatus);
 				stmt.setInt(2, beginRow);
@@ -249,12 +309,13 @@ public class ReservationDao {
 
 			while (rs.next()) {
 				HashMap<String, Object> map = new HashMap<>();
-				map.put("customerId", rs.getString("customerId"));
-				map.put("pvNo", rs.getInt("pvNo"));
-				map.put("reservationDate", rs.getString("reservationDate"));
-				map.put("reservationStatus", rs.getString("reservationStatus"));
-				map.put("createDate", rs.getString("createDate"));
-				map.put("updateDate", rs.getString("updateDate"));
+				map.put("reservationNo", rs.getString("reservationNo"));//예약정보번호
+				map.put("customerId", rs.getString("customerId"));//회원아이디
+				map.put("pvNo", rs.getInt("pvNo"));//상품정보번호
+				map.put("reservationDate", rs.getString("reservationDate")); //체크인날짜
+				map.put("reservationStatus", rs.getString("reservationStatus")); //체크아웃날짜
+				map.put("createDate", rs.getString("createDate")); //생성날짜
+				map.put("updateDate", rs.getString("updateDate")); //수정날짜
 				reservationList.add(map);
 			}
 		} catch (Exception e) {
@@ -322,6 +383,8 @@ public class ReservationDao {
 
 		return totalRow;
 	}
+	
+	
 
 
 }

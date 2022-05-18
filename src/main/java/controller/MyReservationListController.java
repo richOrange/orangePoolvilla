@@ -17,6 +17,8 @@ import dao.ReservationDao;
 public class MyReservationListController extends HttpServlet {
 	private ReservationDao reservationDao;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Dao 호출
+		reservationDao = new ReservationDao();
 		//session에 login 정보 호출
 		HttpSession session = request.getSession();
 		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
@@ -30,8 +32,24 @@ public class MyReservationListController extends HttpServlet {
 			request.setAttribute("reservationStatus", reservationStatus);
 		}
 		System.out.println("[MyReservationListController.doGet()] reservationStatus : " + reservationStatus);
-		//dao 호출
-		reservationDao = new ReservationDao();
+		
+		//예약상태 변경 기능
+		if(request.getParameter("checkStatus")!=null&&request.getParameter("reservationNo")!=null) {
+			//요청값 받기
+			String checkStatus = request.getParameter("checkStatus");//변경될 예약상태 값
+			int reservationNo = Integer.parseInt(request.getParameter("reservationNo")); //변경할 예약 주문 넘버
+			//디버깅
+			System.out.println("[myReservationListController.doGet()] checkStatus : "+checkStatus);
+			System.out.println("[myReservationListController.doGet()] reservationNo : "+reservationNo);
+			//Dao에 예약상태 변경요청
+			int row = reservationDao.updateReservationStatus(checkStatus, reservationNo);
+			if(row==-1) {//-1일시 reservationDao.updateReservationStatus 쿼리문 작동안함,다른 성공 실패 여부는 dao에서 출력됨
+				System.out.println("[ReservationController.doGet()] reservationDao.updateReservationStatus 요청실패 ");
+			}else if(row==1) {//성공시 /customer/myReservationListController목록으로 redirect
+				response.sendRedirect(request.getContextPath()+"/customer/myReservationListController"); 
+				return;
+			}
+		}
 		List<Map<String,Object>> selectMyReservationList = reservationDao.selectMyReservationList(memberId,reservationStatus);
 		//모델값 setAttribute
 		request.setAttribute("selectMyReservationList", selectMyReservationList);
