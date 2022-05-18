@@ -10,15 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.CustomerDao;
 import dao.HostDao;
-
+//관리자가 회원리스트를 보는 컨트롤러
 @WebServlet("/host/customerCheckController")
 public class CustomerCheckController extends HttpServlet {
-	HostDao hostDao = new HostDao();
+	private HostDao hostDao;
+	private CustomerDao customerDao;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// 
+		//DAO호출
+		hostDao = new HostDao();
+		customerDao = new CustomerDao();
+		//페이징
 		int currentPage = 1;
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -32,7 +36,7 @@ public class CustomerCheckController extends HttpServlet {
 		System.out.println("[HostController.doGet()] beginRow : "+beginRow);
 		request.setAttribute("beginRow", beginRow);
 
-        int totalRow = hostDao.selectReservationTotalRow(); 
+        int totalRow = customerDao.selectCustomerTotalRow(); 
 		request.setAttribute("totalRow", totalRow);
 		
 		int lastPage = 0;
@@ -44,12 +48,11 @@ public class CustomerCheckController extends HttpServlet {
 		}
 		
 		request.setAttribute("lastPage", lastPage);
-		// 
-		
-		ArrayList<HashMap<String, Object>> customerList = hostDao.selectCustomerList();
-		
+		//회원리스트 모델값 요청
+		ArrayList<HashMap<String, Object>> customerList = customerDao.selectCustomerList();
+		//모델값 setAttribute
 		request.setAttribute("customerList", customerList);
-		
+		//뷰
 		request.getRequestDispatcher("/WEB-INF/view/customerList.jsp").forward(request, response);
 	}
 
