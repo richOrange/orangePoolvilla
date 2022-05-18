@@ -35,18 +35,27 @@ public class SelectPoolvillaOneController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//널체크 null일경우 home으로 response
-		if(request.getParameter("pvNo")==null||request.getParameter("reservationBeginDate")==null||request.getParameter("reservationLastDate")==null) {
+		if(request.getParameter("pvNo")==null) {
 			response.sendRedirect(request.getContextPath()+"/all/homeController?msg=null");
 			return;
 		}
 		//요청값 호출
+		//풀빌라 상품 번호
 		int pvNo = Integer.parseInt(request.getParameter("pvNo"));
-		String reservationBeginDate = request.getParameter("reservationBeginDate");
-		String reservationLastDate = request.getParameter("reservationLastDate");
 		//디버깅
 		System.out.println("[/all/selectPoolvillaOneController.doget()] pvNo : " + pvNo);
-		System.out.println("[/all/selectPoolvillaOneController.doget()] reservationBeginDate : " + reservationBeginDate);
-		System.out.println("[/all/selectPoolvillaOneController.doget()] reservationLastDate : " + reservationLastDate);
+		//checkIn값 받기
+		if(request.getParameter("reservationBeginDate")!=null) {
+			String reservationBeginDate = request.getParameter("reservationBeginDate");
+			request.setAttribute("reservationBeginDate", reservationBeginDate);//체크인날짜 setAttribute
+		}
+		//checkOut값 받기
+		if(request.getParameter("reservationLastDate")!=null) {
+			String reservationLastDate = request.getParameter("reservationLastDate");
+			request.setAttribute("reservationLastDate", reservationLastDate);//체크인날짜 setAttribute
+			request.setAttribute("reservationLastDate", reservationLastDate);//체크아웃날짜
+		}
+		
 		//모델값 호출
 		poolvillaDao = new PoolvillaDao();
 		poolvillaCookingToolDao = new PoolvillaCookingToolDao();
@@ -68,8 +77,6 @@ public class SelectPoolvillaOneController extends HttpServlet {
 		//디버깅
 		System.out.println("[/all/selectPoolvillaOneController.doget()] selectPoolvillaOne : " + selectPoolvillaOne.toString());
 		//모델값 setAttiribute
-		request.setAttribute("reservationBeginDate", reservationBeginDate);//체크인날짜
-		request.setAttribute("reservationLastDate", reservationLastDate);//체크아웃날짜
 		request.setAttribute("selectPoolvillaOne", selectPoolvillaOne);//poolvillaOne 정보
 		request.setAttribute("poolvillaCookingToolList", poolvillaCookingToolList); // 해당 풀빌라의 cooking_tool 정보
 		request.setAttribute("poolvillaOttList", poolvillaOttList); // 해당 풀빌라의 ott 정보
