@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.HostDao;
+import dao.PoolvillaDao;
 
 @WebServlet("/host/selectHostPoolvillaListController")
 public class SelectHostPoolvillaListController extends HttpServlet {
 	
-	private HostDao hostDao;
+	private PoolvillaDao poolvillaDao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -45,8 +45,8 @@ public class SelectHostPoolvillaListController extends HttpServlet {
 		List<Map<String,Object>> poolvillaList = hostDao.selectPoolvillaList(beginRow, rowPerPage); // 페이징을 적용한 리스트
 		*/
 		
-		hostDao = new HostDao();
-		List<Map<String,Object>> poolvillaList = hostDao.selectPoolvillaList();
+		poolvillaDao = new PoolvillaDao();
+		List<Map<String,Object>> poolvillaList = poolvillaDao.selectPoolvillaList();
 		System.out.println("[/host/selectHostPoolvillaListController.doget()] poolvillaList.size() : " + poolvillaList.size());
 		request.setAttribute("poolvillaList", poolvillaList);
 		
