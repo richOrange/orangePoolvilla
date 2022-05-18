@@ -102,7 +102,7 @@
 									<td>${ pct.cookingToolName }</td>
 									<td>${ pct.cookingToolCnt }</td>
 									<td>${ pct.updateDate }</td> 
-									<td><a href="${pageContext.request.contextPath}/host/#?cookingToolNo=${ pct.cookingToolNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+									<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaCookingToolController?pvNo=${ param.pvNo }&cookingToolNo=${ pct.cookingToolNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
 								</tr>
 						</c:forEach>
 					</c:if>

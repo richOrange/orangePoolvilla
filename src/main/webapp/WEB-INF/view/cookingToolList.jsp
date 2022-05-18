@@ -81,7 +81,7 @@
 		<h2>Enter</h2>
 		<br>
         <!-- Form -->
-        <form action="${pageContext.request.contextPath}/host/cookingToolController?pvNo=${ param.pvNo }" method="post" class="probootstrap-form mb60">
+        <form action="${pageContext.request.contextPath}/host/cookingToolController" method="post" class="probootstrap-form mb60">
             <div class="row">
             <div class="form-group">
               <input type="text" name="cookingToolName" class="form-control" placeholder="Please enter the cooking tool">
