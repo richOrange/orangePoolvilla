@@ -28,7 +28,7 @@ public class MyPageOneController extends HttpServlet {
 		// 모델값 호출
 		customerDao = new CustomerDao();
 		// 고객 정보 호출
-		Customer myPageCustomer = customerDao.myPageCustomer(memberId);
+		Customer myPageCustomer = customerDao.selectCustomerOneByCustomerId(memberId);
 			// 디버깅
 			System.out.println("[/customer/myPageOneController.doget()] myPageCustomer : " + myPageCustomer.toString());
 		

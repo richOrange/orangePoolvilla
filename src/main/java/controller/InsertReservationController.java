@@ -78,7 +78,7 @@ public class InsertReservationController extends HttpServlet {
 		List<PoolvillaPool> selectPoolvillaPoolListByPvNo = poolvillaPoolDao.selectPoolvillaPoolListByPvNo(pvNo);
 		List<Map<String, Object>> selectPoolvillaFacilityListByPvNo = facilityDao.selectPoolvillaFacilityListByPvNo(pvNo);
 		// 고객 정보 호출
-		Customer myPageCustomer = customerDao.myPageCustomer(memberId);
+		Customer myPageCustomer = customerDao.selectCustomerOneByCustomerId(memberId);
 		
 		
 		// 디버깅

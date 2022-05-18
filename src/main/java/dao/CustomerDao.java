@@ -15,59 +15,8 @@ import vo.Customer;
 
 
 public class CustomerDao {
+	//customer_id로 회원 한명 불러오는 기능
 	
-	public Customer myPageCustomer(String memberId) {
-		Customer customer = new Customer();
-		
-		
-		// 데이터베이스 자원 준비
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		try {
-			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
-			System.out.println("[CustomerDao.myPageCustomer()] 드라이버 로딩 성공");
-			
-			String sql = "SELECT customer_id customerId"
-					+ " 			,name"
-					+ " 			,gender"
-					+ " 			,birth_date birthDate"
-					+ " 			,email"
-					+ " 			,phone"
-					+ " 			,create_date createDate"
-					+ " 			,update_date updateDate "
-					+ "	  FROM customer"
-					+ "		WHERE customer_id = ?";
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1,memberId);
-			rs = stmt.executeQuery();
-			
-			while(rs.next()) {
-				customer.setCustomerId(rs.getString("customerId"));
-				customer.setName(rs.getString("name"));
-				customer.setGender(rs.getString("gender"));
-				customer.setBirthDate(rs.getString("birthDate"));
-				customer.setEmail(rs.getString("email"));
-				customer.setPhone(rs.getString("phone"));
-				customer.setCreateDate(rs.getString("createDate"));
-				customer.setUpdateDate(rs.getString("updateDate"));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				// 데이터베이스 자원 반환
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return customer;
-	}
 	
 	//회원로그인 기능
 	public Map<String,Object> loginCustomer(Customer customer) {
@@ -156,55 +105,6 @@ public class CustomerDao {
 		}
 	}
 	
-	public Customer selectMyPage(String CustomerId) {
-		Customer m = new Customer();
-		
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		String sql ="SELECT Customer_id CustomerId"
-				+ "					,name"
-				+ "					,gender"
-				+ "					,birth_date"
-				+ "					,email"
-				+ "					,phone"
-				+ "					,create_date createDate "
-				+ "					,update_date updateDate"
-				+ "					FROM Customer "
-				+ "					WHERE Customer_id=? ";
-		
-		try {
-			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, CustomerId);
-			rs =stmt.executeQuery();
-			if(rs.next()) {
-				m.setCustomerId(rs.getString("CustomerID"));
-				m.setName(rs.getString("name"));
-				m.setGender(rs.getString("gender"));
-				m.setBirthDate(rs.getString("birthDate"));
-				m.setEmail(rs.getString("email"));
-				m.setPhone(rs.getString("phone"));
-				m.setUpdateDate(rs.getString("updatDate"));
-				m.setCreateDate(rs.getString("createDate"));
-			}
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}finally {
-					try {
-						
-						rs.close();
-						stmt.close();
-						conn.close();
-					}catch(SQLException e) {
-						e.printStackTrace();
-					}
-				}		
-		return m;
-	}
 
 	public int insertCustomer(Customer customer) {
 		int row = -1; 
@@ -339,53 +239,53 @@ public int checkIdInCustomer(String customerId) {
 	}
 	return row;
 }
-// 회원 상세보기 모델 
-public Customer selectCustomerDetail(String customerId) {
-	
-	Customer customer = null; 
-	
-	Connection conn = null;
-	PreparedStatement stmt = null;
-	ResultSet rs = null; 
-	
-	String sql = "SELECT customer_id, customer_pw, `name`, gender, birth_date, email, phone, `level`, create_date, update_date"
-			+ " FROM customer"
-			+ " WHERE customer_id = ?"; 
-	
-	try {
-		conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
-	
-		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, customerId);
+	// customerId로 회원 1명 정보 받아 오는 메세드
+	public Customer selectCustomerOneByCustomerId(String customerId) {
 		
-		rs = stmt.executeQuery();
+		Customer customer = null; 
 		
-		while(rs.next()) {
-			customer = new Customer();
-			customer.setCustomerId(rs.getString("customer_id"));
-			customer.setCustomerPw(rs.getString("customer_pw"));
-			customer.setName(rs.getString("name"));
-			customer.setGender(rs.getString("gender"));
-			customer.setBirthDate(rs.getString("birth_date"));
-			customer.setEmail(rs.getString("email"));
-			customer.setPhone(rs.getString("phone"));
-			customer.setLevel(rs.getInt("level"));
-			customer.setCreateDate(rs.getString("create_date"));
-			customer.setUpdateDate(rs.getString("update_date"));
-		}
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} finally {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
+		
+		String sql = "SELECT customer_id, customer_pw, `name`, gender, birth_date, email, phone, `level`, create_date, update_date"
+				+ " FROM customer"
+				+ " WHERE customer_id = ?"; 
+		
 		try {
-			conn.close();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+		
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				customer = new Customer();
+				customer.setCustomerId(rs.getString("customer_id"));
+				customer.setCustomerPw(rs.getString("customer_pw"));
+				customer.setName(rs.getString("name"));
+				customer.setGender(rs.getString("gender"));
+				customer.setBirthDate(rs.getString("birth_date"));
+				customer.setEmail(rs.getString("email"));
+				customer.setPhone(rs.getString("phone"));
+				customer.setLevel(rs.getInt("level"));
+				customer.setCreateDate(rs.getString("create_date"));
+				customer.setUpdateDate(rs.getString("update_date"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 		}
+		
+		return customer;
 	}
-	
-	return customer;
-}
 
 // 회원 리스트보기 모델 
 	public ArrayList<HashMap<String, Object>> selectCustomerList() {

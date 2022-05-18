@@ -24,7 +24,7 @@ public class CustomerDetailController extends HttpServlet {
 		String customerId = request.getParameter("customerId");
 		//dao 호출
 		customerDao = new CustomerDao();
-		Customer customer = customerDao.selectCustomerDetail(customerId);
+		Customer customer = customerDao.selectCustomerOneByCustomerId(customerId);
 		//모델값 setAttribute
 		request.setAttribute("customer", customer);
 		//뷰

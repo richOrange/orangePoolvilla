@@ -31,7 +31,7 @@ public class UpdateCustomerController extends HttpServlet {
 		customerDao = new CustomerDao();
 	    //id정보로 DB의 상세보기 값 호출
 	    Customer Customer = new Customer();
-	    Customer myPageCustomer = customerDao.myPageCustomer(memberId);
+	    Customer myPageCustomer = customerDao.selectCustomerOneByCustomerId(memberId);
 		// 디버깅
 		System.out.println("[/customer/updateCustomerController.doget()] myPageCustomer : " + myPageCustomer.toString());
 		

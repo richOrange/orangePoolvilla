@@ -147,7 +147,7 @@
                  </div>
                  <!-- 지역검색부분 -->
                       지역선택 : 
-                     <select name="locationNo" class="form-control">
+                     <select name="locationNo" class="form-control" onchange ="this.form.submit()">
                          <option value="${poolvillaList[0].locationNo}">${poolvillaList[0].locationName}</option>
                      	<c:forEach var="m" items="${locationList}">
                      	<option value="${m.locationNo}">${m.locationName}</option>
