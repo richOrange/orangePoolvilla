@@ -31,7 +31,6 @@ public class CustomerDao {
 			System.out.println("[CustomerDao.myPageCustomer()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT customer_id customerId"
-					+ "				,costomer_pw customerPw"
 					+ " 			,name"
 					+ " 			,gender"
 					+ " 			,birth_date birthDate"
@@ -47,7 +46,6 @@ public class CustomerDao {
 			
 			while(rs.next()) {
 				customer.setCustomerId(rs.getString("customerId"));
-				customer.setCustomerPw(rs.getString("customerPw"));
 				customer.setName(rs.getString("name"));
 				customer.setGender(rs.getString("gender"));
 				customer.setBirthDate(rs.getString("birthDate"));
@@ -254,11 +252,11 @@ public class CustomerDao {
 	}
 	
 	
-	public int updateCustomer(Customer customer,String newCustomerPw) {
+	public int updateCustomer(Customer memberId,String newCustomerPw) {
 		int row = -1; 
 		String CustomerId =null; //
 		if(newCustomerPw.equals("")) {
-			newCustomerPw=customer.getCustomerPw();
+			newCustomerPw=memberId.getCustomerPw();
 		}
 		
 		Connection conn = null;
@@ -271,7 +269,6 @@ public class CustomerDao {
 				+ "									,phone=?"
 				+ "									,update_date=NOW(?)"
 				+ "									,name = ?"
-				+ "									FROM customer"
 				+ "									WHERE Customer_id = ? "
 				+ "									AND Customer_pw =PASSWORD(?)";
 		
@@ -279,12 +276,15 @@ public class CustomerDao {
 			
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, customer.getCustomerPw());
-			stmt.setString(2, customer.getName());
-			stmt.setString(3, customer.getGender());
-			stmt.setString(4, customer.getBirthDate());
-			stmt.setString(5, newCustomerPw);
-			stmt.setString(6, customer.getCustomerId());
+			
+			stmt.setString(1, memberId.getName());
+			stmt.setString(2, memberId.getGender());
+			stmt.setString(3, memberId.getBirthDate());
+			stmt.setString(4, memberId.getEmail());
+			stmt.setString(5, memberId.getPhone());
+			stmt.setString(6, newCustomerPw);
+			stmt.setString(7, memberId.getCustomerId());
+			stmt.setString(8, memberId.getCustomerPw());
 			row =stmt.executeUpdate();
 					
 		} catch (Exception e) {

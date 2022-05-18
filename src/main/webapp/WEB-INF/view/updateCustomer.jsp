@@ -19,11 +19,13 @@
 	href="${pageContext.request.contextPath}/template/css/style.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/template/css/custom.css">
+	
 <style>
 .helper {
 	color: #FF0000;
 }
 </style>
+
 </head>
 
 <!-- jquery -->
@@ -72,56 +74,73 @@
 								<table class="table table-hover">
 									<tr>
 										<td>ID :</td>
-										<td><input type="text" name="memberid" id="memberid"
-											value="${myPageCustomer.customerId}" readonly></td>
+										<td>
+											<input type="text" name="memberid" id="memberid"
+											value="${myPageCustomer.customerId}" readonly>
+										</td>
 									</tr>
 									<tr>
 										<td>PW :</td>
-										<td><input type="password" name="customerPw1"
-											id="customerPw1"> &nbsp; <span id="customerPwHelper1"
-											class="helper"></span></td>
+										<td>
+											<input type="password" name="customerPw1" id="customerPw1"> 
+											&nbsp; 
+											<span id="customerPwHelper1" class="helper"></span>
+										</td>
 									</tr>
 									<tr>
 										<td>PW Check :</td>
-										<td><input type="password" name="customerPw2"
-											id="customerPw2"> &nbsp; <span id="customerPwHelper2"
-											class="helper"></span></td>
+										<td>
+											<input type="password" name="customerPw2" id="customerPw2"> 
+											&nbsp; 
+											<span id="customerPwHelper2" class="helper"></span>
+										</td>
 									</tr>
 									<tr>
 										<td>NAME :</td>
-										<td><input type="text" name="name" id="name"
-											value="${myPageCustomer.name}"></td>
-										<td><div id="nameHelper"></div></td>
+										<td>
+											<input type="text" name="name" id="name" value="${myPageCustomer.name}">
+											&nbsp;
+											<span id="nameHelper" class="helper"></span>
+										</td>
 									</tr>
-
 									<tr>
 										<td>GENDER :</td>
-										<td><input type="radio" value="M" name="gender"
-											class="gender">M &nbsp; <input type="radio" value="F"
-											name="gender" class="gender">F &nbsp; <span
-											id="genderHelper" class="helper"></span></td>
+										<td>
+											<input type="radio" value="M" name="gender" class="gender">M 
+											&nbsp; 
+											<input type="radio" value="F" name="gender" class="gender">F 
+											&nbsp; 
+											<span id="genderHelper" class="helper"></span>
+										</td>
 									</tr>
 									<tr>
 										<td>BIRTH DATE :</td>
-										<td><input type="date" name="birth" id="birth">
-											&nbsp; <span id="birthHelper" class="helper"></span></td>
+										<td>
+											<input type="date" name="birth" id="birth">
+											&nbsp; 
+											<span id="birthHelper" class="helper"></span>
+										</td>
 									</tr>
 									<tr>
 										<td>EMAIL :</td>
-										<td><input type="text" id="emailId" name="emailId">
+										<td>
+											<input type="text" id="emailId" name="emailId">
 											@ <select id="emailUrl" name="emailUrl">
 												<!-- 필수 -->
 												<option value="">::선택::</option>
 												<option value="naver.com">naver.com</option>
 												<option value="daum.net">daum.net</option>
 												<option value="gmail.com">gmail.com</option>
-										</select> &nbsp; <span id="emailHelper" class="helper"></span></td>
+											</select> 
+											&nbsp; 
+											<span id="emailHelper" class="helper"></span>
+										</td>
 									</tr>
 									<tr>
 										<td>PHONE :</td>
 										<td><input type="text" name="phone" id="phone"
 											value="${myPageCustomer.phone}"></td>
-										<td><div id="phoneHelper"></div></td>
+										<td><span id="phoneHelper" ></span></td>
 									</tr>
 									<tr>
 										<td colspan="2">
@@ -153,53 +172,18 @@
 	$("#includeFooter").load(
 			'${pageContext.request.contextPath}/includeFooterController');
 	//유효성 검사
-	$('#customerPw2').blur(function() {
-    		if($('#customerPw1').val().length < 4) {
-    			$('#customerPwHelper2').text('');
-    			$('#customerPwHelper1').text('pw는 4자 이상 입력해주세요');
-    		} else if($('#customerPw1').val() != $('#customerPw2').val()) {
-    			$('#customerPwHelper1').text('');
-    			$('#customerPwHelper2').text('pw가 일치하지 않습니다');
-    		} else {
-    			$('#customerPwHelper2').text('');
-    		}
-    	});
-	
-	$('#name').blur(function(){
-		if($('#name').val() == '') {
-			$('#nameHelper').text('name을 입력하세요');
-		} else {
-			$('#nameHelper').text('');
-		}
-	});
-	
-	$('#birth').blur(function() {
-		if($('#birth').val() == '') {
-			$('#birthHelper').text('birth을 입력하세요');
-		} else {
-			$('#birthHelper').text('');
-		}
-	});
-	
-	$('#phone').blur(function() {
-		if($('#phone').val() == '') {
-			$('#phoneHelper').text('phone number를 입력하세요');
-		} else {
-			$('#phoneHelper').text('');
-		}
-	});
-	
 	
 	
 	$('#updateCustomer').click(function(){
 		if($('#customerPw1').val() == '') {
-			$('#checkIdHelper').text('');
 			$('#customerPwHelper1').text('pw는 4자 이상 입력해주세요');
 			$('#customerPw1').focus();
+			
 		} else if($('#customerPw1').val() != $('#customerPw2').val()) {
 			$('#customerPwHelper1').text('');
 			$('#customerPwHelper2').text('pw가 일치하지 않습니다.');
 			$('#customerPw2').focus();
+			
 		} else if($('#name').val == '') {
 			$('#customerPwHelper1').text('');
 			$('#customerPwHelper2').text('');
@@ -208,7 +192,7 @@
 			
 		} else if($('.gender:checked').length == 0) {
 			$('#nameHelper').text('');
-			$('#genderHelper').text('gender를 선택하세요');
+			$('#genderHelper').text('성별을 선택해주세요');
 			$('.gender').focus();
 			
 		} else if(($('#birth').val == '') {
