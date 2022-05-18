@@ -9,11 +9,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dao.CustomerDao;
+import dao.FacilityDao;
+import dao.OttDao;
+import dao.PoolvillaCookingToolDao;
 import dao.PoolvillaDao;
+import dao.PoolvillaPoolDao;
+import dao.PoolvillaRoomDao;
 import dao.ReservationDao;
+import dao.SuppliesDao;
 import vo.Customer;
 import vo.Poolvilla;
 import vo.PoolvillaPool;
@@ -27,6 +32,12 @@ public class InsertReservationController extends HttpServlet {
 	private PoolvillaDao poolvillaDao;
 	private ReservationDao reservationDao;
 	private CustomerDao customerDao;
+	private PoolvillaCookingToolDao poolvillacookingToolDao;
+	private OttDao ottDao;
+	private SuppliesDao suppliesDao;
+	private PoolvillaRoomDao poolvillaRoomDao;
+	private PoolvillaPoolDao poolvillaPoolDao;
+	private FacilityDao facilityDao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -52,14 +63,20 @@ public class InsertReservationController extends HttpServlet {
 		// 모델값 호출
 		poolvillaDao = new PoolvillaDao();
 		customerDao = new CustomerDao();
+		poolvillacookingToolDao = new PoolvillaCookingToolDao();
+		ottDao = new OttDao();
+		suppliesDao = new SuppliesDao();
+		poolvillaRoomDao = new PoolvillaRoomDao();
+		poolvillaPoolDao = new PoolvillaPoolDao();
+		facilityDao = new FacilityDao();
 		// 풀빌라 정보 호출
 		Poolvilla selectPoolvillaOne = poolvillaDao.selectPoolvillaOne(pvNo);
-		List<Map<String, Object>> poolvillaCookingToolList = poolvillaDao.selectPoolvillaCookingToolByPvNo(pvNo);
-		List<Map<String, Object>> poolvillaOttList = poolvillaDao.selectPoolvillaOttByPvNo(pvNo);
-		List<Map<String, Object>> poolvillaSuppliesList = poolvillaDao.selectPoolvillaSuppliesByPvNo(pvNo);
-		List<Map<String, Object>> poolvillaRoomNBedList = poolvillaDao.selectPoolvillaRoomNBedByPvNo(pvNo);
-		List<PoolvillaPool> selectPoolvillaPoolListByPvNo = poolvillaDao.selectPoolvillaPoolListByPvNo(pvNo);
-		List<Map<String, Object>> selectPoolvillaFacilityListByPvNo = poolvillaDao.selectPoolvillaFacilityListByPvNo(pvNo);
+		List<Map<String, Object>> poolvillaCookingToolList = poolvillacookingToolDao.selectPoolvillaCookingToolByPvNo(pvNo);
+		List<Map<String, Object>> poolvillaOttList = ottDao.selectPoolvillaOttByPvNo(pvNo);
+		List<Map<String, Object>> poolvillaSuppliesList = suppliesDao.selectPoolvillaSuppliesByPvNo(pvNo);
+		List<Map<String, Object>> poolvillaRoomNBedList = poolvillaRoomDao.selectPoolvillaRoomNBedByPvNo(pvNo);
+		List<PoolvillaPool> selectPoolvillaPoolListByPvNo = poolvillaPoolDao.selectPoolvillaPoolListByPvNo(pvNo);
+		List<Map<String, Object>> selectPoolvillaFacilityListByPvNo = facilityDao.selectPoolvillaFacilityListByPvNo(pvNo);
 		// 고객 정보 호출
 		Customer myPageCustomer = customerDao.myPageCustomer(memberId);
 		
