@@ -14,7 +14,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/styles-merged.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/style.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/custom.css">
-
+	<style>
+	    .helper {
+	    	color : #FF0000;
+	    }
+	</style>
   </head>
   
   	<!-- jquery -->
@@ -66,7 +70,6 @@
 				<tr>
 					<td>지역</td>
 					<td>
-						<span id="locationNoHelper"></span>
 						<select id="locationNo" name="locationNo" class="form-control">
 	                     	<option value="-1">:: 지역 선택 ::</option>
 		                      <c:forEach var ="m" items="${ locationList }">
@@ -76,52 +79,80 @@
 		                         <option value="${ m.locationNo }">${ m.locationName }</option>
 		                      </c:forEach>
 	                    </select>
+	                    <span id="locationNoHelper" class="helper">	</span>
                     </td>
 				</tr>
 				<tr>
 					<td>주소</td>
 					<td>
-					<span id="addressNoHelper"></span>
-		          	<input class="form-control" name="searchAddress" id ="searchAddress" placeholder="주소" type="text" value="${param.searchAddress}"/>
-		          	<button class="btn btn-primary" type="submit">주소검색</button><br>
-						<c:if test="${searchAddressList != null}">
-		            		<select class="form-control" id="addressNo" name="addressNo">
-			       		    	<option value = "" style="text-align:center;">:: 주소 선택 ::</option>
-					            <c:forEach var="s" items="${searchAddressList}">
-					            		<option value="${s.addressNo}" style="text-align:center;">${s.addr}</option>
-					            </c:forEach>
-			            	</select>
-		            	</c:if>
+						
+			          	<input class="form-control" name="searchAddress" id ="searchAddress" placeholder="주소" type="text" value="${param.searchAddress}"/>
+			          	<button class="btn btn-primary" type="submit">주소검색</button><br>
+							<c:if test="${searchAddressList != null}">
+			            		<select class="form-control" id="addressNo" name="addressNo">
+				       		    	<option value = "" style="text-align:center;">:: 주소 선택 ::</option>
+						            <c:forEach var="s" items="${searchAddressList}">
+						            		<option value="${s.addressNo}" style="text-align:center;">${s.addr}</option>
+						            </c:forEach>
+				            	</select>
+			            	</c:if>
+			            <span id="addressNoHelper" class="helper"></span>
 					</td>
 				</tr>
 				<tr>
 					<td>상세 주소</td>
-					<td><input type="text" name="pvDetailaddr" class="form-control" placeholder="Please enter the detail address" value="${param.pvDetailaddr}"></td>
+					<td>
+						<input type="text" name="pvDetailaddr" id ="pvDetailaddr" class="form-control" placeholder="Please enter the detail address" value="${param.pvDetailaddr}">
+						&nbsp; 
+						<span id="pvDetailaddrHelper" class="helper"></span>
+					</td>
 				</tr>
 				<tr>
 					<td>풀빌라 이름</td>
-					<td><input type="text" name="pvName" value="${param.pvName}" class="form-control" placeholder="Please enter the poolvilla name"></td>
+					<td>
+						<input type="text" name="pvName" id ="pvName" value="${param.pvName}" class="form-control" placeholder="Please enter the poolvilla name">
+						&nbsp; 
+						<span id="pvNameHelper" class="helper"></span>
+					</td>
 				</tr>
 				<tr>
 					<td>가격</td>
-					<td><input type="text" name="price" value="${param.price}" class="form-control" placeholder="Please enter the price"></td>
+					<td>
+						<input type="text" name="price" id ="price" value="${param.price}" class="form-control" placeholder="Please enter the price">
+						&nbsp; 
+						<span id="priceHelper" class="helper"></span>
+					</td>
 				</tr>
 				<tr>
 					<td>면적</td>
-					<td><input type="text" name="pvSize" value="${param.pvSize}" class="form-control" placeholder="Please enter the size"></td>
+					<td>
+						<input type="text" name="pvSize" id ="pvSize" value="${param.pvSize}" class="form-control" placeholder="Please enter the size">
+						&nbsp; 
+						<span id="pvSizeHelper" class="helper"></span>
+					</td>
 				</tr>
 				<tr>
 					<td>층수</td>
-					<td><input type="text" name="pvFloor" value="${param.pvFloor}"  class="form-control" placeholder="Please enter the floor"></td>
+					<td>
+						<input type="text" name="pvFloor" id ="pvFloor" value="${param.pvFloor}"  class="form-control" placeholder="Please enter the floor">
+						&nbsp; 
+						<span id="pvFloorHelper" class="helper"></span>
+					</td>
 				</tr>
 				<tr>
 					<td>최대 인원</td>
-					<td><input type="text" name="pvPeople" value="${param.pvPeople}" class="form-control" placeholder="Please enter the people number"></td>
+					<td>
+						<input type="text" name="pvPeople" id ="pvPeople" value="${param.pvPeople}" class="form-control" placeholder="Please enter the people number">
+						&nbsp; 
+						<span id="pvPeopleHelper" class="helper"></span>
+					</td>
 				</tr>
 			</table>
-			<button type="button" class="btn btn-primary" id="submit">insert</button>
+			<button type="button" class="btn btn-primary" id="insert">insert</button>
           </form>
+          </div>
   </section>  
+  
 
   	<!-- START: footer -->
 	       <div id="includeFooter"></div>
@@ -136,41 +167,50 @@
   <script>
         $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
         $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
-    	$('#submit').click(function() {
+    	// 풀빌라 등록 유효성 검사
+       
+    	$('#insert').click(function(){
     		if($('#hostId').val()==''){
     			$('#hostId').focus();
+    		
     		}else if($('#locationNo').val() == -1) {
-    			$('#locationNoHelper').text('지역을 입력해주세요');
+    			$('#locationNoHelper').text('지역을 입력하세요');
     			$('#locationNo').focus();
+    		
     		} else if($('#addressNo').val()=='') {
-    			$('#addressNoHelper').text('주소를 입력해주세요');
-    			$('#searchAddress').focus();
-    		} else if($('#name').val() == '') {
+    			$('#locationNoHelper').text('');
+    			$('#addressNoHelper').text('주소를 입력하세요');
+    			$('#addressNo').focus();
+    		
+    		} else if($('#pvDetailaddr').val() == '') {
     			$('#addressNoHelper').text('');
-    			$('#customerPwHelper2').text('');
-    			
-    			$('#idHelper').text('id는 4자 이상 입력해주세요');
-    			$('#name').focus();
-    		} else if($('.gender:checked').length == 0) {
-    			$('#customerPwHelper').text('');
-    			
-    			$('#genderHelper').text('gender를 선택하세요');
-    			$('.gender').focus(); // ?
-    		} else if($('#birth').val() == '') {
-    			$('#genderHelper').text('');
-    			
-    			$('#birthHelper').text('birth를 입력하세요');
-    			$('.gender').focus();
-    		} else if($('#emailId').val() == '' || $('#emailUrl').val() == '') {
-    			$('#birthtHelper').text('');
-    			
-    			$('#emailHelper').text('email을 입력하세요');
-    			$('#emailId').focus();
-    		} else if($('#phone').val() == '') {
-    			$('#emailHelper').text('');
-    			
-    			$('#phoneHelper').text('phone number를 입력하세요');
-    			$('#phone').focus();
+    			$('#pvDetailaddrHelper').text('상세 주소를 입력하세요');
+    			$('#pvDetailaddr').focus();
+    		
+    		} else if($('#pvName').val() == '') {
+    			$('#pvDetailaddrHelper').text('');
+    			$('#pvNameHelper').text('풀빌라 이름을 입력하세요');
+    			$('pvName').focus(); 
+    		
+    		} else if($('#price').val() == '') {
+    			$('#pvNameHelper').text('');
+    			$('#priceHelper').text('가격을 입력하세요');
+    			$('price').focus();
+    		
+    		} else if($('#pvSize').val() == '' ) {
+    			$('#priceHelper').text('');
+    			$('#pvSizeHelper').text('풀빌라의 사이즈를 입력하세요');
+    			$('#pvSize').focus();
+    		
+    		} else if($('#pvFloor').val() == '') {
+    			$('#pvSizeHelper').text('');
+    			$('#pvFloorHelper').text('풀빌라의 층수를 입력하세요');
+    			$('#pvFloor').focus();
+    		} else if($('#pvPeople').val() == ''){
+    			$('#pvFloorHelper').text('');
+    			$('#pvPeopleHelper').text('최대인원을 입력하세요')
+    			$('#pvPeople').focus();
+    
     		} else {
     			$('#insertForm').submit();
     		}

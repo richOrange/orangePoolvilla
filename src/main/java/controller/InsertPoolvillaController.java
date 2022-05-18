@@ -43,7 +43,7 @@ public class InsertPoolvillaController extends HttpServlet {
 		request.setAttribute("locationList", locationList);
 		
 		
-		if(request.getParameter("addressNo")==null||request.getParameter("searchAddress")!=null) {
+		if(request.getParameter("addressNo")==null&&request.getParameter("searchAddress")!=null) {
 			String searchAddress = request.getParameter("searchAddress"); // 검색한 주소값 받아오기
 			
 			this.poolvillaAddressDao = new PoolvillaAddressDao();
@@ -58,7 +58,9 @@ public class InsertPoolvillaController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/all/homeController");
 		}
 
+		// poolvillaDao.insertPoolvilla()메서드의 매개변수로 사용될 Poolvilla객체 생성
 		Poolvilla poolvilla = new Poolvilla();
+		// 객체를 이용해 정보저장
 		poolvilla.setHostId(request.getParameter("hostId"));		
 		poolvilla.setLocationNo(Integer.parseInt(request.getParameter("locationNo")));
 		poolvilla.setAddressNo(Integer.parseInt(request.getParameter("addressNo")));
@@ -69,8 +71,12 @@ public class InsertPoolvillaController extends HttpServlet {
 		poolvilla.setPvFloor(Integer.parseInt(request.getParameter("pvFloor")));
 		poolvilla.setPvPeople(Integer.parseInt(request.getParameter("pvPeople")));
 		
-		poolvillaDao = new PoolvillaDao();
-		poolvillaDao.insertPoolvilla(poolvilla);
+		
+		
+		this.poolvillaDao = new PoolvillaDao();
+		// 풀빌라 등록 메서드 실행
+		this.poolvillaDao.insertPoolvilla(poolvilla);
+		System.out.println("상품 등록 성공");
 		
 		
 		response.sendRedirect(request.getContextPath() + "/host/insertHostPoolvillaOneController");
