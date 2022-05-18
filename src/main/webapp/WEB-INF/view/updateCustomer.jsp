@@ -66,9 +66,8 @@
 			<div class="row">
 				<div class="col-md-8">
 					<form
-						action="${pageContext.request.contextPath}/customer/myPageOneController"
-						method="post" class="probootstrap-form mb60"
-						id="updatecustomerForm">
+						action="${pageContext.request.contextPath}/customer/updateCustomerController"
+						method="post" id="updatecustomerForm">
 						<div class="row">
 							<div class="col-12">
 								<table class="table table-hover">
@@ -83,7 +82,7 @@
 										<td>PW :</td>
 										<td>
 											<input type="password" name="customerPw1" id="customerPw1"> 
-											&nbsp; 
+											
 											<span id="customerPwHelper1" class="helper"></span>
 										</td>
 									</tr>
@@ -91,15 +90,15 @@
 										<td>PW Check :</td>
 										<td>
 											<input type="password" name="customerPw2" id="customerPw2"> 
-											&nbsp; 
+											
 											<span id="customerPwHelper2" class="helper"></span>
 										</td>
 									</tr>
 									<tr>
 										<td>NAME :</td>
 										<td>
-											<input type="text" name="name" id="name" value="${myPageCustomer.name}">
-											&nbsp;
+											<input type="text" name="name" id="name">
+											
 											<span id="nameHelper" class="helper"></span>
 										</td>
 									</tr>
@@ -107,9 +106,9 @@
 										<td>GENDER :</td>
 										<td>
 											<input type="radio" value="M" name="gender" class="gender">M 
-											&nbsp; 
+											 
 											<input type="radio" value="F" name="gender" class="gender">F 
-											&nbsp; 
+											
 											<span id="genderHelper" class="helper"></span>
 										</td>
 									</tr>
@@ -117,7 +116,7 @@
 										<td>BIRTH DATE :</td>
 										<td>
 											<input type="date" name="birth" id="birth">
-											&nbsp; 
+											
 											<span id="birthHelper" class="helper"></span>
 										</td>
 									</tr>
@@ -127,7 +126,7 @@
 											<input type="text" id="emailId" name="emailId">
 											@ <select id="emailUrl" name="emailUrl">
 												<!-- 필수 -->
-												<option value="">::선택::</option>
+												<option value=''>::선택::</option>
 												<option value="naver.com">naver.com</option>
 												<option value="daum.net">daum.net</option>
 												<option value="gmail.com">gmail.com</option>
@@ -138,13 +137,14 @@
 									</tr>
 									<tr>
 										<td>PHONE :</td>
-										<td><input type="text" name="phone" id="phone"
-											value="${myPageCustomer.phone}"></td>
-										<td><span id="phoneHelper" ></span></td>
+										<td>
+											<input type="text" name="phone" id="phone">
+											<span id="phoneHelper" class="helper"></span>
+										</td>
 									</tr>
 									<tr>
 										<td colspan="2">
-											<button type="button" id="updateCustomer"
+											<button type="button" name="updateCustomer" id="updateCustomer"
 												class="btn btn-primary">수정</button>
 										</td>
 									</tr>
@@ -175,7 +175,7 @@
 	
 	
 	$('#updateCustomer').click(function(){
-		if($('#customerPw1').val() == '') {
+		if($('#customerPw1').val() == '' || $('#customerPw1').val().length < 4) {
 			$('#customerPwHelper1').text('pw는 4자 이상 입력해주세요');
 			$('#customerPw1').focus();
 			
@@ -184,7 +184,7 @@
 			$('#customerPwHelper2').text('pw가 일치하지 않습니다.');
 			$('#customerPw2').focus();
 			
-		} else if($('#name').val == '') {
+		} else if($('#name').val() == '') {
 			$('#customerPwHelper1').text('');
 			$('#customerPwHelper2').text('');
 			$('#nameHelper').text('이름을 입력해주세요');
@@ -195,25 +195,25 @@
 			$('#genderHelper').text('성별을 선택해주세요');
 			$('.gender').focus();
 			
-		} else if(($('#birth').val == '') {
+		} else if($('#birth').val() == '') {
+			$('#nameHelper').text('');
 			$('#genderHelper').text('');
 			$('#birthHelper').text('생일을 입력해주세요');
-			$('#name').focus();
 			
-		} else if(($('#emailId').val == '') {
-			$('#birthtHelper').text('');
+		} else if($('#emailId').val() == '') {
+			$('#birthHelper').text('');
 			$('#emailHelper').text('이메일을 입력해주세요');
-			$('#name').focus();
+			$('#emailId').focus();
 			
-		} else if(($('#phone').val == '') {
+		} else if($('#phone').val() == '') {
 			$('#emailHelper').text('');
 			$('#phoneHelper').text('번호를 입력해주세요');
-			$('#name').focus();
+			$('#phone').focus();
 			
 		} else {
   			$('#updatecustomerForm').submit();
   		}
-	})
+	});
 </script>
 
 <script
