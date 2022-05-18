@@ -71,7 +71,7 @@
 								<td>${ status.count }</td>
 								<td>${ ck.cookingToolName }</td>
 								<td>${ ck.updateDate }</td> 
-								<td><a href="${pageContext.request.contextPath}/host/deleteCookingToolController?cookingToolNo=${ ck.cookingToolNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+								<td><a href="${pageContext.request.contextPath}/host/deleteCookingToolController?cookingToolNo=${ ck.cookingToolNo }&pvNo=${ param.pvNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
 							</tr>
 					</c:forEach>
 				</tr>
@@ -84,6 +84,7 @@
         <form action="${pageContext.request.contextPath}/host/cookingToolController" method="post" class="probootstrap-form mb60">
             <div class="row">
             <div class="form-group">
+            <input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
               <input type="text" name="cookingToolName" class="form-control" placeholder="Please enter the cooking tool">
             </div>
             <div class="form-group">
