@@ -21,6 +21,7 @@ public class InsertPoolvillaController extends HttpServlet {
 	
 	private PoolvillaLocationDao poolvillaLocationDao;
 	private PoolvillaDao poolvillaDao;
+	private PoolvillaAddressDao poolvillaAddressDao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//지역 리스트 모델값 요청
@@ -36,6 +37,16 @@ public class InsertPoolvillaController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameter("addressNo")==null||request.getParameter("searchAddress")!=null) {
+			String searchAddress = request.getParameter("searchAddress"); // 검색한 주소값 받아오기
+			
+			this.poolvillaAddressDao = new PoolvillaAddressDao();
+			List<Map<String, Object>> list = poolvillaAddressDao.searchAddress(searchAddress); // 주소 찾기 메서드 실행 후 찾아온 주소 list에 저장
+			request.setAttribute("searchAddressList", list); // 리스트 값 searchAddressList에 세팅
+			
+			request.getRequestDispatcher("/host/insertPoolvillaController").forward(request, response);
+			return;
+		}
 
 		Poolvilla poolvilla = new Poolvilla();
 		poolvilla.setHostId(request.getParameter("hostId"));		
@@ -51,11 +62,6 @@ public class InsertPoolvillaController extends HttpServlet {
 		poolvillaDao = new PoolvillaDao();
 		poolvillaDao.insertPoolvilla(poolvilla);
 		
-		String searchAddress = request.getParameter("searchAddress"); // 검색한 주소값 받아오기
-		
-		PoolvillaAddressDao poolvillaTestDao = new PoolvillaAddressDao();
-		List<Map<String, Object>> list = poolvillaTestDao.searchAddress(searchAddress); // 주소 찾기 메서드 실행 후 찾아온 주소 list에 저장
-		request.setAttribute("searchAddressList", list); // 리스트 값 searchAddressList에 세팅
 		
 		response.sendRedirect(request.getContextPath() + "/host/insertHostPoolvillaOneController");
 	}

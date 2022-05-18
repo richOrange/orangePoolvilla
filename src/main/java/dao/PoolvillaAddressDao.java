@@ -20,9 +20,10 @@ public class PoolvillaAddressDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		String sql = "SELECT address_no addressNo, CONCAT(zip_code,' ',province,' ',city,' ',town,' ',street) addr"
-				+ "		FROM address"
-				+ "		WHERE CONCAT(province,city,town,street) LIKE ?;";
+		String sql = "SELECT address_no addressNo, CONCAT(province, ' ', city, ' ', town, ' ', street, ' ', building1) addr"
+				+ "				 FROM address"
+				+ "				 WHERE CONCAT(street, ' ', building1)"
+				+ "				 LIKE ?";
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 			stmt = conn.prepareStatement(sql);

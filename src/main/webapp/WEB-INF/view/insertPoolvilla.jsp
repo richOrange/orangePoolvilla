@@ -76,43 +76,42 @@
 				</tr>
 				<tr>
 					<td>주소</td>
-					<td><input class="form-control" name="searchAddress" placeholder="please enter the address" type="text"/>
+					<td>
+		          	<input class="form-control" name="searchAddress" placeholder="주소" type="text"/>
 		          	<button class="btn btn-primary" type="submit">주소검색</button><br>
-					
-					<c:if test="${searchAddressList != null}">
-	            		<select class="form-control" id="addressNo" name="addressNo">
-		       		    	<option value = "" style="text-align:center;">:: 주소 선택 ::</option>
-				            <c:forEach var="s" items="${searchAddressList}">
-				            		<option value="${s.addressNo}" style="text-align:center;">${s.addressName}</option>
-				            </c:forEach>
-		            	</select>
-	            	</c:if>
+						<c:if test="${searchAddressList != null}">
+		            		<select class="form-control" id="addressNo" name="addressNo">
+			       		    	<option value = "" style="text-align:center;">:: 주소 선택 ::</option>
+					            <c:forEach var="s" items="${searchAddressList}">
+					            		<option value="${s.addressNo}" style="text-align:center;">${s.addr}</option>
+					            </c:forEach>
+			            	</select>
+		            	</c:if>
 					</td>
-					
 				</tr>
 				<tr>
 					<td>상세 주소</td>
-					<td><input type="text" name="pvDetailaddr" class="form-control" placeholder="Please enter the detail address"></td>
+					<td><input type="text" name="pvDetailaddr" class="form-control" placeholder="Please enter the detail address" value="${pvDetailaddr}"></td>
 				</tr>
 				<tr>
 					<td>풀빌라 이름</td>
-					<td><input type="text" name="pvName" class="form-control" placeholder="Please enter the poolvilla name"></td>
+					<td><input type="text" name="pvName" value="${pvName}" class="form-control" placeholder="Please enter the poolvilla name"></td>
 				</tr>
 				<tr>
 					<td>가격</td>
-					<td><input type="text" name="price" class="form-control" placeholder="Please enter the price"></td>
+					<td><input type="text" name="price" value="${price}" class="form-control" placeholder="Please enter the price"></td>
 				</tr>
 				<tr>
 					<td>면적</td>
-					<td><input type="text" name="pvSize" class="form-control" placeholder="Please enter the size"></td>
+					<td><input type="text" name="pvSize" value="${pvSize}" class="form-control" placeholder="Please enter the size"></td>
 				</tr>
 				<tr>
 					<td>층수</td>
-					<td><input type="text" name="pvFloor" class="form-control" placeholder="Please enter the floor"></td>
+					<td><input type="text" name="pvFloor" value="${pvFloor}"  class="form-control" placeholder="Please enter the floor"></td>
 				</tr>
 				<tr>
 					<td>최대 인원</td>
-					<td><input type="text" name="pvPeople" class="form-control" placeholder="Please enter the people number"></td>
+					<td><input type="text" name="pvPeople" value="${pvPeople}" class="form-control" placeholder="Please enter the people number"></td>
 				</tr>
 			</table>
 			<input type="submit" class="btn btn-primary" id="submit" name="submit" value="insert">
