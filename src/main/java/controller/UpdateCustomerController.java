@@ -42,57 +42,42 @@ public class UpdateCustomerController extends HttpServlet {
 	}	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//인코딩
-		request.setCharacterEncoding("UTF-8");
+		System.out.println("[/customer/updateCustomerController.doPost()]");
 		//session 값 요청
 		HttpSession session = request.getSession();
 		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
 		
-	    //널 체크
-	    if(request.getParameter("name")==null||request.getParameter("age")==null||request.getParameter("CustomerPw")==null||request.getParameter("CustomerId")==null||request.getParameter("gender")==null) {
-	    	System.out.println("[/customer/updateCustomerController.doget()] sessionLoginMember null" + sessionLoginMember.toString());
-	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController");//요청값에 null있으면 UpdateCustomerController로 돌려보냄
-	    	return;
-	    }
-	    //form 요청 값 처리
+		//form 요청 값 처리
 	    Customer customer = new Customer();
-	    customer.setCustomerId(request.getParameter("CustomerId"));
+	    customer.setCustomerId(request.getParameter("memberid"));
 	    customer.setName(request.getParameter("name"));
-	    customer.setBirthDate(request.getParameter("BirthDate"));
+	    customer.setBirthDate(request.getParameter("birth"));
 	    customer.setGender(request.getParameter("gender"));
-	    customer.setCustomerPw(request.getParameter("CustomerPw"));
-	    System.out.println(customer.toString()+"<-UPdateCustomerController.dopost");//디버깅
+	    customer.setEmail(request.getParameter("emailId")+"@"+request.getParameter("emailUrl"));
+	    customer.setPhone(request.getParameter("phone"));
+	    customer.setCustomerPw(request.getParameter("customerPw1"));
+	    System.out.println("[/customer/updateCustomerController.doPost()] customer " + customer.toString());//디버깅
 	    
-	    String newCustomerPw="";
-	    if(request.getParameter("newPw")==null) {
-	    	System.out.println("1245");
-	    }
-	    if(request.getParameter("newPw").equals("open")){//비밀번호 변경 요청 여부 확인
-	    	if(request.getParameter("newCustomerPw1")!=null&&!request.getParameter("newCustomerPw1").equals("")&&request.getParameter("newCustomerPw1").equals(request.getParameter("newCustomerPw2"))) {
-	    		//새로운 비밀번호가 null,"" 이 아니고 pw1,pw2가 일치하면 newCustomerPw에 저장
-	    		newCustomerPw=request.getParameter("newCustomerPw1");
-	    		System.out.println(newCustomerPw+"<- newCustomerPw UpdateCustomerController.dopost");//디버깅
-	    	}else if(request.getParameter("newCustomerPw1")!=null&&!request.getParameter("newCustomerPw1").equals("")&&!request.getParameter("newCustomerPw1").equals(request.getParameter("newCustomerPw2"))){
-	    		//null, ""은 아니지만, pw1,pw2가 일치하지 않을 경우 msg와 함께 돌려보냄
-	    		response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=notMatch");
-	    		return;
-	    	}
-	    }
+	    String newCustomerPw = request.getParameter("customerPw1");
+	    //디버깅
+	    System.out.println("[/customer/updateCustomerController.doPost()] newCustomerPw : " + newCustomerPw );
 	    //Dao에 update 요청
 	    customerDao = new CustomerDao();
+	    
 	    int row = customerDao.updateCustomer(customer, newCustomerPw);
-	    System.out.println(row+"<-row UpdateCustomerController.dopost");
+	    System.out.println("[/customer/updateCustomerController.doPost()] row" + row);
+	    
 	    if (row==1) { //성공시 SelectCustomerOnecontroller으로 돌려보냄
-	    	System.out.println("수정성공 UpdateCustomerController.dopost");
-	    	response.sendRedirect(request.getContextPath()+"/SelectCustomerOneController");
+	    	System.out.println("[/customer/updateCustomerController.doPost()] 수정성공 ");
+	    	response.sendRedirect(request.getContextPath()+"/customer/myPageOneController");
 	    	return;
 	    }else if(row==0) {// row==0이면 영향받은 행이 없으므로 (row 기본값 -1), 비밀번호 오류
-	    	System.out.println("수정실패비밀번호오류 UpdateCustomerController.dopost");
-	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=wrongPw");
+	    	System.out.println("[/customer/updateCustomerController.doPost()] 수정실패 비밀번호오류 ");
+	    	response.sendRedirect(request.getContextPath()+"/customer/updateCustomerController?msg=wrongPw");
 	    	
 	    }else if (row==-1) {//row가 -1이면 sql이 작동 안함
-	    	System.out.println("예외 발생 UpdateCustomerController.dopost");
-	    	response.sendRedirect(request.getContextPath()+"/UpdateCustomerController?msg=exception");
+	    	System.out.println("[/customer/updateCustomerController.doPost()] 예외 발생");
+	    	response.sendRedirect(request.getContextPath()+"/customer/updateCustomerController?msg=exception");
 	    }
 	    
 	    
