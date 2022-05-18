@@ -48,5 +48,3 @@ public class PoolvillaAddressDao {
 		return list;
 	}
 }
-
-

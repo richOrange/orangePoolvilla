@@ -57,18 +57,22 @@
 		<h2>insert poolvilla info</h2>
 		<br>
         <!-- Form -->
-        <form action="${pageContext.request.contextPath}/host/insertPoolvillaController" method="post" class="probootstrap-form mb60">
+        <form action="${pageContext.request.contextPath}/host/insertPoolvillaController" method="post" class="probootstrap-form mb60" id="insertForm">
            	<table class = "table table-active">
 				<tr>
 					<td>판매자</td>
-					<td><input type="text" name="hostId" class="form-control" value="${ sessionLoginMember.memberId }" readonly="readonly"></td>
+					<td><input type="text" name="hostId" id="hostId" class="form-control" value="${ sessionLoginMember.memberId }" readonly="readonly"></td>
 				</tr>
 				<tr>
 					<td>지역</td>
 					<td>
+						<span id="locationNoHelper"></span>
 						<select id="locationNo" name="locationNo" class="form-control">
 	                     	<option value="-1">:: 지역 선택 ::</option>
 		                      <c:forEach var ="m" items="${ locationList }">
+		                      	<c:if test="${ m.locationNo == param.locationNo }">
+		                         <option value="${ m.locationNo }" selected>${ m.locationName }</option>
+		                      	</c:if>
 		                         <option value="${ m.locationNo }">${ m.locationName }</option>
 		                      </c:forEach>
 	                    </select>
@@ -77,7 +81,8 @@
 				<tr>
 					<td>주소</td>
 					<td>
-		          	<input class="form-control" name="searchAddress" placeholder="주소" type="text"/>
+					<span id="addressNoHelper"></span>
+		          	<input class="form-control" name="searchAddress" id ="searchAddress" placeholder="주소" type="text" value="${param.searchAddress}"/>
 		          	<button class="btn btn-primary" type="submit">주소검색</button><br>
 						<c:if test="${searchAddressList != null}">
 		            		<select class="form-control" id="addressNo" name="addressNo">
@@ -91,30 +96,30 @@
 				</tr>
 				<tr>
 					<td>상세 주소</td>
-					<td><input type="text" name="pvDetailaddr" class="form-control" placeholder="Please enter the detail address" value="${pvDetailaddr}"></td>
+					<td><input type="text" name="pvDetailaddr" class="form-control" placeholder="Please enter the detail address" value="${param.pvDetailaddr}"></td>
 				</tr>
 				<tr>
 					<td>풀빌라 이름</td>
-					<td><input type="text" name="pvName" value="${pvName}" class="form-control" placeholder="Please enter the poolvilla name"></td>
+					<td><input type="text" name="pvName" value="${param.pvName}" class="form-control" placeholder="Please enter the poolvilla name"></td>
 				</tr>
 				<tr>
 					<td>가격</td>
-					<td><input type="text" name="price" value="${price}" class="form-control" placeholder="Please enter the price"></td>
+					<td><input type="text" name="price" value="${param.price}" class="form-control" placeholder="Please enter the price"></td>
 				</tr>
 				<tr>
 					<td>면적</td>
-					<td><input type="text" name="pvSize" value="${pvSize}" class="form-control" placeholder="Please enter the size"></td>
+					<td><input type="text" name="pvSize" value="${param.pvSize}" class="form-control" placeholder="Please enter the size"></td>
 				</tr>
 				<tr>
 					<td>층수</td>
-					<td><input type="text" name="pvFloor" value="${pvFloor}"  class="form-control" placeholder="Please enter the floor"></td>
+					<td><input type="text" name="pvFloor" value="${param.pvFloor}"  class="form-control" placeholder="Please enter the floor"></td>
 				</tr>
 				<tr>
 					<td>최대 인원</td>
-					<td><input type="text" name="pvPeople" value="${pvPeople}" class="form-control" placeholder="Please enter the people number"></td>
+					<td><input type="text" name="pvPeople" value="${param.pvPeople}" class="form-control" placeholder="Please enter the people number"></td>
 				</tr>
 			</table>
-			<input type="submit" class="btn btn-primary" id="submit" name="submit" value="insert">
+			<button type="button" class="btn btn-primary" id="submit">insert</button>
           </form>
   </section>  
 
@@ -131,6 +136,45 @@
   <script>
         $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
         $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+    	$('#submit').click(function() {
+    		if($('#hostId').val()==''){
+    			$('#hostId').focus();
+    		}else if($('#locationNo').val() == -1) {
+    			$('#locationNoHelper').text('지역을 입력해주세요');
+    			$('#locationNo').focus();
+    		} else if($('#addressNo').val()=='') {
+    			$('#addressNoHelper').text('주소를 입력해주세요');
+    			$('#searchAddress').focus();
+    		} else if($('#name').val() == '') {
+    			$('#addressNoHelper').text('');
+    			$('#customerPwHelper2').text('');
+    			
+    			$('#idHelper').text('id는 4자 이상 입력해주세요');
+    			$('#name').focus();
+    		} else if($('.gender:checked').length == 0) {
+    			$('#customerPwHelper').text('');
+    			
+    			$('#genderHelper').text('gender를 선택하세요');
+    			$('.gender').focus(); // ?
+    		} else if($('#birth').val() == '') {
+    			$('#genderHelper').text('');
+    			
+    			$('#birthHelper').text('birth를 입력하세요');
+    			$('.gender').focus();
+    		} else if($('#emailId').val() == '' || $('#emailUrl').val() == '') {
+    			$('#birthtHelper').text('');
+    			
+    			$('#emailHelper').text('email을 입력하세요');
+    			$('#emailId').focus();
+    		} else if($('#phone').val() == '') {
+    			$('#emailHelper').text('');
+    			
+    			$('#phoneHelper').text('phone number를 입력하세요');
+    			$('#phone').focus();
+    		} else {
+    			$('#insertForm').submit();
+    		}
+    	});
   </script>
   
   <script src="${pageContext.request.contextPath}/template/js/scripts.min.js"></script>
