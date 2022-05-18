@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import vo.Ott;
 
@@ -70,6 +72,56 @@ public class OttDao {
 			}
 			return list;
 		}
+		
+		// pvno에 따른 orangepoolvilla db의 해당 풀빌라의 ott 테이블 목록 가져오기
+		public List<Map<String,Object>> selectPoolvillaOttByPvNo(int pvNo) {
+			List<Map<String,Object>> list = new ArrayList<>();
+			
+			// 데이터베이스 자원 준비
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			
+			try {
+				// 데이터베이스 드라이버 연결
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				System.out.println("[PoolvillaDao.selectPoolvillaOttByPvNo()] 드라이버 로딩 성공");
+				
+				String sql = "SELECT po.pv_no pvNo"
+						+ "			, po.ott_no ottNo"
+						+ "			, po.update_date updateDate"
+						+ "			, o.ott_name ottName"
+						+ "		FROM poolvilla_ott po"
+						+ "		INNER JOIN ott o"
+						+ "		ON po.ott_no = o.ott_no"
+						+ "		WHERE po.pv_no = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, pvNo);
+				rs = stmt.executeQuery();
+				
+				while(rs.next()) {
+					Map<String,Object> m = new HashMap<>();
+					m.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
+					m.put("ottNo", rs.getInt("ottNo")); // ott 번호
+					m.put("updateDate", rs.getString("updateDate")); // ott 글 수정 날짜
+					m.put("ottName", rs.getString("ottName")); // ott 이름
+					list.add(m);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					// 데이터베이스 자원 반환
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return list;
+		}
+		
 		public int deleteOtt(int ottNo) {
 			// DB 자원 준비
 			Connection conn = null;

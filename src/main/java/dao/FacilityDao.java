@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import vo.Facility;
 
@@ -105,5 +107,45 @@ public class FacilityDao {
 			}
 		}
 		return row;
+	}
+	// pvNo에 따른 facility정보 출력
+	public List<Map<String, Object>> selectPoolvillaFacilityListByPvNo(int pvNo){
+		List<Map<String, Object>> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			String sql = "SELECT pf.pv_no pvNo"
+					+ "		, pf.facility_no facilityNo"
+					+ "		, pf.update_date updateDate"
+					+ "		, pf.facility_cnt facilityCnt"
+					+ "		, f.facility_name facilityName"
+					+ " FROM poolvilla_facility pf INNER join facility f"
+					+ " ON pf.facility_no = f.facility_no"
+					+ " WHERE pv_no = ?;";
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, pvNo);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				Map<String,Object> map = new HashMap<>();
+				map.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
+				map.put("facilityNo", rs.getInt("facilityNo"));
+				map.put("updateDate", rs.getString("updateDate"));
+				map.put("facilityCnt", rs.getInt("facilityCnt"));
+				map.put("facilityName", rs.getString("facilityName"));
+				list.add(map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
 	}
 }

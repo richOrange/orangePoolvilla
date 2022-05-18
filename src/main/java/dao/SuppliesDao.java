@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.sql.Connection;
 
 import vo.Supplies;
@@ -124,4 +127,54 @@ public class SuppliesDao {
 			}
 		}
 	}
+	// orangepoolvilla db의 해당 풀빌라의 supplies 테이블 목록 가져오기
+		public List<Map<String,Object>> selectPoolvillaSuppliesByPvNo(int pvNo) {
+			List<Map<String,Object>> list = new ArrayList<>();
+			
+			// 데이터베이스 자원 준비
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			
+			try {
+				// 데이터베이스 드라이버 연결
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				System.out.println("[PoolvillaDao.selectPoolvillaSuppliesByPvNo()] 드라이버 로딩 성공");
+				
+				String sql = "SELECT ps.pv_no pvNo"
+						+ "			, ps.supplies_no suppliesNo"
+						+ "			, ps.supplies_cnt suppliesCnt"
+						+ "			, ps.update_date updateDate"
+						+ "			, s.supplies_name suppliesName"
+						+ "		FROM poolvilla_supplies ps"
+						+ "		INNER JOIN supplies s"
+						+ "		ON ps.supplies_no = s.supplies_no"
+						+ "		WHERE ps.pv_no = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, pvNo);
+				rs = stmt.executeQuery();
+				
+				while(rs.next()) {
+					Map<String,Object> m = new HashMap<>();
+					m.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
+					m.put("suppliesNo", rs.getInt("suppliesNo")); // 구비 물품 번호
+					m.put("suppliesCnt", rs.getInt("suppliesCnt")); // 구비 물품 개수
+					m.put("updateDate", rs.getString("updateDate")); // 구비 물품 글 수정 날짜
+					m.put("suppliesName", rs.getString("suppliesName")); // 구비 물품 이름
+					list.add(m);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					// 데이터베이스 자원 반환
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return list;
+		}
 }

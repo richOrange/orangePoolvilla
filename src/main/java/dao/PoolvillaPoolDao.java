@@ -122,4 +122,50 @@ public class PoolvillaPoolDao {
 			}
 			return row;
 		}
+		// pvNo에 따른 pool 정보 출력
+		public List<PoolvillaPool> selectPoolvillaPoolListByPvNo(int pvNo) {
+			List<PoolvillaPool> list = new ArrayList<>();
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			try {
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				String sql = "SELECT pool_no poolNo"
+						+ "		, pv_no pvNo"
+						+ "		, pool_name poolName"
+						+ "		, pool_width poolWidth"
+						+ "		, pool_length poolLength"
+						+ "		, depth, hot_water hotWater"
+						+ "		, indoor_outdoor indoorOutdoor"
+						+ "		, update_date updateDate"
+						+ " FROM poolvilla_pool"
+						+ " WHERE pv_no = ?;";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, pvNo);
+				
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					PoolvillaPool pp = new PoolvillaPool();
+					pp.setPoolNo(rs.getInt("poolNo"));
+					pp.setPvNo(rs.getInt("pvNo"));
+					pp.setPoolName(rs.getString("poolName"));
+					pp.setPoolWidth(rs.getDouble("poolWidth"));
+					pp.setPoolLength(rs.getDouble("poolLength"));
+					pp.setDepth(rs.getDouble("depth"));
+					pp.setHotWater(rs.getString("hotWater"));
+					pp.setIndoorOutdoor(rs.getString("indoorOutdoor"));
+					pp.setUpdateDate(rs.getString("updateDate"));
+					list.add(pp);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return list;
+		}
 	}

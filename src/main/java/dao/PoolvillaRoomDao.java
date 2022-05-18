@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import vo.PoolvillaRoom;
 
@@ -119,5 +121,67 @@ public class PoolvillaRoomDao {
 				}
 			}
 			return row;
+		}
+		// orangepoolvilla db의 해당 풀빌라의 room과 bed 테이블 목록 가져오기
+		public List<Map<String,Object>> selectPoolvillaRoomNBedByPvNo(int pvNo) {
+			List<Map<String,Object>> list = new ArrayList<>();
+			
+			// 데이터베이스 자원 준비
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			
+			try {
+				// 데이터베이스 드라이버 연결
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				System.out.println("[PoolvillaDao.selectPoolvillaRoomNBedByPvNo()] 드라이버 로딩 성공");
+				
+				String sql = "SELECT rb.bed_no bedNo"
+						+ "			, rb.room_no roomNo"
+						+ "			, rb.bed_size bedSize"
+						+ "			, rb.bed_cnt bedCnt"
+						+ "			, rb.update_date updateDateRB"
+						+ "			, pr.pv_no pvNo"
+						+ "			, pr.room_type roomType"
+						+ "			, pr.room_name roomName"
+						+ "			, pr.room_info roomInfo"
+						+ "			, pr.room_size roomSize"
+						+ "			, pr.update_date updateDatePR"
+						+ "		FROM room_bed rb"
+						+ "		INNER JOIN poolvilla_room pr"
+						+ "		ON pr.room_no = rb.room_no"
+						+ "		WHERE pr.pv_no = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, pvNo);
+				rs = stmt.executeQuery();
+				
+				while(rs.next()) {
+					Map<String,Object> m = new HashMap<>();
+					m.put("bedNo", rs.getInt("bedNo")); // 침대 번호
+					m.put("roomNo", rs.getInt("roomNo")); // 방 번호
+					m.put("bedSize", rs.getString("bedSize")); // 침대 사이즈
+					m.put("bedCnt", rs.getInt("bedCnt")); // 침대 개수
+					m.put("updateDateRB", rs.getString("updateDateRB")); // room_bed 테이블의 글 수정 날짜
+					m.put("pvNo", rs.getInt("pvNo")); // 풀빌라 번호
+					m.put("roomType", rs.getString("roomType")); // 방 유형
+					m.put("roomName", rs.getString("roomName")); // 방 이름
+					m.put("roomInfo", rs.getString("roomInfo")); // 방 정보
+					m.put("roomSize", rs.getInt("roomSize")); // 방 사이즈
+					m.put("updateDatePR", rs.getString("updateDatePR")); // poolvilla_room 테이블의 글 수정 날짜
+					list.add(m);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					// 데이터베이스 자원 반환
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return list;
 		}
 	}
