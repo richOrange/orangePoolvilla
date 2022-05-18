@@ -12,14 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.ReviewDao;
 import dao.WishListDao;
 
-@WebServlet("/customer/myWishListController")
-public class MyWishListController extends HttpServlet {
+@WebServlet("/customer/myReviewController")
+public class MyReviewController extends HttpServlet {
 	
-	private WishListDao wishListDao;
+	private ReviewDao reviewDao;
 	
-	// header.jsp 페이지에서 찜 목록을 선택하면 실행되는 내용 
+	// header.jsp 페이지에서 리뷰를 선택하면 실행되는 내용 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// 현재 연결한 클라이언트(브라우저)에 대한 세션값을 받아옴. 
@@ -28,33 +29,18 @@ public class MyWishListController extends HttpServlet {
 		// sessionLoginMember 받을 변수 선언 
 		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
 		
-		// 세션에 로그인한 사용자는 customer, host 두 부류가 있다. 
-		// 로그인 과정의 복잡함을 줄이기 위해 sessionLoginMember로 통일 
-		// 실질적으로 host는 사용하지 않음 
-		
+		// 세션에 로그인된 사용자 아이디를 받는다 
 		String customerId = (String)sessionLoginMember.get("memberId");
-		System.out.println("[/customer/myWishListController.doGet()] customerId : " + customerId);		
-				
+		System.out.println("[/customer/myWishListController.doGet()] customerId : " + customerId);	
+		
 		// 유효성 검사 코드. customerId 값을 받지 못하면 로그인 페이지로 이동 
 		if(customerId == null) {
 			response.sendRedirect(request.getContextPath()+"/all/loginController");
 			return;
 		}
 		
-		/*
-		// 처음에는 페이지에서 값을 넘겨받는 방식으로 코드를 작성했는데 
-		// `session`에서 값을 받는게 낫다고 판단해서 수정함
-		// 값으로 받아 넘기면 그 페이지에서만 넘어갈 수 있는 점이 있어서 사용 범위가 좁아짐 
-		 * 
-		// 고객 아이디를 받고 문자열 변수에 저장한다 
-		String customerId = request.getParameter("customerId");
-		// 디버깅 
-		System.out.println("[/customer/myWishListController.doGet()] customerId : " + customerId);
-		*/
-		
-		
 		// 찜 목록 모델 인스턴스 생성 
-		this.wishListDao = new WishListDao();
+		this.reviewDao = new ReviewDao();
 		
 		// 페이징 처리 코드 시작 
 		
@@ -75,7 +61,7 @@ public class MyWishListController extends HttpServlet {
 		request.setAttribute("beginRow", beginRow);
 		
 		// 전체 행의 개수 구하는 코드 
-        int totalRow = wishListDao.selectWishListTotalRow(customerId); 
+        int totalRow = reviewDao.selectReviewListTotalRow(); 
 		request.setAttribute("totalRow", totalRow);
 		
 		// 마지막 페이지 구하는 로직 
@@ -89,10 +75,12 @@ public class MyWishListController extends HttpServlet {
 		
 		// 페이징 처리 코드 끝 
 		
-		ArrayList<HashMap<String, Object>> wishList = wishListDao.selectWishList(beginRow, rowPerPage, customerId);
-		request.setAttribute("wishList", wishList);
+		// 리뷰 리스트 뽑아오는 메서드 호출 DAO 
+		ArrayList<HashMap<String, Object>> reviewList = reviewDao.selectReviewList(customerId, beginRow, rowPerPage);
+		// myReviewList.jsp 페이지로 리뷰 목록 보냄 
+		request.setAttribute("reviewList", reviewList);
 		
-		request.getRequestDispatcher("/WEB-INF/view/myWishList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/myReviewController.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

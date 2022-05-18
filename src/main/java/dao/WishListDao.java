@@ -208,4 +208,65 @@ public class WishListDao {
 
 			return totalRow;
 		}
+		
+		// 찜 목록 테이블(wish_list)에 있던 상품을 삭제하는 메서드 
+		public void deleteWishList(int pvNo, String customerId) {
+			// DB 자원 준비 
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			
+			String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
+			// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
+			String dbuser = "root";
+			// 연결하려는 DB의 아이디를 문자열 변수에 저장
+			String dbpw = "java1234";
+			// 연결하려는 DB의 패스워드를 문자열 변수에 저장
+			
+			// 찜 목록 테이블 생성 쿼리 
+			String sql = "DELETE FROM wish_list WHERE customer_id = ? AND pv_no = ?";
+			
+			try {
+				// DB 연결 
+				conn = DriverManager.getConnection(dburl,dbuser,dbpw);
+				System.out.println("[WishListDao.deleteWishList()] conn : " + conn);
+				// 자동 커밋을 해제 
+				conn.setAutoCommit(false);
+				
+				// 찜 목록 삭제 쿼리를 저장 
+				stmt = conn.prepareStatement(sql);
+				
+				stmt.setString(1, customerId);
+				stmt.setInt(2, pvNo);
+				
+				// 찜 목록이 삭제되면 1이라는 숫자값을 row에 저장 
+				int row = stmt.executeUpdate();
+				
+				if(row == 1) {
+					System.out.println("[WishListDao.deleteWishList()] row : " + row);
+				} else {
+					System.out.println("[WishListDao.deleteWishList()] row : 입력 실패");
+				}
+				
+				// 커밋 실행 
+				conn.commit();
+			} catch (Exception e) {
+				try {
+					// 예외 발생시 롤백 
+					conn.rollback();
+				} catch (SQLException e1) {
+					// TODO: handle exception
+					e1.printStackTrace();
+				}
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					// DB 연결을 종료 
+					conn.close();
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
 }

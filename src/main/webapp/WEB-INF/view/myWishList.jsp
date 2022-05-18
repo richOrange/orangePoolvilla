@@ -99,7 +99,18 @@
 										
 										<div class="probootstrap-listing-price">
 											<strong>${m.price}원</strong> / Day
+											
+											
 										</div>
+										
+										<div>
+											<button>
+												<a href="${pageContext.request.contextPath}/customer/deleteWishListController?pvNo=${m.pvNo}&customerId=${sessionLoginMember.memberId}" class="probootstrap-love">
+													찜 삭제
+												</a>
+											</button>
+										</div>
+										
 									</div>
 									
 									<div class="probootstrap-card-extra">
