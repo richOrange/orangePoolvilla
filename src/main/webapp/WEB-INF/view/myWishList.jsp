@@ -118,8 +118,8 @@
 							</div>
 							<!-- 윗부분 처리했음 -->
 							
-							<!-- 한줄에 2개씩 나오게 하는 if문 -->
-							<c:if test="${status.index % 2 == 0 && status.index != 0 }">
+							<!-- 한줄에 3개씩 나오게 하는 if문 -->
+							<c:if test="${status.index % 3 == 0 && status.index != 0 }">
 					</div>
 					
 					<div class="row">
@@ -131,17 +131,24 @@
 					
 					<!-- 페이징 부분 시작 -->
 					<div>
+						
 						<!-- 이전 목록 표시 -->
+						<!--  
 						<c:if test="${minPage > 10 }">
 							<button type="submit" value="${minPage-10}" name="minPage"
 								class="btn">이전목록</button>
 						</c:if>
+						-->
+						
 						<!-- 이전 부분 -->
-						<c:if test="${currentPage>1}">
-							<button type="submit" value="${currentPage-1}" name="currentPage"
-								class="btn">이전</button>
+						<c:if test="${currentPage > 1}">
+							<button type="submit" value="${currentPage-1}" name="currentPage" class="btn">
+								이전
+							</button>
 						</c:if>
+						
 						<!-- 목록 사이 번호 표시 -->
+						<!--  
 						<c:forEach var="i" begin="${minPage}" end="${minPage+9}" step="1">
 							<c:if test="${i <= lastPage}">
 								<c:if test="${currentPage == i}">
@@ -155,16 +162,22 @@
 							</c:if>
 
 						</c:forEach>
+						-->
+						
 						<!-- 다음 부분 -->
-						<c:if test="${currentPage< lastPage }">
-							<button type="submit" value="${currentPage+1}" name="currentPage"
-								class="btn">다음</button>
+						<c:if test="${currentPage < lastPage }">
+							<button type="submit" value="${currentPage+1}" name="currentPage" class="btn">
+								다음
+							</button>
 						</c:if>
+						
 						<!-- 다음목록 표시 -->
+						<!--  
 						<c:if test="${minPage+10<= lastPage }">
 							<button type="submit" value="${minPage+10 }" name="minPage"
 								class="btn">다음목록</button>
 						</c:if>
+						-->
 					</div>
 				</div>
 				<!-- 페이징 부분 끝 -->
