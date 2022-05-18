@@ -66,7 +66,7 @@
 	        			</div>
 	        		<!-- 이미지 내 상품설명부분 -->
 	        			<div class="probootstrap-card-text"> 
-	          				<h2 class="probootstrap-card-heading"><a href="${pageContext.request.contextPath}/all/selectPoolvillaOneController?pvNo=${m.pvNo}">${m.pvName}</a></h2>
+	          				<h2 class="probootstrap-card-heading"><a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${m.pvNo}">${m.pvName}</a></h2>
 	          				<div class="probootstrap-listing-location">
 	            				<i class="icon-location2"></i> <span>${m.address}</span>
 	          				</div>
