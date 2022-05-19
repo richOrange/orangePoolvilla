@@ -60,102 +60,71 @@
 	<!-- END: slider  -->
 	
 	<div>
-		<table class = "table table-hover">
-			<thead>
+		<!-- 자바스크립트 적용 해야함 -->
+		<form method="post" action="${pageContext.request.contextPath}/customer/insertReviewController">
+			<table class = "table table-hover">
 				<tr>
-					<th>풀빌라 이름</th>
-					<th>지역</th>
-					<th>체크 인</th>
-					<th>체크 아웃</th>
-					<th>나의 리뷰 최종 업데이트 날짜</th>
-					<th>나의 리뷰</th>
+					<td>청결도(0~5)</td>
+					<td>
+						<input type="number" name="cleanliness">
+					</td>
 				</tr>
-			</thead>
-			
-			<tbody>
-				<c:forEach var="r" items="${reviewList}">
-					<tr>
-						<td>
-							<a href="${pageContext.request.contextPath}/all/selectPoolvillaOneController?pvNo=${r.pvNo}">${r.pvName }</a>
-						</td>
-						
-						<td>${r.locationName }</td>
-						<td>${r.reservationBeginDate }</td>
-						<td>${r.reservationLastDate }</td>
-						<td>${r.updateDate }</td>
-						
-						<!-- 리뷰 작성을 한번도 한적이 없다면 리뷰 입력폼으로 이동하고, 
-							 리뷰 작성을 한번이라도 헀다면 리뷰 수정하는 폼으로 이동 -->
-						<!-- 리뷰 삭제는 리뷰 수정폼에서만 가능하다 -->
-						<td>
-							<c:if test="${r.updateDate == null}">
-								<a href="${pageContext.request.contextPath}/customer/insertReviewController?reservationNo=${r.reservationNo}">리뷰 작성</a>
-							</c:if>
-							
-							<c:if test="${r.updateDate != null}">
-								<a href="${pageContext.request.contextPath}/customer/updateReviewController">리뷰 수정</a>
-							</c:if>
-						</td>
-					</tr>
-				</c:forEach>
-			</tbody>
+				<tr>
+					<td>재방문 의사</td>
+					<td>
+						<select name="revisit">
+							<option value="">::선택::</option>
+							<option value="Y">있음</option>
+							<option value="N">없음</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>만족도(0~5)</td>
+					<td>
+						<input type="number" name="satisfaction">
+					</td>
+				</tr>
+				<tr>
+					<td>판매자에게 보내는 의견 (공백 가능)</td>
+					<td>
+						<input type="text" name="opinin">
+					</td>
+				</tr>
+				<tr>
+					<td>리뷰 내용 (공백 가능)</td>
+					<td>
+						<input type="text" name="reviewContents">
+					</td>
+				</tr>
+				<tr>
+					<td>타인에게 리뷰 보여주기 여부</td>
+					<td>
+						<select name="reviewActive">
+							<option value="">::선택::</option>
+							<option value="Y">공개</option>
+							<option value="N">비공개</option>	
+						</select>
+					</td>
+				</tr>
+				<!--  -->
+				<tr>
+					<td><input type="hidden" name="예약 번호"></td>
+					<td>
+						 <input type="hidden" id="reservationNo" name="reservationNo" value="${reservationNo }">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button type = "submit" class="btn btn-info">리뷰 입력</button>
+					</td>
+					
+				</tr>
+			</table>
+		</form>
 		
-		</table>
 	</div>
 
-	<!-- 페이징 부분 시작 -->
-					<div>
-						
-						<!-- 이전 목록 표시 -->
-						<!--  
-						<c:if test="${minPage > 10 }">
-							<button type="submit" value="${minPage-10}" name="minPage"
-								class="btn">이전목록</button>
-						</c:if>
-						-->
-						
-						<!-- 이전 부분 -->
-						<c:if test="${currentPage > 1}">
-							<button type="submit" value="${currentPage-1}" name="currentPage" class="btn">
-								이전
-							</button>
-						</c:if>
-						
-						<!-- 목록 사이 번호 표시 -->
-						<!--  
-						<c:forEach var="i" begin="${minPage}" end="${minPage+9}" step="1">
-							<c:if test="${i <= lastPage}">
-								<c:if test="${currentPage == i}">
-									<button type="submit" value="${i}" name="currentPage"
-										class="btn btn-primary">${i}</button>
-								</c:if>
-								<c:if test="${currentPage != i}">
-									<button type="submit" value="${i}" name="currentPage"
-										class="btn btn-default">${i}</button>
-								</c:if>
-							</c:if>
-
-						</c:forEach>
-						-->
-						
-						<!-- 다음 부분 -->
-						<c:if test="${currentPage < lastPage }">
-							<button type="submit" value="${currentPage+1}" name="currentPage" class="btn">
-								다음
-							</button>
-						</c:if>
-						
-						<!-- 다음목록 표시 -->
-						<!--  
-						<c:if test="${minPage+10<= lastPage }">
-							<button type="submit" value="${minPage+10 }" name="minPage"
-								class="btn">다음목록</button>
-						</c:if>
-						-->
-					</div>
-				</div>
-				<!-- 페이징 부분 끝 -->
-	
 <section class="probootstrap-section">
 		<div class="container">
 			<div class="row heading">

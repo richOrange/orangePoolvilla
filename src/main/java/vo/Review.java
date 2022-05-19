@@ -10,13 +10,13 @@ public class Review {
 	private String createDate;
 	private String updateDate;
 	private String reviewActive;
-	private int orderNo;
+	private int reservationNo;
 	public Review() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Review(int reviewNo, int cleanliness, String revisit, int satisfaction, String opinion,
-			String reviewContents, String createDate, String updateDate, String reviewActive, int orderNo) {
+			String reviewContents, String createDate, String updateDate, String reviewActive, int reservationNo) {
 		super();
 		this.reviewNo = reviewNo;
 		this.cleanliness = cleanliness;
@@ -27,14 +27,14 @@ public class Review {
 		this.createDate = createDate;
 		this.updateDate = updateDate;
 		this.reviewActive = reviewActive;
-		this.orderNo = orderNo;
+		this.reservationNo = reservationNo;
 	}
 	@Override
 	public String toString() {
 		return "Review [reviewNo=" + reviewNo + ", cleanliness=" + cleanliness + ", revisit=" + revisit
 				+ ", satisfaction=" + satisfaction + ", opinion=" + opinion + ", reviewContents=" + reviewContents
 				+ ", createDate=" + createDate + ", updateDate=" + updateDate + ", reviewActive=" + reviewActive
-				+ ", orderNo=" + orderNo + "]";
+				+ ", reservationNo=" + reservationNo + "]";
 	}
 	public int getReviewNo() {
 		return reviewNo;
@@ -90,11 +90,11 @@ public class Review {
 	public void setReviewActive(String reviewActive) {
 		this.reviewActive = reviewActive;
 	}
-	public int getOrderNo() {
-		return orderNo;
-	}
-	public void setOrderNo(int orderNo) {
-		this.orderNo = orderNo;
+	public int getReservationNo() {
+		return reservationNo;
+	}			
+	public void setReservationNo(int reservationNo) {
+		this.reservationNo = reservationNo;
 	}
 	
 }

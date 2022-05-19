@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import vo.Review;
+
 public class ReviewDao {
 	
 	// 사용자 리뷰 목록 확인하는 메서드 
@@ -25,6 +27,8 @@ public class ReviewDao {
 				+ " , rv.reservation_begin_date reservationBeginDate"
 				+ " , rv.reservation_last_date reservationLastDate"
 				+ " , r.update_date updateDate"
+				+ " , pv.pv_no pvNo"
+				+ " , rv.reservation_no reservationNo"
 				+ " FROM review r"
 				+ " RIGHT JOIN reservation rv"
 				+ " ON r.reservation_no = rv.reservation_no"
@@ -62,7 +66,10 @@ public class ReviewDao {
 				map.put("reservationBeginDate", rs.getString("reservationBeginDate"));
 				map.put("reservationLastDate", rs.getString("reservationLastDate"));
 				map.put("updateDate", rs.getString("updateDate"));
-				
+				// 리뷰 목록에서 풀빌라 상세 보기 페이지로 넘어가려면 pvNo가 필요해서 같이 가져옴 
+				map.put("pvNo", rs.getInt("pvNo"));
+				// 리뷰 작성이 없는 사용자가 리뷰를 작성하기 위해서는 reservationNo 필요 
+				map.put("reservationNo", rs.getString("reservationNo"));
 				// 동적 배열에 map 데이터 저장 
 				reviewList.add(map);
 			}
@@ -97,13 +104,19 @@ public class ReviewDao {
 		String dbpw = "java1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
-		String sql = "";
+		String sql = "SELECT COUNT(*) cnt"
+				+ " FROM review r"
+				+ " INNER JOIN reservation rv"
+				+ " ON r.reservation_no = rv.reservation_no"
+				+ " INNER JOIN customer c"
+				+ " ON rv.customer_id = c.customer_id"
+				+ " WHERE c.customer_id = ? AND rv.reservation_status = '이용완료'";
 		
 		try {
 		
 
 			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
-			System.out.println("[WishListDao.selectReviewListTotalRow()] conn:" + conn);
+			System.out.println("[ReviewDao.selectReviewListTotalRow()] conn:" + conn);
 
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customerId);
@@ -112,7 +125,7 @@ public class ReviewDao {
 
 			if (rs.next()) {
 				totalRow = rs.getInt("cnt");
-				System.out.println("[WishListDao.selectReviewListTotalRow()] totalRow :" + totalRow);
+				System.out.println("[ReviewDao.selectReviewListTotalRow()] totalRow :" + totalRow);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -129,5 +142,75 @@ public class ReviewDao {
 		}
 		
 		return totalRow; 
+	}
+	
+	public void insertReview(Review review) {
+		
+		// DB 자원 준비 
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
+		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
+		String dbuser = "root";
+		// 연결하려는 DB의 아이디를 문자열 변수에 저장
+		String dbpw = "java1234";
+		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
+		
+		// 찜 목록 테이블 생성 쿼리 
+		String sql = "INSERT INTO review"
+				+ " (cleanliness, revisit, satisfaction, opinion, review_contents"
+				+ " , review_active, create_date, update_date, reservation_no)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, now(), now(), ?)";
+		
+		try {
+			conn = DriverManager.getConnection(dburl,dbuser,dbpw);
+			System.out.println("[ReviewDao.insertReview()] conn : " + conn);
+			// 자동 커밋을 해제 
+			conn.setAutoCommit(false);
+			
+			// 찜 목록 생성 쿼리를 저장 
+			stmt = conn.prepareStatement(sql);
+			
+			stmt.setInt(1, review.getCleanliness());
+			stmt.setString(2, review.getRevisit());
+			stmt.setInt(3, review.getSatisfaction());
+			stmt.setString(4, review.getOpinion());
+			stmt.setString(5, review.getReviewContents());
+			stmt.setString(6, review.getReviewActive());
+			stmt.setInt(7, review.getReservationNo());
+			
+			// 찜 목록이 생성되면 1이라는 숫자값을 row에 저장 
+			int row = stmt.executeUpdate();
+			
+			if(row == 1) {
+				System.out.println("[ReviewDao.insertReview()] row : " + row);
+			} else {
+				System.out.println("[ReviewDao.insertReview()] row : 입력 실패");
+			}
+			
+			// 커밋 실행 
+			conn.commit();
+		} catch (Exception e) {
+			try {
+				// 예외 발생시 롤백 
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO: handle exception
+				e1.printStackTrace();
+			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				// DB 연결을 종료 
+				conn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+				
+				
 	}
 }
