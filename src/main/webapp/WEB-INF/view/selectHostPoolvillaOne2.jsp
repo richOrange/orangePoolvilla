@@ -240,11 +240,11 @@
 								</thead>
 								<tbody>
 									<tr>
-										<c:forEach var="list"
-											items="${selectPoolvillaFacilityListByPvNo}">
+										<c:forEach var="pf"
+											items="${poolvillaFacilityList}">
 											<tr>
-												<td>${list.facilityName }</td>
-												<td>${list.facilityCnt }</td>
+												<td>${pf.facilityName }</td>
+												<td>${pf.facilityCnt }</td>
 											</tr>
 										</c:forEach>
 									</tr>
@@ -314,7 +314,7 @@
 								</thead>
 								<tbody>
 									<tr>
-										<c:forEach var="list" items="${selectPoolvillaPoolListByPvNo}">
+										<c:forEach var="list" items="${poolvillaPoolList}">
 											<tr>
 												<td>${list.poolName }</td>
 												<td>${list.poolWidth }</td>
