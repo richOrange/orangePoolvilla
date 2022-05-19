@@ -26,7 +26,7 @@ public class CookingToolController extends HttpServlet {
 		System.out.println("[CookingToolController.doGet()] pvNo : " + pvNo);
 		
 		cookingToolDao = new CookingToolDao();
-		ArrayList<CookingTool> list = cookingToolDao.selectCookingTool();
+		ArrayList<CookingTool> list = cookingToolDao.selectCookingToolList();
 		
 		request.setAttribute("list", list);
 		request.setAttribute("pvNo", pvNo);

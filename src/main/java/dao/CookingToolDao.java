@@ -18,17 +18,17 @@ public class CookingToolDao {
 	/*
 	 * CookingToolDao 목록
 	 * 
-	 * [host] selectCookingTool() 메서드 : cookingtool 테이블 목록 가져오기
+	 * [host] selectCookingToolList() 메서드 : cookingtool 테이블 목록 가져오기
 	 * [host] insertCookingTool() 메서드 : cookingtool 테이블 데이터 입력
 	 * [host] deleteCookingTool() 메서드 : cookingtool 테이블 데이터 삭제
 	 * 
+	 * [host] selectPoolvillaCookingToolList() 메서드 : pvNo에 따른 poolvilla_cooking_tool 테이블 목록 가져오기
 	 * [host] insertPoolvillaCookingTool() 메서드 : pvNo에 따른 poolvilla_cooking_tool 테이블 데이터 입력
-	 * [host] selectPoolvillaCookingTool() 메서드 : pvNo에 따른 poolvilla_cooking_tool 테이블 목록 가져오기
 	 * [host] deletePoolvillaCookingTool() 메서드 : pvNo와 cookingToolNo에 따른 poolvilla_cooking_tool 테이블 데이터 삭제
 	 */
 	
 	// orangepoolvilla db의 cookingtool 테이블 목록 가져오기
-	public ArrayList<CookingTool> selectCookingTool() {
+	public ArrayList<CookingTool> selectCookingToolList() {
 		ArrayList<CookingTool> list = new ArrayList<CookingTool>();
 		
 		// 데이터베이스 자원 준비
@@ -141,6 +141,57 @@ public class CookingToolDao {
 		}
 	}
 	
+	// pvNo에 따른 orangepoolvilla db의 poolvilla_cooking_tool 테이블 목록 가져오기
+	public List<Map<String,Object>> selectPoolvillaCookingToolList(int pvNo) {
+		List<Map<String,Object>> list = new ArrayList<>();
+		
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[CookingToolDao.selectPoolvillaCookingTool()] 드라이버 로딩 성공");
+			
+			String sql = "SELECT pct.pv_no pvNo"
+					+ "			, ct.cooking_tool_no cookingToolNo"
+					+ "			, ct.cooking_tool_name cookingToolName"
+					+ "			, pct.cooking_tool_cnt cookingToolCnt"
+					+ "			, pct.update_date updateDate"
+					+ " FROM cooking_tool ct "
+					+ " INNER JOIN poolvilla_cooking_tool pct "
+					+ " ON pct.cooking_tool_no = ct.cooking_tool_no "
+					+ " WHERE pct.pv_no = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, pvNo);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Map<String,Object> m = new HashMap<>();
+				m.put("pvNo", rs.getInt("pvNo")); // 풀빌라 번호
+				m.put("cookingToolNo", rs.getInt("cookingToolNo")); // 취사 도구 번호
+				m.put("cookingToolCnt", rs.getInt("cookingToolCnt")); // 취사 도구 수량
+				m.put("cookingToolName", rs.getString("cookingToolName")); // 취사 도구 이름
+				m.put("updateDate", rs.getString("updateDate")); // poolvilla_cooking_tool 글 날짜
+				list.add(m);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	
 	// pvNo에 따른 orangepoolvilla db의 poolvilla_cooking_tool 테이블 데이터 입력
 	public List<PoolvillaCookingTool> insertPoolvillaCookingTool(int pvNo, int cookingToolNo, int cookingToolCnt) {
 		List<PoolvillaCookingTool> list = new ArrayList<>();
@@ -177,57 +228,6 @@ public class CookingToolDao {
 				} else {
 					System.out.println("[CookingToolDao.insertPoolvillaCookingTool()] poolvilla cooking tool 입력 실패");
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return list;
-	}
-	
-	// pvNo에 따른 orangepoolvilla db의 poolvilla_cooking_tool 테이블 목록 가져오기
-	public List<Map<String,Object>> selectPoolvillaCookingTool(int pvNo) {
-		List<Map<String,Object>> list = new ArrayList<>();
-		
-		// 데이터베이스 자원 준비
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		try {
-			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
-			System.out.println("[CookingToolDao.selectPoolvillaCookingTool()] 드라이버 로딩 성공");
-			
-			String sql = "SELECT pct.pv_no pvNo"
-					+ "			, ct.cooking_tool_no cookingToolNo"
-					+ "			, ct.cooking_tool_name cookingToolName"
-					+ "			, pct.cooking_tool_cnt cookingToolCnt"
-					+ "			, pct.update_date updateDate"
-					+ " FROM cooking_tool ct "
-					+ " INNER JOIN poolvilla_cooking_tool pct "
-					+ " ON pct.cooking_tool_no = ct.cooking_tool_no "
-					+ " WHERE pct.pv_no = ?";
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, pvNo);
-			rs = stmt.executeQuery();
-			
-			while(rs.next()) {
-				Map<String,Object> m = new HashMap<>();
-				m.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
-				m.put("cookingToolNo", rs.getInt("cookingToolNo")); // 취사 도구 번호
-				m.put("cookingToolCnt", rs.getInt("cookingToolCnt")); // 취사 도구 수량
-				m.put("cookingToolName", rs.getString("cookingToolName")); // poolvilla_cooking_tool 글 날짜
-				m.put("updateDate", rs.getString("updateDate")); // poolvilla_cooking_tool 글 날짜
-				list.add(m);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				// 데이터베이스 자원 반환
-				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

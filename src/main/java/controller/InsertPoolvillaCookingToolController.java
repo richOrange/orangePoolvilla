@@ -32,9 +32,9 @@ public class InsertPoolvillaCookingToolController extends HttpServlet {
 		System.out.println("[InsertPoolvillaCookingToolController.doGet()] pvNo : " + pvNo);
 		cookingToolDao = new CookingToolDao();
 		
-		ArrayList<CookingTool> list = cookingToolDao.selectCookingTool();
+		ArrayList<CookingTool> list = cookingToolDao.selectCookingToolList();
 		if(Integer.parseInt(request.getParameter("pvNo")) != -1) {
-			List<Map<String,Object>> pctList = cookingToolDao.selectPoolvillaCookingTool(Integer.parseInt(request.getParameter("pvNo")));
+			List<Map<String,Object>> pctList = cookingToolDao.selectPoolvillaCookingToolList(Integer.parseInt(request.getParameter("pvNo")));
 			request.setAttribute("pctList", pctList);
 		}
 		

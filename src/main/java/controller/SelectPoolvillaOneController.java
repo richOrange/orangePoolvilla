@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.CookingToolDao;
 import dao.FacilityDao;
 import dao.OttDao;
-import dao.PoolvillaCookingToolDao;
 import dao.PoolvillaDao;
 import dao.PoolvillaPoolDao;
 import dao.PoolvillaRoomDao;
@@ -26,9 +26,9 @@ import vo.PoolvillaPool;
 public class SelectPoolvillaOneController extends HttpServlet {
 	
 	private PoolvillaDao poolvillaDao;
-	private PoolvillaCookingToolDao poolvillaCookingToolDao;
 	private OttDao ottDao;
 	private SuppliesDao suppliesDao;
+	private CookingToolDao cookingToolDao;
 	private PoolvillaRoomDao poolvillaRoomDao;
 	private PoolvillaPoolDao poolvillaPoolDao;
 	private FacilityDao facilityDao;
@@ -58,7 +58,7 @@ public class SelectPoolvillaOneController extends HttpServlet {
 		
 		//모델값 호출
 		poolvillaDao = new PoolvillaDao();
-		poolvillaCookingToolDao = new PoolvillaCookingToolDao();
+		cookingToolDao = new CookingToolDao();
 		ottDao = new OttDao();
 		suppliesDao = new SuppliesDao();
 		poolvillaRoomDao = new PoolvillaRoomDao();
@@ -67,7 +67,7 @@ public class SelectPoolvillaOneController extends HttpServlet {
 		
 		//풀빌라 정보 호출
 		Poolvilla selectPoolvillaOne = poolvillaDao.selectPoolvillaOne(pvNo);
-		List<Map<String, Object>> poolvillaCookingToolList = poolvillaCookingToolDao.selectPoolvillaCookingToolByPvNo(pvNo);
+		List<Map<String, Object>> poolvillaCookingToolList = cookingToolDao.selectPoolvillaCookingToolList(pvNo);
 		List<Map<String, Object>> poolvillaOttList = ottDao.selectPoolvillaOttByPvNo(pvNo);
 		List<Map<String, Object>> poolvillaSuppliesList = suppliesDao.selectPoolvillaSuppliesByPvNo(pvNo);
 		List<Map<String, Object>> poolvillaRoomNBedList = poolvillaRoomDao.selectPoolvillaRoomNBedByPvNo(pvNo);
