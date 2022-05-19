@@ -56,24 +56,25 @@
 			</ul>
 		</section>
 		<!-- END: slider  -->
-	<!-- 예약 목록 -->
-	<!-- 페이징 및 예약상태 검색 폼 -->
-	<form method="get" action="${pageContext.request.contextPath}/customer/myReservationListController">
-		<!-- 예약상태 select-->
-		<select name="reservationStatus" onchange ="this.form.submit()">
-			<c:if test="${not empty reservationStatus}">
-				<option value="${reservationStatus}">${reservationStatus}</option>
-			</c:if>
-			<option value="">::예약상태::</option>
-			<option value="결제대기">결제대기</option>
-			<option value="결제완료">결제완료</option>
-			<option value="취소대기">취소대기</option>
-			<option value="취소">취소</option>
-			<option value="이용완료">이용완료</option>
-		</select>
-	
 		<section class="probootstrap-section">
 			<div class="container">
+				<!-- 예약 목록 -->
+				<!-- 페이징 및 예약상태 검색 폼 -->
+				<form method="get" action="${pageContext.request.contextPath}/customer/myReservationListController">
+					<!-- 예약상태 select-->
+					<select name="reservationStatus" onchange ="this.form.submit()">
+						<c:if test="${not empty reservationStatus}">
+							<option value="${reservationStatus}">${reservationStatus}</option>
+						</c:if>
+						<option value="">::예약상태::</option>
+						<option value="결제대기">결제대기</option>
+						<option value="결제완료">결제완료</option>
+						<option value="취소대기">취소대기</option>
+						<option value="취소">취소</option>
+						<option value="이용완료">이용완료</option>
+					</select>
+	
+				<!-- 예약정보테이블 -->
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -107,9 +108,9 @@
 						</c:forEach>
 					</tbody>
 				</table>
-			</div>
-		</section>
-	</form>
+			</form>
+		</div>
+	</section>
 
 	<!-- START: footer -->
 	<div id="includeFooter"></div>
