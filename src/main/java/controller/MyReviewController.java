@@ -42,7 +42,7 @@ public class MyReviewController extends HttpServlet {
 		// 찜 목록 모델 인스턴스 생성 
 		this.reviewDao = new ReviewDao();
 		
-		// 페이징 처리 코드 시작 
+		// ` 페이징 처리 코드 시작 `
 		
 		// 현재 페이지 구하는 코드 
 		int currentPage = 1;
@@ -61,7 +61,8 @@ public class MyReviewController extends HttpServlet {
 		request.setAttribute("beginRow", beginRow);
 		
 		// 전체 행의 개수 구하는 코드 
-        int totalRow = reviewDao.selectReviewListTotalRow(); 
+        int totalRow = reviewDao.selectReviewListTotalRow(customerId);
+        System.out.println("[/customer/myWishListController.doGet()] totalRow : "+totalRow);
 		request.setAttribute("totalRow", totalRow);
 		
 		// 마지막 페이지 구하는 로직 
@@ -71,16 +72,17 @@ public class MyReviewController extends HttpServlet {
 		} else {
 			lastPage = (totalRow / rowPerPage) + 1;
 		}
+		System.out.println("[/customer/myWishListController.doGet()] lastPage : "+lastPage);
 		request.setAttribute("lastPage", lastPage);
 		
-		// 페이징 처리 코드 끝 
+		// ` 페이징 처리 코드 끝 ` 
 		
 		// 리뷰 리스트 뽑아오는 메서드 호출 DAO 
 		ArrayList<HashMap<String, Object>> reviewList = reviewDao.selectReviewList(customerId, beginRow, rowPerPage);
 		// myReviewList.jsp 페이지로 리뷰 목록 보냄 
 		request.setAttribute("reviewList", reviewList);
 		
-		request.getRequestDispatcher("/WEB-INF/view/myReviewController.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/myReviewList.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -83,8 +83,51 @@ public class ReviewDao {
 	}
 	
 	// 리뷰 목록 전체 행의 수 구하는 메서드 
-	public int selectReviewListTotalRow() {
+	public int selectReviewListTotalRow(String customerId) {
 		int totalRow = 0; 
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
+		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
+		String dbuser = "root";
+		// 연결하려는 DB의 아이디를 문자열 변수에 저장
+		String dbpw = "java1234";
+		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
+
+		String sql = "";
+		
+		try {
+		
+
+			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
+			System.out.println("[WishListDao.selectReviewListTotalRow()] conn:" + conn);
+
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				totalRow = rs.getInt("cnt");
+				System.out.println("[WishListDao.selectReviewListTotalRow()] totalRow :" + totalRow);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				stmt.close();
+				conn.close();
+			} catch (SQLException e1) {
+				// TODO: handle exception
+				e1.printStackTrace();
+			}
+		}
+		
 		return totalRow; 
 	}
 }
