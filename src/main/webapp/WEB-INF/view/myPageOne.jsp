@@ -88,10 +88,10 @@
 										<td><input type="text" name="memberphone" id="memberphone" value="${myPageCustomer.phone}" readonly></td>
 									</tr>
 									<tr>
-										<td><a href="${pageContext.request.contextPath}/customer/updateCustomerController" class="btn btn-primary">회원 정보 수정</a></td>
-										<td><a href="${pageContext.request.contextPath}/customer/deleteCustomerController" class="btn btn-primary">회원탈퇴</a></td>
+										<td><a href="${pageContext.request.contextPath}/customer/updateCustomerController" class="btn btn-primary">회원 정보 변경</a></td>
+										<td><a href="${pageContext.request.contextPath}/customer/updatePasswordController" class="btn btn-primary">회원 비밀번호 변경</a></td>
+										<td><a href="${pageContext.request.contextPath}/customer/deleteCustomerController" class="btn btn-primary">회원 탈퇴</a></td>
 										<td><a href="${pageContext.request.contextPath}/all/homeController" class="btn btn-primary">홈으로</a></td>
-										
 									</tr>
 								</table>
 							</div>

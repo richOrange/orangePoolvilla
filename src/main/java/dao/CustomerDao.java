@@ -152,13 +152,42 @@ public class CustomerDao {
 		return row;
 	}
 	
-	
-	public int updateCustomer(Customer customer,String newCustomerPw) {
+	public int updatePassword(Customer customer,String newMemberPw) {
 		int row = -1;
-		String memberId = null;
-		if(newCustomerPw.equals("")) {
-			newCustomerPw=customer.getCustomerPw();
+		String CustomerId =null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		
+		String sql ="UPDATE customer SET Customer_pw = PASSWORD(?)"
+				+ "							,pw_update_date = NOW()"
+				+ "							,update_date = NOW()"
+				+ "							WHERE Customer_id = ?"
+				+ "							AND Customer_pw = PASSWORD(?)";
+		
+		try {
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, newMemberPw);
+			stmt.setString(2, customer.getCustomerId());
+			stmt.setString(3, customer.getCustomerPw());
+			row =stmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		return row;
+	}
+	
+	public int updateCustomer(Customer customer) {
+		int row = -1;
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -169,8 +198,7 @@ public class CustomerDao {
 				+ "									,email=?"
 				+ "									,phone=?"
 				+ "									,update_date=NOW()"
-				+ "									WHERE Customer_id = ? "
-				+ "									AND Customer_pw =PASSWORD(?)";
+				+ "									WHERE Customer_id = ? ";
 		
 		try {
 			
@@ -182,7 +210,6 @@ public class CustomerDao {
 			stmt.setString(4, customer.getEmail());
 			stmt.setString(5, customer.getPhone());
 			stmt.setString(6, customer.getCustomerId());
-			stmt.setString(7, customer.getCustomerPw());
 			row =stmt.executeUpdate();
 					
 		} catch (Exception e) {

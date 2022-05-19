@@ -78,7 +78,6 @@
 											value="${myPageCustomer.customerId}" readonly>
 										</td>
 									</tr>
-									
 									<tr>
 										<td>NAME :</td>
 										<td>
@@ -160,7 +159,7 @@
 	
 	
 	$('#updateCustomer').click(function(){
-		 if($('#name').val() == '') {
+		if($('#name').val() == '') {
 			$('#nameHelper').text('이름을 입력해주세요');
 			$('#name').focus();
 			

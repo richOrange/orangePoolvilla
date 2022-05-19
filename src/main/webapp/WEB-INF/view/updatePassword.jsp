@@ -1,39 +1,157 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orange-poolvilla:home</title>
+<meta name="description" content="Free Bootstrap Theme by uicookies.com">
+<meta name="keywords"
+	content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/template/css/styles-merged.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/template/css/style.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/template/css/custom.css">
+
+<style>
+.helper {
+	color: #FF0000;
+}
+</style>
+
 </head>
+
+<!-- jquery -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <body>
-	<tr>
-										<td>PW :</td>
+
+	<!-- START: header -->
+	<div id="includeHeader"></div>
+	<!-- END: header -->
+	<section class="probootstrap-slider flexslider2 page-inner">
+		<div class="overlay"></div>
+		<div class="probootstrap-wrap-banner">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8">
+						<div class="page-title probootstrap-animate">
+							<div class="probootstrap-breadcrumbs"></div>
+							<h1>My Page</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<ul class="slides">
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_1.jpg);"></li>
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_4.jpg);"></li>
+			<li
+				style="background-image: url(${pageContext.request.contextPath}/template/img/slider_2.jpg);"></li>
+		</ul>
+	</section>
+	<!-- Form -->
+	<section class="probootstrap-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8">
+					<form
+						action="${pageContext.request.contextPath}/customer/updatePasswordController"
+						method="post" id="updatePasswordForm">
+						<div class="row">
+							<div class="col-12">
+								<table class="table table-hover">
+									<tr>
+										<td>ID :</td>
 										<td>
-											<input type="password" name="customerPw1" id="customerPw1"> 
-											
-											<span id="customerPwHelper1" class="helper"></span>
+											<input type="text" name="memberid" id="memberid"
+											value="${myPageCustomer.customerId}" readonly>
 										</td>
 									</tr>
 									<tr>
-										<td>PW Check :</td>
-										<td>
-											<input type="password" name="customerPw2" id="customerPw2"> 
+										<td> í˜„ìž¬ PW :</td>
+										<td><input type="password" name="customerPw"
+											id="customerPw"> <span id="customerPwHelper"
+											class="helper"></span></td>
+									</tr>
+									<tr>
+										<td> ì‹ ê·œ PW :</td>
+										<td><input type="password" name="customerPw1"
+											id="customerPw1"> <span id="customerPwHelper1"
+											class="helper"></span></td>
+									</tr>
+									<tr>
+										<td> ì‹ ê·œ PW Check :</td>
+										<td><input type="password" name="customerPw2"
+											id="customerPw2"> <span id="customerPwHelper2"
+											class="helper"></span></td>
 											
-											<span id="customerPwHelper2" class="helper"></span>
+										<td colspan="2">
+											<button type="button" name="updatePassword" id="updatePassword"
+												class="btn btn-primary">ìˆ˜ì •</button>
 										</td>
 									</tr>
+								</table>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+
+
 </body>
 
 <script>
-if($('#customerPw1').val() == '' || $('#customerPw1').val().length < 4) {
-	$('#customerPwHelper1').text('pw´Â 4ÀÚ ÀÌ»ó ÀÔ·ÂÇØÁÖ¼¼¿ä');
-	$('#customerPw1').focus();
+	//include
+	$("#includeHeader").load(
+			'${pageContext.request.contextPath}/includeHeaderController');
+	$("#includeFooter").load(
+			'${pageContext.request.contextPath}/includeFooterController');
 	
-} else if($('#customerPw1').val() != $('#customerPw2').val()) {
-	$('#customerPwHelper1').text('');
-	$('#customerPwHelper2').text('pw°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.');
-	$('#customerPw2').focus();
-}
+	$('#updatePassword').click(function() {
+				if ($('#customerPw').val() == '' 
+						|| $('#customerPw').val().length < 4){
+					$('#customerPwHelper').text('pwëŠ” 4ìž ì´ìƒ ìž…ë ¥í•´ì£¼ì„¸ìš”');
+					$('#customerPw').focus();
+				
+				}else if($('#customerPw1').val() == ''
+						|| $('#customerPw1').val().length < 4) {
+					$('#customerPwHelper1').text('pwëŠ” 4ìž ì´ìƒ ìž…ë ¥í•´ì£¼ì„¸ìš”');
+					$('#customerPw1').focus();
+
+				} else if ($('#customerPw1').val() != $('#customerPw2').val()) {
+					$('#customerPwHelper1').text('');
+					$('#customerPwHelper2').text('pwê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.');
+					$('#customerPw2').focus();
+					
+				} else {
+					$('#customerPwHelper2').text('');
+					$('#updatePasswordForm').submit();
+				}
+			});
 </script>
+
+<script
+	src="${pageContext.request.contextPath}/template/js/scripts.min.js"></script>
+<script src="${pageContext.request.contextPath}/template/js/main.min.js"></script>
+<script src="${pageContext.request.contextPath}/template/js/custom.js"></script>
+
+</html>
 </html>
