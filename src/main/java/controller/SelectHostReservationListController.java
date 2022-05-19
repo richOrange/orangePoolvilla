@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.ReservationDao;
 
-@WebServlet("/host/reservationController")
-public class ReservationController extends HttpServlet {
+@WebServlet("/host/selectHostReservationListController")
+public class SelectHostReservationListController extends HttpServlet {
 	private ReservationDao reservationDao;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -21,17 +21,17 @@ public class ReservationController extends HttpServlet {
 		//reservationStatus를 받을 변수 초기화, ""이면 모든 상태를 다 요청
 		String reservationStatus = "";
 		//페이징
-		int currentPage = 1;
+		int currentPage = 1; //현재페이지 기본값 1
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 		request.setAttribute("currentPage", currentPage);
 		
-		int rowPerPage = 10; 
+		int rowPerPage = 10; //페이지 당 목록 수 기본값 10;
 		request.setAttribute("rowPerPage", rowPerPage);
 		
-		int beginRow = (currentPage-1) * rowPerPage;
-		System.out.println("[ReservationController.doGet()] beginRow : "+beginRow);
+		int beginRow = (currentPage-1) * rowPerPage; //시작 목록
+		System.out.println("[selectHostReservationListController.doGet()] beginRow : "+beginRow);
 		request.setAttribute("beginRow", beginRow);
 		
 		//dao 호출
@@ -58,22 +58,22 @@ public class ReservationController extends HttpServlet {
 		if(request.getParameter("reservationStatus") == null || request.getParameter("reservationStatus") =="") {
 			request.setAttribute("reservationStatus", reservationStatus);
 
-			request.getRequestDispatcher("/WEB-INF/view/reservationList.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/view/selectHostReservationList.jsp").forward(request, response);
 		}
 		
 		if(request.getParameter("reservationStatus") != null) {
-			System.out.println("[ReservationController.doGet()] reservationStatus : "+reservationStatus);
+			System.out.println("[selectHostReservationListController.doGet()] reservationStatus : "+reservationStatus);
 				if(request.getParameter("currentPage") == null) {
 					request.setAttribute("reservationStatus", reservationStatus);
 					
-					request.getRequestDispatcher("/WEB-INF/view/reservationList.jsp?reservationStatus="+reservationStatus).forward(request, response);
+					request.getRequestDispatcher("/WEB-INF/view/selectHostReservationList.jsp?reservationStatus="+reservationStatus).forward(request, response);
 				} else if(request.getParameter("currentPage") != null) {
 					request.setAttribute("reservationStatus", reservationStatus);
 					currentPage = Integer.parseInt(request.getParameter("currentPage"));
 					request.setAttribute("currentPage", currentPage);
 					
-					request.getRequestDispatcher("/WEB-INF/view/reservationList.jsp?currentPage="+currentPage+"&reservationStatus="+reservationStatus).forward(request, response);
-					System.out.println("[ReservationController.doGet()] currentPage : "+currentPage);
+					request.getRequestDispatcher("/WEB-INF/view/selectHostReservationList.jsp?currentPage="+currentPage+"&reservationStatus="+reservationStatus).forward(request, response);
+					System.out.println("[selectHostReservationListController.doGet()] currentPage : "+currentPage);
 				}
 		}
 		
@@ -84,16 +84,18 @@ public class ReservationController extends HttpServlet {
 			String checkStatus = request.getParameter("checkStatus");//변경될 예약상태 값
 			int reservationNo = Integer.parseInt(request.getParameter("reservationNo")); //변경할 예약 주문 넘버
 			//디버깅
-			System.out.println("[ReservationController.doGet()] checkStatus : "+checkStatus);
-			System.out.println("[ReservationController.doGet()] reservationNo : "+reservationNo);
+			System.out.println("[selectHostReservationListController.doGet()] checkStatus : "+checkStatus);
+			System.out.println("[selectHostReservationListController.doGet()] reservationNo : "+reservationNo);
 			//Dao 호출
 			reservationDao = new ReservationDao();
 			//Dao에 예약상태 변경요청
-			int row = reservationDao.updateReservationStatus(checkStatus, reservationNo);
-			if(row==-1) {//-1일시 reservationDao.updateReservationStatus 쿼리문 작동안함,다른 성공 실패 여부는 dao에서 출력됨
-				System.out.println("[ReservationController.doGet()] reservationDao.updateReservationStatus 요청실패 ");
-			}else if(row==1) {//성공시 reservationcontroller목록으로 redirect
-				response.sendRedirect(request.getContextPath()+"/host/reservationController"); 
+			int row = reservationDao.updateReservationStatusOfReservation(checkStatus, reservationNo);
+			if(row==-1||row==0) {//-1일시 DB에 요청실패, 0일시 update or insert 실패
+				System.out.println("[selectHostReservationListController.doGet()] reservationDao.updateReservationStatus 요청실패 ");
+				response.sendRedirect(request.getContextPath()+"/host/selectHostReservationListController?msg=fail");
+				return;
+			}else if(row==1) {//성공시 selectHostReservationListController목록으로 redirect
+				response.sendRedirect(request.getContextPath()+"/host/selectHostReservationListController"); 
 				return;
 			}
 		}

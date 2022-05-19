@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `cooking_tool` (
 CREATE TABLE IF NOT EXISTS `customer` (
   `customer_id` varchar(100) NOT NULL,
   `customer_pw` varchar(255) NOT NULL,
+  `customer_pw_update_date` datetime NOT NULL,
   `name` varchar(50) NOT NULL,
   `gender` enum('M','F') NOT NULL,
   `birth_date` date NOT NULL,
@@ -54,6 +55,17 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `create_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 내보낼 데이터가 선택되어 있지 않습니다.
+
+-- 테이블 orangepoolvilla.customer_pw_history 구조 내보내기
+CREATE TABLE IF NOT EXISTS `customer_pw_history` (
+  `customer_id` varchar(100) NOT NULL,
+  `customer_pw` varchar(255) NOT NULL,
+  `customer_pw_update_date` datetime NOT NULL,
+  PRIMARY KEY (`customer_id`,`customer_pw_update_date`) USING BTREE,
+  CONSTRAINT `FK_customer_pw_history_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
@@ -249,7 +261,18 @@ CREATE TABLE IF NOT EXISTS `reservation` (
   KEY `FK_poolvilla_TO_order_1` (`pv_no`),
   CONSTRAINT `FK_customer_TO_order_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
   CONSTRAINT `FK_poolvilla_TO_order_1` FOREIGN KEY (`pv_no`) REFERENCES `poolvilla` (`pv_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- 내보낼 데이터가 선택되어 있지 않습니다.
+
+-- 테이블 orangepoolvilla.reservation_status_history 구조 내보내기
+CREATE TABLE IF NOT EXISTS `reservation_status_history` (
+  `reservation_no` int(11) NOT NULL,
+  `reservation_status` enum('결제대기','결제완료','취소대기','취소','이용완료') NOT NULL,
+  `reservation_status_update_date` datetime NOT NULL,
+  PRIMARY KEY (`reservation_no`,`reservation_status_update_date`),
+  CONSTRAINT `FK_reservation_status_history_reservation` FOREIGN KEY (`reservation_no`) REFERENCES `reservation` (`reservation_no`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 

@@ -16,27 +16,62 @@ public class ReservationDao {
 	
 	/*-----------------------------------------공통 영역-------------------------------------------*/
 	//요청값으로 예약상태 변경하는 메서드
-	public int updateReservationStatus(String reservationStatus,int reservationNo) {
+	public int updateReservationStatusOfReservation(String reservationStatus,int reservationNo) {
 		int row = -1; // 쿼리문 실패시 -1 반환
+		String updateDate = null; // 변경된 updateDate 저장할 변수 초기화
 		//DB 자원 준비
 		Connection conn = null;
-		PreparedStatement stmt = null;
+		PreparedStatement stmt1 = null; // reservation update에 사용
+		PreparedStatement stmt2 = null; // select reservation_update_date에 사용
+		PreparedStatement stmt3 = null; // reservation_status_history insert에 사용
+		ResultSet rs = null; // select reservation_update_date에 사용 
 		//DB에 요청
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
-			//쿼리
+			//오토커밋해제
+			conn.setAutoCommit(false);
+			//1. reservation테이블의 상태를 변경
 			String checkReservationsql = "UPDATE reservation"
 					+ "					 SET reservation_status =	 ? "
 					+ "					WHERE reservation_no = ? ";
-			stmt = conn.prepareStatement(checkReservationsql);
-			stmt.setString(1, reservationStatus);//reservationStatus 입력
-			stmt.setInt(2, reservationNo);//reservationStatus 입력
-			row =stmt.executeUpdate();//check
+			stmt1 = conn.prepareStatement(checkReservationsql);
+			stmt1.setString(1, reservationStatus);//reservationStatus 입력
+			stmt1.setInt(2, reservationNo);//reservationStatus 입력
+			row =stmt1.executeUpdate();//check
 			if(row==0) { // 수정실패
-				System.out.println("[ReservationDao.updateReservationStatus] 수정실패");
-			}else if(row==1) { //수정성공
-				System.out.println("[ReservationDao.updateReservationStatus] 수정성공");
+				System.out.println("[ReservationDao.updateReservationStatus] reservation테이블 수정실패");
+			}else if(row==1) { //수정성공 시에만 다음 진행
+				System.out.println("[ReservationDao.updateReservationStatus] reservation테이블 수정성공");
+			
+				//2. reservation테이블의 update_date값을 select
+				String selectReservationUpdateDateSpl = "SELECT res.update_date updateDate"
+						+ "FROM reservation res "
+						+ "WHERE res.reservation_no = ? ";
+				stmt2 = conn.prepareStatement(selectReservationUpdateDateSpl);
+				stmt2.setInt(1, reservationNo);
+				rs = stmt2.executeQuery();
+				if(rs.next()){ //변경된 reservation테이블의 updateDate를 저장
+					updateDate = rs.getString("updateDate");
+				}
+				
+				//3. reservation_status_history에 insert
+				String insertReservationStatusHistorySql ="INSERT INTO reservation_status_history (reservation_no"
+						+ "																	,reservation_status"
+						+ "																	,reservation_status_update_date) "
+						+ "												VALUES (?,?,?) ";
+				stmt3 = conn.prepareStatement(insertReservationStatusHistorySql);
+				stmt3.setInt(1, reservationNo);
+				stmt3.setString(2, reservationStatus);
+				stmt3.setString(3,updateDate);
+				row = stmt3.executeUpdate(); // insert의 결과 물을 row에 저장
+				if(row==0) {//row가 0일시, insert실패 롤백
+					System.out.println("[ReservationDao.updateReservationStatus] reservation_status_history테이블 입력실패");
+					conn.rollback();//롤백
+				} else if(row==1) {//row가 1이면, insert 성공, 최종 커밋
+					System.out.println("[ReservationDao.updateReservationStatus] reservation_status_history테이블 입력성공");
+					conn.commit(); //최종 커밋
+				}
 			}
 		} catch (Exception e) {
 			try {
@@ -48,7 +83,10 @@ public class ReservationDao {
 		} finally {
 			try {
 				//DB자원반납
-				stmt.close();
+				rs.close();
+				stmt3.close();
+				stmt2.close();
+				stmt1.close();
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
