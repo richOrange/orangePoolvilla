@@ -47,6 +47,7 @@ public class UpdateCustomerController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
 		
+		String memberPw = request.getParameter("memberPw");
 		//form 요청 값 처리
 	    Customer customer = new Customer();
 	    customer.setCustomerId(request.getParameter("memberid"));
@@ -55,10 +56,10 @@ public class UpdateCustomerController extends HttpServlet {
 	    customer.setGender(request.getParameter("gender"));
 	    customer.setEmail(request.getParameter("emailId")+"@"+request.getParameter("emailUrl"));
 	    customer.setPhone(request.getParameter("phone"));
-	    customer.setCustomerPw(request.getParameter("customerPw1"));
+	    customer.setCustomerPw(request.getParameter(memberPw));
 	    System.out.println("[/customer/updateCustomerController.doPost()] customer " + customer.toString());//디버깅
 	    
-	    String newCustomerPw = request.getParameter("customerPw1");
+	    String newCustomerPw = request.getParameter(memberPw);
 	    //디버깅
 	    System.out.println("[/customer/updateCustomerController.doPost()] newCustomerPw : " + newCustomerPw );
 	    //Dao에 update 요청
