@@ -58,9 +58,11 @@ public class CustomerDao {
 		ResultSet rs = null;
 		
 		//select customer_id
-		String selectCustomerNoSql = "SELECT customer_id CustomerNo FROM Customer WHERE Customer_id=?";
+		String selectCustomerNoSql = "SELECT customer_id CustomerNo "
+				+ "					FROM Customer WHERE Customer_id=?";
 		
-		String deleteCustomerSql = "DELETE FROM Customer WHERE Customer_id=? AND Customer_pw=PASSWORD(?)";
+		String deleteCustomerSql = "DELETE FROM Customer WHERE Customer_id=? "
+				+ "					AND Customer_pw=PASSWORD(?)";
 		try {
 			
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
@@ -115,7 +117,7 @@ public class CustomerDao {
 		
 		String sql ="INSERT INTO Customer (Customer_id "
 				+ "									,Customer_pw "
-				+ "									,pw_update_date"
+				+ "									,customer_pw_update_date"
 				+ " 								,name "
 				+ "									,gender "
 				+ "									,Birth_date "
@@ -160,7 +162,7 @@ public class CustomerDao {
 		
 		
 		String sql ="UPDATE customer SET Customer_pw = PASSWORD(?)"
-				+ "							,pw_update_date = NOW()"
+				+ "							,customer_pw_update_date = NOW()"
 				+ "							,update_date = NOW()"
 				+ "							WHERE Customer_id = ?"
 				+ "							AND Customer_pw = PASSWORD(?)";
@@ -273,7 +275,7 @@ public int checkIdInCustomer(String customerId) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		
-		String sql = "SELECT customer_id, customer_pw, pw_update_date,`name`, gender, birth_date, email, phone, `level`, create_date, update_date"
+		String sql = "SELECT customer_id, customer_pw, customer_pw_update_date,`name`, gender, birth_date, email, phone, `level`, create_date, update_date"
 				+ " FROM customer"
 				+ " WHERE customer_id = ?"; 
 		
@@ -289,6 +291,7 @@ public int checkIdInCustomer(String customerId) {
 				customer = new Customer();
 				customer.setCustomerId(rs.getString("customer_id"));
 				customer.setCustomerPw(rs.getString("customer_pw"));
+				customer.setCustomerPwUpdateDate(rs.getString("customer_pw_update_date"));
 				customer.setName(rs.getString("name"));
 				customer.setGender(rs.getString("gender"));
 				customer.setBirthDate(rs.getString("birth_date"));
