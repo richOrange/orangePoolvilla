@@ -18,6 +18,12 @@ public class DeleteCookingToolController extends HttpServlet {
 		
 		cookingToolDao = new CookingToolDao();
 		
+		int pvNo = -1;
+		if(Integer.parseInt(request.getParameter("pvNo")) != -1) {
+			pvNo = Integer.parseInt(request.getParameter("pvNo"));
+		}
+		System.out.println("[DeleteCookingToolController.doGet()] pvNo : " + pvNo);
+		
 		// 요청값 처리
 		int cookingToolNo  = 0;
 		if(!request.getParameter("cookingToolNo").equals(0)) {
@@ -29,7 +35,7 @@ public class DeleteCookingToolController extends HttpServlet {
 		
 		cookingToolDao.deleteCookingTool(cookingToolNo);
 		
-		response.sendRedirect(request.getContextPath() + "/host/cookingToolController");
+		response.sendRedirect(request.getContextPath() + "/host/cookingToolController?pvNo=" + pvNo);
 	}
 
 }
