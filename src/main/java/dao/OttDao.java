@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import vo.Ott;
+import vo.PoolvillaOtt;
 
 public class OttDao {
 	
@@ -155,6 +156,86 @@ public class OttDao {
 				}
 			}
 			return row;
+		}
+		// pvNo에 따른 orangepoolvilla db의 poolvilla_ott 테이블 데이터 입력
+		public List<PoolvillaOtt> insertPoolvillaOtt(int pvNo, int ottNo) {
+			List<PoolvillaOtt> list = new ArrayList<>();
+			
+			// 데이터베이스 자원 준비
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			int row = 0;
+			
+			try {
+				// 데이터베이스 드라이버 연결
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				System.out.println("[OttDao.insertPoolvillaOtt()] 드라이버 로딩 성공");
+				
+				String sql = "INSERT INTO poolvilla_ott(pv_no, ott_no, update_date) VALUES (?, ?, NOW())";
+				stmt = conn.prepareStatement(sql);
+				
+				stmt.setInt(1, pvNo);
+				stmt.setInt(2, ottNo);
+				row = stmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					// 데이터베이스 자원 반환
+					conn.close();
+					
+					// 디버깅 코드
+					if(row == 1) {
+						System.out.println("[OttDao.insertPoolvillaOtt()] poolvilla ott 입력 성공");
+					} else {
+						System.out.println("[OttDao.insertPoolvillaOtt()] poolvilla ott 입력 실패");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return list;
+		}
+		
+		// pvNo와 ottNo에 따른 orangepoolvilla db의 poolvilla_ott 테이블 데이터 삭제
+		public void deletePoolvillOtt(int pvNo, int ottNo) {
+			// 데이터베이스 자원 준비
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			int row = 0;
+			
+			try {
+				// 데이터베이스 드라이버 연결
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				System.out.println("[OttDao.deletePoolvillaOtt()] 드라이버 로딩 성공");
+				
+				String sql = "DELETE FROM poolvilla_ott WHERE pv_no = ? AND ott_no = ?";
+				stmt = conn.prepareStatement(sql);
+				
+				stmt.setInt(1, pvNo);
+				stmt.setInt(2, ottNo);
+				row = stmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					// 데이터베이스 자원 반환
+					conn.close();
+					
+					// -디버깅 코드
+					if(row == 1) {
+						System.out.println("[OttDao.deletePoolvillaOtt()] poolvilla ott 삭제 성공");
+					} else {
+						System.out.println("[OttDao.deletePoolvillaOtt()] poolvilla ott 삭제 실패");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 }

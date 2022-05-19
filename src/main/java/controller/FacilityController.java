@@ -18,20 +18,34 @@ import vo.Facility;
 @WebServlet("/host/facilityController")
 public class FacilityController extends HttpServlet {
 	
+	private FacilityDao facilityDao;
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		FacilityDao facilityDao = new FacilityDao();
+		int pvNo = -1;
+		if(Integer.parseInt(request.getParameter("pvNo")) != -1) {
+			pvNo = Integer.parseInt(request.getParameter("pvNo"));
+		}
+		System.out.println("[FacilityController.doGet()] pvNo : " + pvNo);
+		
+		facilityDao = new FacilityDao();
 		List<Facility> list = facilityDao.selectFacilityList();
 		
 		request.setAttribute("list", list);
+		request.setAttribute("pvNo", pvNo);
 		
 		request.getRequestDispatcher("/WEB-INF/view/facilityList.jsp").forward(request, response);
 	}
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		FacilityDao facilityDao = new FacilityDao();
+		int pvNo = -1;
+		if(Integer.parseInt(request.getParameter("pvNo")) != -1) {
+			pvNo = Integer.parseInt(request.getParameter("pvNo"));
+		}
+		
+		facilityDao = new FacilityDao();
 		String facilityName = request.getParameter("facilityName");
 		System.out.println("facilityName : " + facilityName);
 		
@@ -40,6 +54,6 @@ public class FacilityController extends HttpServlet {
 			facilityDao.insertFacility(facilityName);
 		}
 		
-		response.sendRedirect(request.getContextPath() + "/host/facilityController");
+		response.sendRedirect(request.getContextPath() + "/host/facilityController?pvNo=" + pvNo);
 	}
 }

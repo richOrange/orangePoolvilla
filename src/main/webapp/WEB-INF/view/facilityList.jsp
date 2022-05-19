@@ -72,14 +72,14 @@
 				</thead>
 				<tbody>
 					<tr>
-						<c:forEach var="f" items="${list }">
+						<c:forEach var="f" items="${list }" varStatus = "status">
 							<tr>
-								<td>${f.getFacilityNo()}</td>
+								<td>${ status.count }</td>
 								<td>${f.getFacilityName()}</td>
 								<td>${f.getUpdateDate()}
 								<td>
 								<td><a
-									href="${pageContext.request.contextPath}/host/deleteFacilityController?facilityNo=${ f.getFacilityNo()}"
+									href="${pageContext.request.contextPath}/host/deleteFacilityController?facilityNo=${ f.getFacilityNo()}&pvNo=${ param.pvNo }"
 									class="btn btn-outline-secondary btn-sm">삭제</a></td>
 							</tr>
 						</c:forEach>
@@ -91,20 +91,18 @@
 			<h2>Enter</h2>
 
 			<!-- Form -->
-			<form
-				action="${pageContext.request.contextPath}/host/facilityController"
-				method="post">
-				<div class="row">
-					<div class="form-group">
-						<input type="text" name="facilityName" class="form-control"
-							placeholder="Please enter facility">
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary" id="submit"
-							name="submit">Save</button>
-					</div>
-				</div>
-			</form>
+			<form action="${pageContext.request.contextPath}/host/facilityController" method="post" class="probootstrap-form mb60">
+            <div class="row">
+            <div class="form-group">
+            <input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
+              <input type="text" name="facilityName" class="form-control" placeholder="Please enter the facility">
+            </div>
+            <div class="form-group">
+              <input type="submit" class="btn btn-primary" id="submit" name="submit" value="Save">
+              <a href="${pageContext.request.contextPath}/host/insertPoolvillaFacilityController?pvNo=${ pvNo }" class = "btn btn-primary float-right">Back</a>
+            </div>
+            </div>
+          </form>
 		</div>
 	</section>
 

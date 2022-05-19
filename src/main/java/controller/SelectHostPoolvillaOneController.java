@@ -62,8 +62,8 @@ public class SelectHostPoolvillaOneController extends HttpServlet {
 		List<Map<String, Object>> poolvillaOttList = ottDao.selectPoolvillaOttByPvNo(pvNo);
 		List<Map<String, Object>> poolvillaSuppliesList = suppliesDao.selectPoolvillaSuppliesByPvNo(pvNo);
 		List<Map<String, Object>> poolvillaRoomNBedList = poolvillaRoomDao.selectPoolvillaRoomNBedByPvNo(pvNo);
-		List<PoolvillaPool> selectPoolvillaPoolListByPvNo = poolvillaPoolDao.selectPoolvillaPoolListByPvNo(pvNo);
-		List<Map<String, Object>> selectPoolvillaFacilityListByPvNo = facilityDao.selectPoolvillaFacilityListByPvNo(pvNo);
+		List<PoolvillaPool> poolvillaPoolList = poolvillaPoolDao.selectPoolvillaPoolListByPvNo(pvNo);
+		List<Map<String, Object>> poolvillaFacilityList = facilityDao.selectPoolvillaFacilityListByPvNo(pvNo);
 		
 		// 디버깅
 		System.out.println("[/host/selectHostPoolvillaOneController.doget()] selectHostPoolvillaOne : " + selectPoolvillaOne.toString());
@@ -76,8 +76,8 @@ public class SelectHostPoolvillaOneController extends HttpServlet {
 		request.setAttribute("poolvillaOttList", poolvillaOttList); // 해당 풀빌라의 ott 정보
 		request.setAttribute("poolvillaSuppliesList", poolvillaSuppliesList); // 해당 풀빌라의 supplies 정보
 		request.setAttribute("poolvillaRoomNBedList", poolvillaRoomNBedList); // 해당 풀빌라의 room_info 정보와 bed 정보 
-		request.setAttribute("selectPoolvillaPoolListByPvNo", selectPoolvillaPoolListByPvNo); // 해당 풀빌라의 pool 정보
-		request.setAttribute("selectPoolvillaFacilityListByPvNo", selectPoolvillaFacilityListByPvNo); // 해당 풀빌라의 facility 정보
+		request.setAttribute("poolvillaPoolList", poolvillaPoolList); // 해당 풀빌라의 pool 정보
+		request.setAttribute("poolvillaFacilityList", poolvillaFacilityList); // 해당 풀빌라의 facility 정보
 		
 		// jsp 호출
 		request.getRequestDispatcher("/WEB-INF/view/selectHostPoolvillaOne.jsp").forward(request, response);

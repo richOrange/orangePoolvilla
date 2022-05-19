@@ -203,7 +203,7 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/insertPoolvillaSuppliesController?pvNo=${ selectPoolvillaOne.pvNo }" class = "btn btn-primary btn-sm">update</a>
+							<a href="${pageContext.request.contextPath}/host/#" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				</div>
@@ -224,17 +224,16 @@
 								</thead>
 								<tbody>
 									<tr>
-										<c:forEach var="list"
-											items="${selectPoolvillaFacilityListByPvNo}">
+										<c:forEach var="pf" items="${ poolvillaFacilityList }">
 											<tr>
-												<td>${list.facilityName }</td>
-												<td>${list.facilityCnt }</td>
+												<td>${ pf.facilityName }</td>
+												<td>${ pf.facilityCnt }</td>
 											</tr>
 										</c:forEach>
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/#" class = "btn btn-primary btn-sm">update</a>
+							<a href="${pageContext.request.contextPath}/host/insertPoolvillaFacilityController?pvNo=${ selectPoolvillaOne.pvNo }" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				</div>
@@ -300,7 +299,7 @@
 								</thead>
 								<tbody>
 									<tr>
-										<c:forEach var="list" items="${selectPoolvillaPoolListByPvNo}">
+										<c:forEach var="list" items="${poolvillaPoolList}">
 											<tr>
 												<td>${list.poolName }</td>
 												<td>${list.poolWidth }</td>
