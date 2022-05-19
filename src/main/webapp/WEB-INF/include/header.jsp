@@ -30,7 +30,7 @@
           <c:if test="${sessionLoginMember.level > 4}">
           	<li><a href="${pageContext.request.contextPath}/host/">${sessionLoginMember.memberId}님 환영합니다</a></li>
             <li><a href="${pageContext.request.contextPath}/host/customerCheckController">회원 관리 페이지</a></li>
-            <li><a href="${pageContext.request.contextPath}/host/reservationController">거래 목록 관리 페이지</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/selectHostReservationListController">거래 목록 관리 페이지</a></li>
             <li><a href="${pageContext.request.contextPath}/host/hostController">관리자 계정 리스트 관리 페이지</a></li>
             <li><a href="${pageContext.request.contextPath}/host/selectHostPoolvillaListController">풀빌라 리스트 관리 페이지</a></li>
             <li><a href="${pageContext.request.contextPath}/host/myReviewController">추가 기능 구현 대기중</a></li>

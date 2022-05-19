@@ -33,7 +33,8 @@ public class ReservationDao {
 			conn.setAutoCommit(false);
 			//1. reservation테이블의 상태를 변경
 			String checkReservationsql = "UPDATE reservation"
-					+ "					 SET reservation_status =	 ? "
+					+ "					 SET reservation_status = ?"
+					+ "							,update_date= NOW() "
 					+ "					WHERE reservation_no = ? ";
 			stmt1 = conn.prepareStatement(checkReservationsql);
 			stmt1.setString(1, reservationStatus);//reservationStatus 입력
@@ -46,8 +47,8 @@ public class ReservationDao {
 			
 				//2. reservation테이블의 update_date값을 select
 				String selectReservationUpdateDateSpl = "SELECT res.update_date updateDate"
-						+ "FROM reservation res "
-						+ "WHERE res.reservation_no = ? ";
+						+ "				FROM reservation res "
+						+ "				WHERE res.reservation_no = ? ";
 				stmt2 = conn.prepareStatement(selectReservationUpdateDateSpl);
 				stmt2.setInt(1, reservationNo);
 				rs = stmt2.executeQuery();
@@ -228,31 +229,31 @@ public class ReservationDao {
 	
 	
 	/*-----------------------------------------관리자 관련 영역-------------------------------------------*/	
-	// RESERVATION 테이블의 예약 상태별 갯수 가져오는 메서드
-	public ArrayList<HashMap<String, Object>> selectReservationStatusCount() {
-		ArrayList<HashMap<String, Object>> reservationStatusList = new ArrayList<HashMap<String, Object>>();
-
+	// RESERVATION 테이블의 예약 상태 중 결제대기,취소대기,이용중 갯수 가져오는 메서드
+	public ArrayList<HashMap<String, Object>> selectWaitReservationStatusCount() {
+		ArrayList<HashMap<String, Object>> selectWaitReservationStatusCount = new ArrayList<HashMap<String, Object>>();
+		//DB자원 준비
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		/*
-		 * SELECT reservation_status reservationStatus, COUNT(*) cnt FROM reservation
-		 * GROUP BY reservationStatus;
-		 * 
-		 * WHERE reservation_status = '결제완료' <- ? ; ( 사용 X )
-		 */
-		String sql = "SELECT reservation_status reservationStatus, COUNT(*) cnt FROM reservation GROUP BY reservationStatus";
+		String sql = "SELECT reservation_status reservationStatus"
+				+ "					, COUNT(*) cnt "
+				+ "		FROM reservation "
+				+ "		WHERE reservation_status = '결제대기' "
+				+ "		OR reservation_status = '취소대기' "
+				+ "		OR reservation_status = '이용중' "
+				+ "GROUP BY reservationStatus";
 		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 		String dbuser = "root";
 		String dbpw = "java1234";
 
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
-			System.out.println("[HostDao.selectReservationStatusCount()] : 드라이버 로딩 성공");
+			System.out.println("[HostDao.selectWaitReservationStatusCount()] : 드라이버 로딩 성공");
 
 			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
-			System.out.println("[HostDao.selectReservationStatusCount()] conn:" + conn);
+			System.out.println("[HostDao.selectWaitReservationStatusCount()] conn:" + conn);
 
 			stmt = conn.prepareStatement(sql);
 
@@ -263,23 +264,74 @@ public class ReservationDao {
 
 				map.put("reservationStatus", rs.getString("reservationStatus"));
 				map.put("cnt", rs.getInt("cnt"));
-				reservationStatusList.add(map);
+				selectWaitReservationStatusCount.add(map);
 			}
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
+				//DB자원반납
 				rs.close();
 				stmt.close();
 				conn.close();
 			} catch (SQLException e1) {
-				// TODO: handle exception
 				e1.printStackTrace();
 			}
 		}
-		return reservationStatusList;
+		return selectWaitReservationStatusCount;
+
+	}
+			
+			// RESERVATION 테이블의 예약 상태 중 결제완료,취소,이용완료 갯수 가져오는 메서드
+			public ArrayList<HashMap<String, Object>> selectCompleteReservationStatusCount() {
+				ArrayList<HashMap<String, Object>> selectCompleteReservationStatusCount = new ArrayList<HashMap<String, Object>>();
+				//DB자원준비
+				Connection conn = null;
+				PreparedStatement stmt = null;
+				ResultSet rs = null;
+				
+				String sql = "SELECT reservation_status reservationStatus"
+						+ "					, COUNT(*) cnt "
+						+ "		FROM reservation "
+						+ "		WHERE reservation_status = '결제완료' "
+						+ "		OR reservation_status = '취소' "
+						+ "		OR reservation_status = '이용완료' "
+						+ "GROUP BY reservationStatus";
+				String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
+				String dbuser = "root";
+				String dbpw = "java1234";
+				
+				try {
+					Class.forName("org.mariadb.jdbc.Driver");
+					System.out.println("[HostDao.selectCompleteReservationStatusCount()] : 드라이버 로딩 성공");
+					
+					conn = DriverManager.getConnection(dburl, dbuser, dbpw);
+					System.out.println("[HostDao.selectCompleteReservationStatusCount()] conn:" + conn);
+					
+					stmt = conn.prepareStatement(sql);
+					
+					rs = stmt.executeQuery();
+					
+					while (rs.next()) {
+						HashMap<String, Object> map = new HashMap<String, Object>();
+						map.put("reservationStatus", rs.getString("reservationStatus"));
+						map.put("cnt", rs.getInt("cnt"));
+						selectCompleteReservationStatusCount.add(map);
+					}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				//DB자원 반납
+				rs.close();
+				stmt.close();
+				conn.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return selectCompleteReservationStatusCount;
 
 	}
 
@@ -330,12 +382,13 @@ public class ReservationDao {
 			} else {
 				sql = "SELECT reservation_no reservationNo"
 						+ "			, customer_id customerId"
-						+ "			, pv_no pvNo, concat(reservation_begin_date,' ~ ',reservation_last_date) AS reservationDate"
+						+ "			, pv_no pvNo"
+						+ "			, concat(reservation_begin_date,' ~ ',reservation_last_date) AS reservationDate"
 						+ "			, reservation_status reservationStatus"
 						+ "			, create_date createDate, update_date updateDate"
 						+ "		FROM reservation"
-						+ " 	WHERE reservationStatus = ?"
-						+ "		ORDER BY reservationDate DESC"
+						+ " 	WHERE reservation_status = ? "
+						+ "		ORDER BY update_date DESC"
 						+ " 	LIMIT ?,?";
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, reservationStatus);
@@ -351,7 +404,7 @@ public class ReservationDao {
 				map.put("customerId", rs.getString("customerId"));//회원아이디
 				map.put("pvNo", rs.getInt("pvNo"));//상품정보번호
 				map.put("reservationDate", rs.getString("reservationDate")); //체크인날짜
-				map.put("reservationStatus", rs.getString("reservationStatus")); //체크아웃날짜
+				map.put("reservationStatus", rs.getString("reservationStatus")); //예약상태
 				map.put("createDate", rs.getString("createDate")); //생성날짜
 				map.put("updateDate", rs.getString("updateDate")); //수정날짜
 				reservationList.add(map);
