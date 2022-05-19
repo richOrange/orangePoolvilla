@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Orange-poolvilla:suppliesList</title>
+    <title>Orange-poolvilla:insertPoolvillaSupplies</title>
     <meta name="description" content="Free Bootstrap Theme by uicookies.com">
     <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
     
@@ -37,7 +37,7 @@
               <div class="probootstrap-breadcrumbs">
                 <a href="${pageContext.request.contextPath}/template/#">Home</a><span>About</span>
               </div>
-              <h1>Cooking Tool List</h1>
+              <h1>Insert Poolvilla Supplies</h1>
             </div>
 
           </div>
@@ -54,44 +54,64 @@
   
   <section class="probootstrap-section">
     <div class="container">
+    
+    		<table class = "table table-hover">
+			<thead>
+				<tr>
+					<th>Number</th>
+					<th>Supplies Name</th>
+					<th>Count</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<c:forEach var = "s" items = "${ sList }" varStatus = "status">
+						<form method="post" action="${ pageContext.request.contextPath }/host/insertPoolvillaSuppliesController">
+						<input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
+							<tr>
+								<td><input type = "hidden" name = "suppliesNo" value = "${ s.suppliesNo }" readonly>${ status.count }</td>
+								<td><input type = "hidden" name = "suppliesName" value = "${ s.suppliesName }" readonly>${ s.suppliesName }</td>
+								<td>
+									<input type = "number" name = "suppliesCnt">
+								</td> 
+								<td><input type="submit" class="btn btn-outline-secondary btn-sm" id="submit" name="submit" value="추가"></td>
+							</tr>
+						</form>
+					</c:forEach>
+				</tr>
+			</tbody>
+		</table>
+		
+		<hr>
       
 		<table class = "table table-hover">
 			<thead>
 				<tr>
 					<th>Number</th>
 					<th>Supplies Name</th>
-					<th>Update Date</th>
+					<th>Count</th>
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<c:forEach var = "s" items = "${ list }" varStatus = "status">
-							<tr>
-								<td>${ status.count }</td>
-								<td>${ s.suppliesName }</td>
-								<td>${ s.updateDate }</td> 
-								<td><a href="${pageContext.request.contextPath}/host/deleteSuppliesController?suppliesNo=${ s.suppliesNo }&pvNo=${ param.pvNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
-							</tr>
-					</c:forEach>
+					<c:if test="${ not empty psList }">
+						<c:forEach var = "ps" items = "${ psList }">
+								<tr>
+									<td>${ ps.suppliesName }</td>
+									<td>${ ps.suppliesCnt }</td> 
+									<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaSuppliesController?pvNo=${ param.pvNo }&suppliesNo=${ ps.suppliesNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+								</tr>
+						</c:forEach>
+					</c:if>
 				</tr>
 			</tbody>
 		</table>
 		<hr>
-		<h2>Enter</h2>
-		<br>
-        <!-- Form -->
-        <form action="${pageContext.request.contextPath}/host/suppliesController" method="post" class="probootstrap-form mb60">
-            <div class="row">
-            <div class="form-group">
-            <input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
-              <input type="text" name="suppliesName" class="form-control" placeholder="Please enter the supplies">
-            </div>
-            <div class="form-group">
-              <input type="submit" class="btn btn-primary" id="submit" name="submit" value="Save">
-              <a href="${pageContext.request.contextPath}/host/insertPoolvillaSuppliesController?pvNo=${ pvNo }" class = "btn btn-primary float-right">Back</a>
-            </div>
-          </form>
+		
+		<a href="${pageContext.request.contextPath}/host/suppliesController?pvNo=${ pvNo }" class = "btn btn-primary btn-sm">다른 supplies 목록 추가하러 가기</a>
+		<a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${ pvNo }" class = "btn btn-primary btn-sm">update완료</a>
 
     </div>
   </section>  

@@ -203,7 +203,7 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="${pageContext.request.contextPath}/host/#" class = "btn btn-primary btn-sm">update</a>
+							<a href="${pageContext.request.contextPath}/host/insertPoolvillaSuppliesController?pvNo=${ selectPoolvillaOne.pvNo }" class = "btn btn-primary btn-sm">update</a>
 						</div>
 					</div>
 				</div>
