@@ -115,6 +115,7 @@ public class CustomerDao {
 		
 		String sql ="INSERT INTO Customer (Customer_id "
 				+ "									,Customer_pw "
+				+ "									,pw_update_date"
 				+ " 								,name "
 				+ "									,gender "
 				+ "									,Birth_date "
@@ -123,7 +124,7 @@ public class CustomerDao {
 				+ "									,level"
 				+ "									,create_date "
 				+ "									,update_date)"
-				+ "									VALUES (?,PASSWORD(?),?,?,?,?,?,3,NOW(),NOW()) ";
+				+ "									VALUES (?,PASSWORD(?),NOW(),?,?,?,?,?,3,NOW(),NOW()) ";
 		
 		try {
 			
@@ -162,8 +163,7 @@ public class CustomerDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		
-		String sql ="UPDATE Customer SET Customer_pw = PASSWORD(?) "
-				+ "									,name = ?"
+		String sql ="UPDATE Customer SET name = ?"
 				+ "									,gender=? "
 				+ "									,birth_date=? "
 				+ "									,email=?"
@@ -176,14 +176,13 @@ public class CustomerDao {
 			
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, newCustomerPw);
-			stmt.setString(2, customer.getName());
-			stmt.setString(3, customer.getGender());
-			stmt.setString(4, customer.getBirthDate());
-			stmt.setString(5, customer.getEmail());
-			stmt.setString(6, customer.getPhone());
-			stmt.setString(7, customer.getCustomerId());
-			stmt.setString(8, customer.getCustomerPw());
+			stmt.setString(1, customer.getName());
+			stmt.setString(2, customer.getGender());
+			stmt.setString(3, customer.getBirthDate());
+			stmt.setString(4, customer.getEmail());
+			stmt.setString(5, customer.getPhone());
+			stmt.setString(6, customer.getCustomerId());
+			stmt.setString(7, customer.getCustomerPw());
 			row =stmt.executeUpdate();
 					
 		} catch (Exception e) {
@@ -247,7 +246,7 @@ public int checkIdInCustomer(String customerId) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		
-		String sql = "SELECT customer_id, customer_pw, `name`, gender, birth_date, email, phone, `level`, create_date, update_date"
+		String sql = "SELECT customer_id, customer_pw, pw_update_date,`name`, gender, birth_date, email, phone, `level`, create_date, update_date"
 				+ " FROM customer"
 				+ " WHERE customer_id = ?"; 
 		

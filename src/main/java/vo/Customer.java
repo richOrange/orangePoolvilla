@@ -3,6 +3,7 @@ package vo;
 public class Customer {
 	private String customerId;
 	private String customerPw;
+	private String pwUpdateDate;
 	private String name;
 	private String gender;
 	private String birthDate;
@@ -15,11 +16,12 @@ public class Customer {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Customer(String customerId, String customerPw, String name, String gender, String birthDate, String email,
+	public Customer(String customerId, String customerPw, String pwUpdateDate, String name, String gender, String birthDate, String email,
 			String phone, int level, String createDate, String updateDate) {
 		super();
 		this.customerId = customerId;
 		this.customerPw = customerPw;
+		this.pwUpdateDate = pwUpdateDate;
 		this.name = name;
 		this.gender = gender;
 		this.birthDate = birthDate;
@@ -31,7 +33,7 @@ public class Customer {
 	}
 	@Override
 	public String toString() {
-		return "Customer [customerId=" + customerId + ", customerPw=" + customerPw + ", name=" + name + ", gender="
+		return "Customer [customerId=" + customerId + ", customerPw=" + customerPw + ", pwUpdateDate=" + pwUpdateDate +", name=" + name + ", gender="
 				+ gender + ", birthDate=" + birthDate + ", email=" + email + ", phone=" + phone + ", level=" + level
 				+ ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
 	}
@@ -46,6 +48,12 @@ public class Customer {
 	}
 	public void setCustomerPw(String customerPw) {
 		this.customerPw = customerPw;
+	}
+	public String getpwUpdateDate() {
+		return pwUpdateDate;
+	}
+	public void setpwUpdateDate(String pwUpdateDate) {
+		this.pwUpdateDate = pwUpdateDate;
 	}
 	public String getName() {
 		return name;
