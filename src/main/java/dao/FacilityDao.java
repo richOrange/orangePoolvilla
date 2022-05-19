@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import vo.Facility;
+import vo.PoolvillaFacility;
 
 public class FacilityDao {
 
@@ -148,4 +149,85 @@ public class FacilityDao {
 		}
 		return list;
 	}
+	// pvNo에 따른 orangepoolvilla db의 poolvilla_facility 테이블 데이터 입력
+			public List<PoolvillaFacility> insertPoolvillaFacility(int pvNo, int facilityNo, int facilityCnt) {
+				List<PoolvillaFacility> list = new ArrayList<>();
+				
+				// 데이터베이스 자원 준비
+				Connection conn = null;
+				PreparedStatement stmt = null;
+				ResultSet rs = null;
+				int row = 0;
+				
+				try {
+					// 데이터베이스 드라이버 연결
+					conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+					System.out.println("[FacilityDao.insertPoolvillaFacility()] 드라이버 로딩 성공");
+					
+					String sql = "INSERT INTO poolvilla_facility(pv_no, facility_no, facility_cnt, update_date) VALUES (?, ?, ?, NOW())";
+					stmt = conn.prepareStatement(sql);
+					
+					stmt.setInt(1, pvNo);
+					stmt.setInt(2, facilityNo);
+					stmt.setInt(3, facilityCnt);
+					row = stmt.executeUpdate();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						// 데이터베이스 자원 반환
+						conn.close();
+						
+						// 디버깅 코드
+						if(row == 1) {
+							System.out.println("[FacilityDao.insertPoolvillaFacility()] poolvilla facility 입력 성공");
+						} else {
+							System.out.println("[FacilityDao.insertPoolvillaFacility()] poolvilla facility 입력 실패");
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				return list;
+			}
+	
+	// pvNo와 facilityNo에 따른 orangepoolvilla db의 poolvilla_facility 테이블 데이터 삭제
+			public void deletePoolvillFacility(int pvNo, int facilityNo) {
+				// 데이터베이스 자원 준비
+				Connection conn = null;
+				PreparedStatement stmt = null;
+				int row = 0;
+				
+				try {
+					// 데이터베이스 드라이버 연결
+					conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+					System.out.println("[FacilityDao.deletePoolvillaFacility()] 드라이버 로딩 성공");
+					
+					String sql = "DELETE FROM poolvilla_facility WHERE pv_no = ? AND facility_no = ?";
+					stmt = conn.prepareStatement(sql);
+					
+					stmt.setInt(1, pvNo);
+					stmt.setInt(2, facilityNo);
+					row = stmt.executeUpdate();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						// 데이터베이스 자원 반환
+						conn.close();
+						
+						// -디버깅 코드
+						if(row == 1) {
+							System.out.println("[FacilityDao.deletePoolvillaFacility()] poolvilla facility 삭제 성공");
+						} else {
+							System.out.println("[FacilityDao.deletePoolvillaFacility()] poolvilla facility 삭제 실패");
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 }

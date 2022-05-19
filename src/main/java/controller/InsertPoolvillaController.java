@@ -75,11 +75,11 @@ public class InsertPoolvillaController extends HttpServlet {
 		
 		this.poolvillaDao = new PoolvillaDao();
 		// 풀빌라 등록 메서드 실행
-		this.poolvillaDao.insertPoolvilla(poolvilla);
+		int pvNo=poolvillaDao.insertPoolvilla(poolvilla);
 		System.out.println("상품 등록 성공");
 		
 		
-		response.sendRedirect(request.getContextPath() + "/host/insertHostPoolvillaOneController");
+		response.sendRedirect(request.getContextPath() + "/host/selectHostPoolvillaOneController?pvNo=" +pvNo);
 	}
 
 }
