@@ -90,7 +90,6 @@
 				<tr>
 					<th>Facility Name</th>
 					<th>Count</th>
-					<th>Update Date</th>
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
@@ -101,7 +100,6 @@
 								<tr>
 									<td>${ pf.facilityName }</td>
 									<td>${ pf.facilityCnt }</td>
-									<td>${ pct.updateDate }</td> 
 									<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaFacilityController?pvNo=${ param.pvNo }&facilityNo=${ pf.facilityNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
 								</tr>
 						</c:forEach>
