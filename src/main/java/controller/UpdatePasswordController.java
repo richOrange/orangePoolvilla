@@ -74,6 +74,9 @@ public class UpdatePasswordController extends HttpServlet {
 	    }else if (row==-1) {//row가 -1이면 sql이 작동 안함
 	    	System.out.println("[/customer/updateCustomerController.doPost()] 예외 발생");
 	    	response.sendRedirect(request.getContextPath()+"/customer/updatePasswordController");
+	    }else if (row==2) {//row가 2이면 이전 비밀번호와 중복
+	    	System.out.println("[/customer/updateCustomerController.doPost()] 이전 비밀번호와 중복");
+	    	response.sendRedirect(request.getContextPath()+"/customer/updatePasswordController?msg=duplication");
 	    }
 	}
 

@@ -33,7 +33,9 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <body>
-
+<c:if test="${not empty msg }">
+	<div class="helper">이전 비밀번호와 같게 변경하실 수 없습니다.</div>
+</c:if>
 	<!-- START: header -->
 	<div id="includeHeader"></div>
 	<!-- END: header -->

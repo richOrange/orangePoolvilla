@@ -54,35 +54,35 @@ public class CustomerDao {
 		int row = -1;
 		
 		Connection conn = null;
-		PreparedStatement stmt = null;
+		PreparedStatement stmt1 = null; // selectCustomersql 에 사용
+		PreparedStatement stmt2 = null; // deleteCustomerSql 에 사용
 		ResultSet rs = null;
 		
 		//select customer_id
-		String selectCustomerNoSql = "SELECT customer_id CustomerNo "
-				+ "					FROM Customer WHERE Customer_id=?";
+		String selectCustomerIdSql = "SELECT customer_id, name, level"
+				+ "					  FROM Customer WHERE Customer_id= ?";
 		
-		String deleteCustomerSql = "DELETE FROM Customer WHERE Customer_id=? "
-				+ "					AND Customer_pw=PASSWORD(?)";
+		
 		try {
 			
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 			conn.setAutoCommit(false); 
 			//0. select customer_id
-			stmt = conn.prepareStatement(selectCustomerNoSql);
-			stmt.setString(1, customerId);
-			rs = stmt.executeQuery();
+			stmt1 = conn.prepareStatement(selectCustomerIdSql);
+			stmt1.setString(1, customerId);
+			rs = stmt1.executeQuery();
 			List<Integer> list = new ArrayList<>(); 
 			while(rs.next()) {
 				list.add(rs.getInt("CustomerId"));
 				
 			}
+			String deleteCustomerSql = "UPDATE FROM Customer WHERE Customer_id=? "
+					+ "					AND Customer_pw=PASSWORD(?)";
 			
-
-			
-			stmt = conn.prepareStatement(deleteCustomerSql);
-			stmt.setString(1, customerId);
-			stmt.setString(2, customerPw);
-			row = stmt.executeUpdate();
+			stmt2 = conn.prepareStatement(deleteCustomerSql);
+			stmt2.setString(1, customerId);
+			stmt2.setString(2, customerPw);
+			row = stmt2.executeUpdate();
 			if (row == 1) {
 				conn.commit();
 			} else { 
@@ -99,7 +99,8 @@ public class CustomerDao {
 		}finally {
 			try {
 				
-				stmt.close();
+				stmt1.close();
+				stmt2.close();
 				conn.close();
 			}catch(SQLException e) {
 				e.printStackTrace();
@@ -155,31 +156,92 @@ public class CustomerDao {
 	}
 	
 	public int updatePassword(Customer customer,String newMemberPw) {
-		int row = -1;
-		String CustomerId =null;
+		int row = -1; // 쿼리문 실패시 -1 반환
+		String CustomerId =null;// 변경된 Customer 저장할 변수 초기화
+		String updateDate =null;// 변경된 updateDate 저장할 변후 초기화
+		//DB 자원 준비
 		Connection conn = null;
-		PreparedStatement stmt = null;
-		
-		
-		String sql ="UPDATE customer SET Customer_pw = PASSWORD(?)"
-				+ "							,customer_pw_update_date = NOW()"
-				+ "							,update_date = NOW()"
-				+ "							WHERE Customer_id = ?"
-				+ "							AND Customer_pw = PASSWORD(?)";
+		PreparedStatement stmt0 = null;
+		PreparedStatement stmt1 = null; // customer 에 사용
+		PreparedStatement stmt2 = null; // select custmomer_password_update_date에 사용
+		PreparedStatement stmt3 = null; // customer_password_update_date insert에 사용
+		ResultSet rs0 = null; // select customer_password_update_date에 사용 
+		ResultSet rs = null; // select customer_password_update_date에 사용 
+		//1. Customer테이블의 상태를 변경
 		
 		try {
+			
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, newMemberPw);
-			stmt.setString(2, customer.getCustomerId());
-			stmt.setString(3, customer.getCustomerPw());
-			row =stmt.executeUpdate();
+			//오토커밋해제
+			conn.setAutoCommit(false);
+			// 0. 기존비밀번호와 중복여부 확인
+			String checkPwSpl ="SELECT * FROM customer_pw_history "
+					+ "WHERE customer_id = ? AND customer_pw =PASSWORD(?)";
+			stmt0 = conn.prepareStatement(checkPwSpl);
+			stmt1.setString(2, customer.getCustomerId());
+			stmt0.setString(1, newMemberPw);
+			rs0=stmt0.executeQuery();
+			if(rs0.next()) {
+				row = 2;
+			}else {
+				row=0;
+			}
+			if(row==2) {//중복 발생 실패 row=2
+				System.out.println("[CustomerDao.updatePassword] 비밀번호 중복 발생");
+			} else if(row==0) {//중복 없음 비밀번호 변경가능 다음 작업 진행
+				// 1. customer테이블의 비밀번호 변경
+				String sql ="UPDATE customer SET Customer_pw = PASSWORD(?)"
+						+ "							,customer_pw_update_date = NOW()"
+						+ "							,update_date = NOW()"
+						+ "							WHERE Customer_id = ?"
+						+ "							AND Customer_pw = PASSWORD(?)";
+				stmt1 = conn.prepareStatement(sql);
+				stmt1.setString(1, newMemberPw);
+				stmt1.setString(2, customer.getCustomerId());
+				stmt1.setString(3, customer.getCustomerPw());
+				row =stmt1.executeUpdate();
+				if(row==0) { // 수정실패
+					System.out.println("[CustomerDao.updatePassword] Customer테이블 수정실패");
+				}else if(row==1) { //수정성공 시에만 다음 진행
+					System.out.println("[CustomerDao.updatePassword] Customer테이블 수정성공");
+				
+					//2. customer테이블의 update_date값을 select
+					String selecPasswordUpdateDateSpl = "SELECT update_date updateDate"
+							+ "				FROM customer "
+							+ "				WHERE customer_id = ? ";
+					stmt2 = conn.prepareStatement(selecPasswordUpdateDateSpl);
+					stmt2.setString(1, customer.getCustomerId());
+					rs = stmt2.executeQuery();
+					if(rs.next()){ //변경된 customer테이블의 updateDate를 저장
+						updateDate = rs.getString("updateDate");
+					}
+					
+					//3. customer_pw_history에 insert
+					String insertCustomerPwUpdateDateSql ="INSERT INTO customer_pw_history(customer_id"
+							+ "								,customer_pw"
+							+ "								,customer_pw_update_date)"
+							+ "								VALUES (?,PASSWORD(?),?)";
+					stmt3 = conn.prepareStatement(insertCustomerPwUpdateDateSql);
+					stmt3.setString(1, customer.getCustomerId());
+					stmt3.setString(2, newMemberPw);
+					stmt3.setString(3, updateDate);
+					row = stmt3.executeUpdate(); // insert의 결과 물을 row에 저장
+					if(row==0) {//row가 0일시, insert실패 롤백
+						System.out.println("[CustomerDao.updatePassword] customer_pw_history테이블 입력실패");
+						conn.rollback();//롤백
+					} else if(row==1) {//row가 1이면, insert 성공, 최종 커밋
+						System.out.println("[CustomerDao.updatePassword] customer_pw_history테이블 입력성공");
+						conn.commit(); //최종 커밋
+					}
+				}
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			try {
-				stmt.close();
+				stmt1.close();
+				
 				conn.close();
 			}catch(SQLException e) {
 				e.printStackTrace();
