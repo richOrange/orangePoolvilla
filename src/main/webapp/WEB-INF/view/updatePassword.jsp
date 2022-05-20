@@ -33,9 +33,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <body>
-<c:if test="${not empty msg }">
-	<div class="helper">이전 비밀번호와 같게 변경하실 수 없습니다.</div>
-</c:if>
 	<!-- START: header -->
 	<div id="includeHeader"></div>
 	<!-- END: header -->
@@ -72,6 +69,10 @@
 						method="post" id="updatePasswordForm">
 						<div class="row">
 							<div class="col-12">
+								<!-- 이전비밀번호와 비밀번호 중복 오류 메세지 표시 부분 -->
+								<c:if test="${param.msg=='duplication'}">
+									<div class="helper">이전 비밀번호와 같게 변경하실 수 없습니다.</div>
+								</c:if>
 								<table class="table table-hover">
 									<tr>
 										<td>ID :</td>

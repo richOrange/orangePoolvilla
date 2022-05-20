@@ -157,16 +157,16 @@ public class CustomerDao {
 	
 	public int updatePassword(Customer customer,String newMemberPw) {
 		int row = -1; // 쿼리문 실패시 -1 반환
-		String CustomerId =null;// 변경된 Customer 저장할 변수 초기화
-		String updateDate =null;// 변경된 updateDate 저장할 변후 초기화
+		String CustomerId = null;// 변경된 Customer 저장할 변수 초기화
+		String updateDate = null;// 변경된 updateDate 저장할 변후 초기화
 		//DB 자원 준비
 		Connection conn = null;
-		PreparedStatement stmt0 = null;
+		PreparedStatement stmt0 = null; // checkPwSpl에 사용
 		PreparedStatement stmt1 = null; // customer 에 사용
 		PreparedStatement stmt2 = null; // select custmomer_password_update_date에 사용
 		PreparedStatement stmt3 = null; // customer_password_update_date insert에 사용
 		ResultSet rs0 = null; // select customer_password_update_date에 사용 
-		ResultSet rs = null; // select customer_password_update_date에 사용 
+		ResultSet rs1 = null; // select customer_password_update_date에 사용 
 		//1. Customer테이블의 상태를 변경
 		
 		try {
@@ -176,18 +176,19 @@ public class CustomerDao {
 			conn.setAutoCommit(false);
 			// 0. 기존비밀번호와 중복여부 확인
 			String checkPwSpl ="SELECT * FROM customer_pw_history "
-					+ "WHERE customer_id = ? AND customer_pw =PASSWORD(?)";
+					+ "		WHERE customer_id = ? AND customer_pw =PASSWORD(?)";
 			stmt0 = conn.prepareStatement(checkPwSpl);
-			stmt1.setString(2, customer.getCustomerId());
-			stmt0.setString(1, newMemberPw);
+			stmt0.setString(1, customer.getCustomerId());
+			stmt0.setString(2, newMemberPw);
 			rs0=stmt0.executeQuery();
 			if(rs0.next()) {
 				row = 2;
 			}else {
-				row=0;
+				row = 0;
 			}
 			if(row==2) {//중복 발생 실패 row=2
 				System.out.println("[CustomerDao.updatePassword] 비밀번호 중복 발생");
+				
 			} else if(row==0) {//중복 없음 비밀번호 변경가능 다음 작업 진행
 				// 1. customer테이블의 비밀번호 변경
 				String sql ="UPDATE customer SET Customer_pw = PASSWORD(?)"
@@ -202,6 +203,7 @@ public class CustomerDao {
 				row =stmt1.executeUpdate();
 				if(row==0) { // 수정실패
 					System.out.println("[CustomerDao.updatePassword] Customer테이블 수정실패");
+					conn.rollback();//롤백
 				}else if(row==1) { //수정성공 시에만 다음 진행
 					System.out.println("[CustomerDao.updatePassword] Customer테이블 수정성공");
 				
@@ -211,9 +213,9 @@ public class CustomerDao {
 							+ "				WHERE customer_id = ? ";
 					stmt2 = conn.prepareStatement(selecPasswordUpdateDateSpl);
 					stmt2.setString(1, customer.getCustomerId());
-					rs = stmt2.executeQuery();
-					if(rs.next()){ //변경된 customer테이블의 updateDate를 저장
-						updateDate = rs.getString("updateDate");
+					rs1 = stmt2.executeQuery();
+					if(rs1.next()){ //변경된 customer테이블의 updateDate를 저장
+						updateDate = rs1.getString("updateDate");
 					}
 					
 					//3. customer_pw_history에 insert
@@ -240,8 +242,7 @@ public class CustomerDao {
 			e.printStackTrace();
 		}finally {
 			try {
-				stmt1.close();
-				
+
 				conn.close();
 			}catch(SQLException e) {
 				e.printStackTrace();
