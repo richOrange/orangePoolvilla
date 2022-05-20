@@ -316,12 +316,13 @@
 				</div>
 			</div>
 			
-			<form action="#" method="post" enctype="multipart/form-data">
-				<table class = "table table-active">
+			<form action="${pageContext.request.contextPath}/host/insertPoolvillaPhoto" method="post" enctype="multipart/form-data">
+				<table class = "table table-active" id="insertPoolvillaPhotoForm">
 					<tr>
 						<td>insert image</td>
-						<td><input type = "file" name = "photo" class = "custom-file"></td>
-						<td><button type = "button" class = "btn btn-dark">insert</button></td>
+						<td><input type = "file" name = "poolvillaPhoto" class = "custom-file"></td>
+						<td><button type = "button" class = "btn btn-dark" id="insertPoolvillaPhotoButton">insert</button></td>
+						<td><span id="poolvillaPhotoHelper" class="helper"></span></td>
 					</tr>
 				</table>
 			</form>
@@ -344,7 +345,16 @@
 			'${pageContext.request.contextPath}/includeHeaderController');
 	$("#includeFooter").load(
 			'${pageContext.request.contextPath}/includeFooterController');
+	$('#insertPoolvillaButton').click(function() {
+		if ($('#poolvillaPhoto').val == ''){
+			$('#poolvillaPhotoHelper').text('이미지를 선택해주세요');
+		} else {
+			$('#poolvillaPhotoHelper').text('');
+			$('#insertPoolvillaPhotoForm').submit();
+		}
+	});
 </script>
+
 
 <script
 	src="${pageContext.request.contextPath}/template/js/scripts.min.js"></script>
