@@ -254,8 +254,7 @@
 										<th class="text text-center">방 유형</th>
 										<th class="text text-center">방 설명</th>
 										<th class="text text-center">방 크기</th>
-										<th class="text text-center">침대 사이즈</th>
-										<th class="text text-center">침대 수량</th>
+										<th class="text text-center">침대</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -266,8 +265,7 @@
 												<td>${ prb.roomType }</td>
 												<td>${ prb.roomInfo }</td>
 												<td>${ prb.roomSize }</td>
-												<td>${ prb.bedSize }</td>
-												<td>${ prb.bedCnt }</td>
+												<td>${ prb.bed }</td>
 											</tr>
 										</c:forEach>
 									</tr>
