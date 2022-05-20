@@ -301,8 +301,6 @@ public int checkIdInCustomer(String customerId) {
 	try {
 		// 데이터베이스 드라이버 연결
 		conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
-		System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
-		
 		String sql = "SELECT * FROM customer WHERE customer_id = ?";
 		stmt = conn.prepareStatement(sql);
 		stmt.setString(1, customerId);
@@ -434,11 +432,8 @@ public int checkIdInCustomer(String customerId) {
 
 		String sql = "SELECT COUNT(*) cnt FROM customer";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			System.out.println("[HostDao.selectTotalRow()] : 드라이버 로딩 성공");
-
 			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
-			System.out.println("[HostDao.selectTotalRow()] conn:" + conn);
+			System.out.println("[customerDao.selectTotalRow()] conn:" + conn);
 
 			stmt = conn.prepareStatement(sql);
 
@@ -463,6 +458,53 @@ public int checkIdInCustomer(String customerId) {
 		}
 
 		return totalRow;
+	}
+	//마지막 비밀번호 변경 날짜 요청 메서드
+	public String selectLastUpdateDateCustomerPw(String customerId) {
+		String date = null; // 마지막 비밀번호 변경 날짜 들어갈 변수 초기화
+		//DB 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
+		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
+		String dbuser = "root";
+		// 연결하려는 DB의 아이디를 문자열 변수에 저장
+		String dbpw = "java1234";
+		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
+		
+		//비밀번호 변경날짜를 내림차순으로 정렬하는 쿼리, 시간 제외 날짜만 불러옴
+		String sql = "SELECT STR_TO_DATE(customer_pw_update_date,'%Y-%m-%d') date "
+				+ "FROM customer_pw_history "
+				+ "WHERE customer_id = ? "
+				+ "ORDER BY customer_pw_update_date DESC";
+		try {
+			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
+			System.out.println("[customerDao.selectLastUpdateDateCustomerPw()] conn:" + conn);
+
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId); // ?에 customerId 셋팅
+
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {//내림차순 중에서 한번만 rs.get --> 가장최근 날짜만 받아옴
+				date = rs.getString("date");
+				System.out.println("[customerDao.selectLastUpdateDateCustomerPw()] date :" + date);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				stmt.close();
+				conn.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		return date;
 	}
 		
 }

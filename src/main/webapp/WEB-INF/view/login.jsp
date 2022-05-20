@@ -66,11 +66,6 @@
 									</tr>
 									<tr>
 										<td colspan="2">
-											<input type="checkbox" name ="hostLogin" id="hostLogin" value="check"'>관리자 로그인</checkbox>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="2">
 											<button type="button" id="login" class="btn btn-primary">로그인</button>
 											<a href="${pageContext.request.contextPath}/all/insertCustomerController" class="btn roberto-btn btn-3 mt-15">회원가입</a>
 										</td>

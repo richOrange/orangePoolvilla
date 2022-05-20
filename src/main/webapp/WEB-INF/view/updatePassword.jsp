@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orange-poolvilla:home</title>
+<title>Orange-poolvilla:updatePassword</title>
 <meta name="description" content="Free Bootstrap Theme by uicookies.com">
 <meta name="keywords"
 	content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
@@ -44,7 +44,7 @@
 					<div class="col-md-8">
 						<div class="page-title probootstrap-animate">
 							<div class="probootstrap-breadcrumbs"></div>
-							<h1>My Page</h1>
+							<h1>비밀번호 변경</h1>
 						</div>
 					</div>
 				</div>
@@ -72,6 +72,10 @@
 								<!-- 이전비밀번호와 비밀번호 중복 오류 메세지 표시 부분 -->
 								<c:if test="${param.msg=='duplication'}">
 									<div class="helper">이전 비밀번호와 같게 변경하실 수 없습니다.</div>
+								</c:if>
+								<!-- 3개월 초과 비밀번호로 인한 접속시 메세지 표시 부분 -->
+								<c:if test="${param.msg=='over3month'}">
+									<div class="helper">3개월을 경과하여, 비밀번호를 변경 하여야 합니다.</div>
 								</c:if>
 								<table class="table table-hover">
 									<tr>

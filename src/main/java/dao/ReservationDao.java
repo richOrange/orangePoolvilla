@@ -84,10 +84,6 @@ public class ReservationDao {
 		} finally {
 			try {
 				//DB자원반납
-				rs.close();
-				stmt3.close();
-				stmt2.close();
-				stmt1.close();
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
