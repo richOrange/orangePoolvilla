@@ -88,7 +88,7 @@ public class PoolvillaPoolDao {
 			return list;
 		}
 		// orangepoolvilla db의 poolvilla_pool 테이블 데이터 삭제
-		public int deletePoolvillaPool(int poolNo) {
+		public int deletePoolvillaPool(int pvNo, int poolNo) {
 			// DB 자원 준비
 			Connection conn = null;
 			PreparedStatement stmt = null;

@@ -78,18 +78,38 @@ public class FacilityDao {
 	public int deleteFacility(int facilityNo) {
 		// DB 자원 준비
 		Connection conn = null;
-		PreparedStatement stmt = null;
-		int row = 0;
+		PreparedStatement stmt1 = null; //1. poolvilla_facility에서 삭제
+		PreparedStatement stmt2 = null; //2. facility에서 삭제
+		int row = -1;
 
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
 			System.out.println("deleteFacility DB 로딩");
-
-			String sql = "DELETE FROM facility WHERE facility_no = ?;";
-			stmt = conn.prepareStatement(sql);
-
-			stmt.setInt(1, facilityNo);
-			row = stmt.executeUpdate();
+			//오토커밋해제
+			conn.setAutoCommit(false);
+			//1. reservation테이블의 상태를 변경
+			String deletePoolvillaFacilitySpl = "DELETE FROM poolvilla_facility WHERE facility_no = ? ";
+			stmt1 = conn.prepareStatement(deletePoolvillaFacilitySpl);
+			stmt1.setInt(1, facilityNo);//
+			row =stmt1.executeUpdate();//check
+			if(row==0) { // 삭제실패
+				System.out.println("poolvilla_facility 삭제 실패");
+			}else { //삭제성공 시에만 다음 진행
+				System.out.println("poolvilla_facility 삭제 성공");
+	
+				String sql = "DELETE FROM facility WHERE facility_no = ?;";
+				stmt2 = conn.prepareStatement(sql);
+	
+				stmt2.setInt(1, facilityNo);
+				row = stmt2.executeUpdate();
+				if(row==0) {//결과가 0이면 삭제 실패, 롤백
+					System.out.println("facility 삭제 실패");
+					conn.rollback();
+				} else {//결과가 0이 아니면 삭제 성공, 최종커밋
+				System.out.println("facility 삭제 성공");
+				conn.commit();
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -97,12 +117,6 @@ public class FacilityDao {
 				// DB 자원 반환
 				conn.close();
 
-				// 디버깅 코드
-				if (row == 1) {
-					System.out.println("facility 삭제 성공");
-				} else {
-					System.out.println("facility 삭제 실패");
-				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

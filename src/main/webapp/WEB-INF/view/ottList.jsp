@@ -73,10 +73,10 @@
 				</thead>
 				<tbody>
 					<tr>
-						<c:forEach var="o" items="${list }">
+						<c:forEach var="o" items="${list }" varStatus = "status">
 							<tr>
-								<td>${o.getOttNo()}</td>
-								<td>${o.getOttName()}</td>
+								<td>${ status.count }</td>
+								<td>${o.ottName}</td>
 								<td>${o.getUpdateDate()}
 								<td>
 								<td><a

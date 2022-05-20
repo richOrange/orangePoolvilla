@@ -59,7 +59,7 @@
 			<thead>
 				<tr>
 					<th>Number</th>
-					<th>Cooking Tool Name</th>
+					<th>Facility Name</th>
 					<th>Count</th>
 					<th>&nbsp;</th>
 				</tr>
