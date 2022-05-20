@@ -275,4 +275,136 @@ public class ReviewDao {
 				
 				
 	}
+	
+	// 리뷰 테이블(review)에 있던 리뷰를 삭제하는 메서드 
+	public void deleteReview(int reservationNo) {
+		// DB 자원 준비 
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
+		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
+		String dbuser = "root";
+		// 연결하려는 DB의 아이디를 문자열 변수에 저장
+		String dbpw = "java1234";
+		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
+		
+		// 리뷰 테이블 삭제 쿼리 
+		String sql = "DELETE FROM review WHERE reservation_no = ?";
+		
+		try {
+			// DB 연결 
+			conn = DriverManager.getConnection(dburl,dbuser,dbpw);
+			System.out.println("[ReviewDao.deleteReview()] conn : " + conn);
+			// 자동 커밋을 해제 
+			conn.setAutoCommit(false);
+			
+			// 찜 목록 삭제 쿼리를 저장 
+			stmt = conn.prepareStatement(sql);
+			
+			stmt.setInt(1, reservationNo);
+			
+			
+			// 리뷰 삭제되면 1이라는 숫자값을 row에 저장 
+			int row = stmt.executeUpdate();
+			
+			if(row == 1) {
+				System.out.println("[ReviewDao.deleteReview()] row : " + row);
+			} else {
+				System.out.println("[ReviewDao.deleteReview()] row : 입력 실패");
+			}
+			
+			// 커밋 실행 
+			conn.commit();
+		} catch (Exception e) {
+			try {
+				// 예외 발생시 롤백 
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO: handle exception
+				e1.printStackTrace();
+			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				// DB 연결을 종료 
+				conn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	// 관리자가 확인하는 고객 리뷰 목록 
+	// 풀빌라 구매는 했지만 리뷰는 작성하지 않는 경우를 확인하는 메서드 
+		public ArrayList<HashMap<String, Object>> selectCustomerReviewList(int beginRow, int rowPerPage) {
+			
+	// 반환값으로 사용할 변수 선언 
+	ArrayList<HashMap<String, Object>> customerReviewList = new ArrayList<>();
+	
+	// DB 자원 준비 
+	Connection conn = null;
+	PreparedStatement stmt = null;
+	ResultSet rs = null;
+	
+	String sql = "SELECT rv.customer_id customerId, pv.pv_name pvName, r.satisfaction satisfaction, r.cleanliness cleanliness, r.revisit revisit"
+			+ " , LEFT(r.opinion, 5) opinion, LEFT(r.review_contents, 5) reviewContents , r.update_date updateDate, r.review_active reviewActive"
+			+ " FROM review r"
+			+ " INNER JOIN reservation rv"
+			+ " ON r.reservation_no = rv.reservation_no"
+			+ " INNER JOIN poolvilla pv"
+			+ " ON rv.pv_no = pv.pv_no"
+			+ " LIMIT ?,?";
+	
+	try {
+		// DB 연결 
+		conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+		// 디버깅 
+		System.out.println("[ReviewDao.selectCustomerReviewList()] conn : " + conn);
+		
+		// 리뷰 목록에 사용할 데이터를 가져오는 쿼리를 저장한다 
+		stmt= conn.prepareStatement(sql);
+		stmt.setInt(1, beginRow);
+		stmt.setInt(2, rowPerPage);
+		
+		// 테이블에 쿼리 내용들을 저장한다 
+		rs = stmt.executeQuery();
+		
+		while(rs.next()) {
+			// 1회용 VO HashMap 인스턴스 생성 
+			HashMap<String, Object> map = new HashMap<>();
+			
+			// map 인스턴스에 데이터 저장 
+			map.put("pvName", rs.getString("pvName"));
+			
+			map.put("customerId", rs.getString("customerId"));
+			map.put("pvName", rs.getString("pvName"));
+			map.put("satisfaction", rs.getInt("satisfaction"));
+			map.put("cleanliness", rs.getInt("cleanliness"));
+			map.put("revisit", rs.getString("revisit"));
+			map.put("opinion", rs.getString("opinion"));
+			map.put("reviewContents", rs.getString("reviewContents"));
+			map.put("updateDate", rs.getString("updateDate"));
+			map.put("reviewActive", rs.getString("reviewActive"));
+			
+			// 동적 배열에 map 데이터 저장 
+			customerReviewList.add(map);
+		}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} finally {
+		try {
+			// DB 연결 종료 
+			conn.close();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} 
+	}
+	
+	// 반환값 
+	return customerReviewList;
+}
 }

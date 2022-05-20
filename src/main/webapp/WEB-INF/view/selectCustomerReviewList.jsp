@@ -59,89 +59,44 @@
 		</ul>
 	</section>
 	<!-- END: slider  -->
-
-	<h3>리뷰 작성하지 않은 목록</h3>
+	
+	<h3>사용자 리뷰 목록</h3>
 
 	<div>
 		<table class="table table-hover">
 			<thead>
 				<tr>
+					<th>회원 아이디</th>
 					<th>풀빌라 이름</th>
-					<th>지역</th>
-					<th>체크 인</th>
-					<th>체크 아웃</th>
-					
-					<!-- <th>나의 리뷰 최종 업데이트 날짜</th>  -->
-					
-					<th>나의 리뷰</th>
+					<th>만족도</th>
+					<th>청결도</th>
+					<th>재방문 의사</th>
+					<th>판매자에게 보내는 의견</th>
+					<th>리뷰 내용</th>
+					<th>업데이트된 날짜</th>
+					<th>리뷰 가리기</th>		
 				</tr>
 			</thead>
 
 			<tbody>
-				<c:forEach var="r" items="${reviewList}">
+				<c:forEach var="r" items="${customerReviewList}">
 					<tr>
-						<td><a
-							href="${pageContext.request.contextPath}/all/selectPoolvillaOneController?pvNo=${r.pvNo}">${r.pvName }</a>
-						</td>
-
-						<td>${r.locationName }</td>
-						<td>${r.reservationBeginDate }</td>
-						<td>${r.reservationLastDate }</td>
-
-						<!-- <td>${r.updateDate }</td> -->
-
-						<!-- 리뷰 작성을 한번도 한적이 없다면 리뷰 입력폼으로 이동하고, 
-									 리뷰 작성을 한번이라도 헀다면 리뷰 수정하는 폼으로 이동 -->
-						<!-- 리뷰 삭제는 리뷰 수정폼에서만 가능하다 -->
-						<td><a
-							href="${pageContext.request.contextPath}/customer/insertReviewController?reservationNo=${r.reservationNo}">리뷰
-								작성</a></td>
+						<td>${r.customerId }</td>
+						<td>${r.pvName }</td>
+						<td>${r.satisfaction }</td>
+						<td>${r.cleanliness }</td>
+						<td>${r.revisit }</td>
+						<td>${r.opinion }</td>
+						<td>${r.reviewContents }</td>
+						<td>${r.updateDate }</td>
+						<td>${r.reviewActive }</td>						
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
 
-	<h3>리뷰 작성한 목록</h3>
-
-	<div>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>풀빌라 이름</th>
-					<th>지역</th>
-					<th>체크 인</th>
-					<th>체크 아웃</th>
-					<!-- <th>나의 리뷰 최종 업데이트 날짜</th> -->
-					<th>나의 리뷰</th>
-				</tr>
-			</thead>
-
-			<c:forEach var="rw" items="${reviewListWroteReview}">
-
-
-				<tr>
-					<td><a
-						href="${pageContext.request.contextPath}/all/selectPoolvillaOneController?pvNo=${rw.pvNo}">${rw.pvName }</a>
-					</td>
-					<td>${rw.locationName }</td>
-					<td>${rw.reservationBeginDate }</td>
-					<td>${rw.reservationLastDate }</td>
-					<!-- <td>${r.updateDate }</td> -->
-					<td><a
-						href="${pageContext.request.contextPath}/customer/deleteReviewController?reservationNo=${rw.reservationNo}">리뷰
-							삭제</a></td>
-				</tr>
-
-
-			</c:forEach>
-
-
-		</table>
-	</div>
-
-
-	<!-- 페이징 부분 시작 -->
+<!-- 페이징 부분 시작 -->
 	<div>
 
 		<!-- 이전 목록 표시 -->

@@ -13,16 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.ReviewDao;
-import dao.WishListDao;
 
-@WebServlet("/customer/myReviewController")
-public class MyReviewController extends HttpServlet {
+@WebServlet("/host/selectCustomerReviewController")
+public class SelectCustomerReviewController extends HttpServlet {
 	
 	private ReviewDao reviewDao;
 	
-	// header.jsp 페이지에서 리뷰를 선택하면 실행되는 내용 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		// 현재 연결한 클라이언트(브라우저)에 대한 세션값을 받아옴. 
 		HttpSession session = request.getSession();
 		
@@ -31,7 +28,7 @@ public class MyReviewController extends HttpServlet {
 		
 		// 세션에 로그인된 사용자 아이디를 받는다 
 		String customerId = (String)sessionLoginMember.get("memberId");
-		System.out.println("[/customer/myWishListController.doGet()] customerId : " + customerId);	
+		System.out.println("[/host/selectCustomerReviewController.doGet()] customerId : " + customerId);	
 		
 		// 유효성 검사 코드. customerId 값을 받지 못하면 로그인 페이지로 이동 
 		if(customerId == null) {
@@ -75,37 +72,19 @@ public class MyReviewController extends HttpServlet {
 		System.out.println("[/customer/myWishListController.doGet()] lastPage : "+lastPage);
 		request.setAttribute("lastPage", lastPage);
 		
-		// ` 페이징 처리 코드 끝 ` 
+		// ` 페이징 처리 코드 끝 `
 		
+		// DAO 메서드 생성 후 받아오기 
 		// 리뷰 리스트 뽑아오는 메서드 호출 DAO 
-		ArrayList<HashMap<String, Object>> reviewList = reviewDao.selectReviewList(customerId, beginRow, rowPerPage);
-		// myReviewList.jsp 페이지로 리뷰 목록 보냄 
-		request.setAttribute("reviewList", reviewList);
+		ArrayList<HashMap<String, Object>> customerReviewList = reviewDao.selectCustomerReviewList(beginRow, rowPerPage);
+		// selectCustomerReviewList.jsp 페이지로 리뷰 목록 보냄 
+		request.setAttribute("customerReviewList", customerReviewList);
 		
-		// 리뷰 리스트 뽑아오는 메서드 호출 DAO 
-		ArrayList<HashMap<String, Object>> reviewListWroteReview = reviewDao.selectReviewListWroteReview(customerId, beginRow, rowPerPage);
-		// myReviewList.jsp 페이지로 리뷰 목록 보냄 
-		request.setAttribute("reviewListWroteReview", reviewListWroteReview);
-		
-		request.getRequestDispatcher("/WEB-INF/view/myReviewList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/selectCustomerReviewList.jsp").forward(request, response);
 	}
-
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 현재 연결한 클라이언트(브라우저)에 대한 세션값을 받아옴. 
-		HttpSession session = request.getSession();
 		
-		// sessionLoginMember 받을 변수 선언 
-		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
-		
-		// 세션에 로그인된 사용자 아이디를 받는다 
-		String customerId = (String)sessionLoginMember.get("memberId");
-		System.out.println("[/customer/myWishListController.doPost()] customerId : " + customerId);	
-		
-		// 유효성 검사 코드. customerId 값을 받지 못하면 로그인 페이지로 이동 
-		if(customerId == null) {
-			response.sendRedirect(request.getContextPath()+"/all/loginController");
-			return;
-		}
 	}
 
 }
