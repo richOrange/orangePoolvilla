@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +42,7 @@
 							<div class="probootstrap-breadcrumbs">
 								<h1>리뷰 목록</h1>
 							</div>
-							
+
 						</div>
 
 					</div>
@@ -58,71 +59,107 @@
 		</ul>
 	</section>
 	<!-- END: slider  -->
-	
+
+	<h3>리뷰 작성하지 않은 목록</h3>
+
 	<div>
-		<table class = "table table-hover">
+		<table class="table table-hover">
 			<thead>
 				<tr>
 					<th>풀빌라 이름</th>
 					<th>지역</th>
 					<th>체크 인</th>
 					<th>체크 아웃</th>
-					<th>나의 리뷰 최종 업데이트 날짜</th>
+					
+					<!-- <th>나의 리뷰 최종 업데이트 날짜</th>  -->
+					
 					<th>나의 리뷰</th>
 				</tr>
 			</thead>
-			
+
 			<tbody>
 				<c:forEach var="r" items="${reviewList}">
 					<tr>
-						<td>
-							<a href="${pageContext.request.contextPath}/all/selectPoolvillaOneController?pvNo=${r.pvNo}">${r.pvName }</a>
+						<td><a
+							href="${pageContext.request.contextPath}/all/selectPoolvillaOneController?pvNo=${r.pvNo}">${r.pvName }</a>
 						</td>
-						
+
 						<td>${r.locationName }</td>
 						<td>${r.reservationBeginDate }</td>
 						<td>${r.reservationLastDate }</td>
-						<td>${r.updateDate }</td>
-						
+
+						<!-- <td>${r.updateDate }</td> -->
+
 						<!-- 리뷰 작성을 한번도 한적이 없다면 리뷰 입력폼으로 이동하고, 
-							 리뷰 작성을 한번이라도 헀다면 리뷰 수정하는 폼으로 이동 -->
+									 리뷰 작성을 한번이라도 헀다면 리뷰 수정하는 폼으로 이동 -->
 						<!-- 리뷰 삭제는 리뷰 수정폼에서만 가능하다 -->
-						<td>
-							<c:if test="${r.updateDate == null}">
-								<a href="${pageContext.request.contextPath}/customer/insertReviewController?reservationNo=${r.reservationNo}">리뷰 작성</a>
-							</c:if>
-							
-							<c:if test="${r.updateDate != null}">
-								<a href="${pageContext.request.contextPath}/customer/updateReviewController">리뷰 수정</a>
-							</c:if>
-						</td>
+						<td><a
+							href="${pageContext.request.contextPath}/customer/insertReviewController?reservationNo=${r.reservationNo}">리뷰
+								작성</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>
-		
 		</table>
 	</div>
 
+	<h3>리뷰 작성한 목록</h3>
+
+	<div>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>풀빌라 이름</th>
+					<th>지역</th>
+					<th>체크 인</th>
+					<th>체크 아웃</th>
+					<!-- <th>나의 리뷰 최종 업데이트 날짜</th> -->
+					<th>나의 리뷰</th>
+				</tr>
+			</thead>
+
+			<c:forEach var="rw" items="${reviewListWroteReview}">
+
+
+				<tr>
+					<td><a
+						href="${pageContext.request.contextPath}/all/selectPoolvillaOneController?pvNo=${rw.pvNo}">${rw.pvName }</a>
+					</td>
+					<td>${rw.locationName }</td>
+					<td>${rw.reservationBeginDate }</td>
+					<td>${rw.reservationLastDate }</td>
+					<!-- <td>${r.updateDate }</td> -->
+					<td><a
+						href="${pageContext.request.contextPath}/customer/updateReviewController">리뷰
+							수정</a></td>
+				</tr>
+
+
+			</c:forEach>
+
+
+		</table>
+	</div>
+
+
 	<!-- 페이징 부분 시작 -->
-					<div>
-						
-						<!-- 이전 목록 표시 -->
-						<!--  
+	<div>
+
+		<!-- 이전 목록 표시 -->
+		<!--  
 						<c:if test="${minPage > 10 }">
 							<button type="submit" value="${minPage-10}" name="minPage"
 								class="btn">이전목록</button>
 						</c:if>
 						-->
-						
-						<!-- 이전 부분 -->
-						<c:if test="${currentPage > 1}">
-							<button type="submit" value="${currentPage-1}" name="currentPage" class="btn">
-								이전
-							</button>
-						</c:if>
-						
-						<!-- 목록 사이 번호 표시 -->
-						<!--  
+
+		<!-- 이전 부분 -->
+		<c:if test="${currentPage > 1}">
+			<button type="submit" value="${currentPage-1}" name="currentPage"
+				class="btn">이전</button>
+		</c:if>
+
+		<!-- 목록 사이 번호 표시 -->
+		<!--  
 						<c:forEach var="i" begin="${minPage}" end="${minPage+9}" step="1">
 							<c:if test="${i <= lastPage}">
 								<c:if test="${currentPage == i}">
@@ -137,26 +174,26 @@
 
 						</c:forEach>
 						-->
-						
-						<!-- 다음 부분 -->
-						<c:if test="${currentPage < lastPage }">
-							<button type="submit" value="${currentPage+1}" name="currentPage" class="btn">
-								다음
-							</button>
-						</c:if>
-						
-						<!-- 다음목록 표시 -->
-						<!--  
+
+		<!-- 다음 부분 -->
+		<c:if test="${currentPage < lastPage }">
+			<button type="submit" value="${currentPage+1}" name="currentPage"
+				class="btn">다음</button>
+		</c:if>
+
+		<!-- 다음목록 표시 -->
+		<!--  
 						<c:if test="${minPage+10<= lastPage }">
 							<button type="submit" value="${minPage+10 }" name="minPage"
 								class="btn">다음목록</button>
 						</c:if>
 						-->
-					</div>
-				</div>
-				<!-- 페이징 부분 끝 -->
+	</div>
+	</div>
+	<!-- 페이징 부분 끝 -->
+
 	
-<section class="probootstrap-section">
+	<section class="probootstrap-section">
 		<div class="container">
 			<div class="row heading">
 				<h2 class="mt0 mb50 text-center">Explore Our Neighborhoods</h2>
@@ -229,6 +266,7 @@
 			</div>
 		</div>
 	</section>
+
 	<!-- END: section -->
 
 	<section class="probootstrap-half reverse">

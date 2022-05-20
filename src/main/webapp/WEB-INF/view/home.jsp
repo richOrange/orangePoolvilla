@@ -30,7 +30,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8 col-md-offset-2">
-
+ 
             <div class="probootstrap-home-search probootstrap-animate">
               <form id ="searchForm" action="${pageContext.request.contextPath}/all/poolvillaListController" method="get">
               <!-- 유효성 메세지 출력 부분-->

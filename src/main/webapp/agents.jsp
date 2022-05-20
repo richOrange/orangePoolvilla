@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/styles-merged.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/style.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/custom.css">
-
+ 
   </head>
   
   	<!-- jquery -->

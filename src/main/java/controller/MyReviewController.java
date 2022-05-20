@@ -82,6 +82,11 @@ public class MyReviewController extends HttpServlet {
 		// myReviewList.jsp 페이지로 리뷰 목록 보냄 
 		request.setAttribute("reviewList", reviewList);
 		
+		// 리뷰 리스트 뽑아오는 메서드 호출 DAO 
+		ArrayList<HashMap<String, Object>> reviewListWroteReview = reviewDao.selectReviewListWroteReview(customerId, beginRow, rowPerPage);
+		// myReviewList.jsp 페이지로 리뷰 목록 보냄 
+		request.setAttribute("reviewListWroteReview", reviewListWroteReview);
+		
 		request.getRequestDispatcher("/WEB-INF/view/myReviewList.jsp").forward(request, response);
 	}
 

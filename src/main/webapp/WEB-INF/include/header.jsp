@@ -13,7 +13,7 @@
   <header role="banner" class="probootstrap-header">
     <div class="container">
         <a href="${pageContext.request.contextPath}/all/homeController" class="probootstrap-logo">Orange-poolvilla</a>
-        
+         
 
         <nav role="navigation" class="probootstrap-nav hidden-xs">
           <ul class="probootstrap-main-nav">

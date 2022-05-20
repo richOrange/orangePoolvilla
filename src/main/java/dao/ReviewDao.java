@@ -12,7 +12,7 @@ import vo.Review;
 
 public class ReviewDao {
 	
-	// 사용자 리뷰 목록 확인하는 메서드 
+	// 풀빌라 구매는 했지만 리뷰는 작성하지 않는 경우를 확인하는 메서드 
 	public ArrayList<HashMap<String, Object>> selectReviewList(String customerId, int beginRow, int rowPerPage) {
 		
 		// 반환값으로 사용할 변수 선언 
@@ -23,22 +23,15 @@ public class ReviewDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		String sql = "SELECT pv.pv_name pvName, loc.location_name locationName"
-				+ " , rv.reservation_begin_date reservationBeginDate"
-				+ " , rv.reservation_last_date reservationLastDate"
-				+ " , r.update_date updateDate"
-				+ " , pv.pv_no pvNo"
-				+ " , rv.reservation_no reservationNo"
-				+ " FROM review r"
-				+ " RIGHT JOIN reservation rv"
-				+ " ON r.reservation_no = rv.reservation_no"
-				+ " INNER JOIN customer c"
-				+ " ON rv.customer_id = c.customer_id"
+		String sql = "SELECT pv.pv_name pvName, loc.location_name locationName, rv.reservation_begin_date reservationBeginDate, rv.reservation_last_date reservationLastDate"
+				+ " , pv.pv_no pvNo, rv.reservation_no reservationNo"
+				+ " FROM reservation rv"
 				+ " INNER JOIN poolvilla pv"
 				+ " ON rv.pv_no = pv.pv_no"
 				+ " INNER JOIN poolvilla_location loc"
 				+ " ON pv.location_no = loc.location_no"
-				+ " WHERE c.customer_id = ? AND rv.reservation_status = '이용완료'"
+				+ " WHERE rv.customer_id = ? AND rv.reservation_status = '이용완료'"
+				+ " AND rv.reservation_no NOT IN (SELECT reservation_no FROM review)"
 				+ " LIMIT ?,?";
 		
 		try {
@@ -65,7 +58,7 @@ public class ReviewDao {
 				map.put("locationName", rs.getString("locationName"));
 				map.put("reservationBeginDate", rs.getString("reservationBeginDate"));
 				map.put("reservationLastDate", rs.getString("reservationLastDate"));
-				map.put("updateDate", rs.getString("updateDate"));
+				// map.put("updateDate", rs.getString("updateDate"));
 				// 리뷰 목록에서 풀빌라 상세 보기 페이지로 넘어가려면 pvNo가 필요해서 같이 가져옴 
 				map.put("pvNo", rs.getInt("pvNo"));
 				// 리뷰 작성이 없는 사용자가 리뷰를 작성하기 위해서는 reservationNo 필요 
@@ -88,6 +81,75 @@ public class ReviewDao {
 		// 반환값 
 		return reviewList;
 	}
+	
+	// 풀빌라 구매는 했지만 리뷰는 작성하지 않는 경우를 확인하는 메서드 
+		public ArrayList<HashMap<String, Object>> selectReviewListWroteReview(String customerId, int beginRow, int rowPerPage) {
+			
+			// 반환값으로 사용할 변수 선언 
+			ArrayList<HashMap<String, Object>> reviewListWroteReview = new ArrayList<>();
+			
+			// DB 자원 준비 
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			
+			String sql = "SELECT pv.pv_name pvName, loc.location_name locationName, rv.reservation_begin_date reservationBeginDate, rv.reservation_last_date reservationLastDate"
+					+ " , pv.pv_no pvNo, rv.reservation_no reservationNo"
+					+ " FROM reservation rv"
+					+ " INNER JOIN poolvilla pv"
+					+ " ON rv.pv_no = pv.pv_no"
+					+ " INNER JOIN poolvilla_location loc"
+					+ " ON pv.location_no = loc.location_no"
+					+ " WHERE rv.customer_id = ? AND rv.reservation_status = '이용완료'"
+					+ " AND rv.reservation_no IN (SELECT reservation_no FROM review)";
+			
+			try {
+				// DB 연결 
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+				// 디버깅 
+				System.out.println("[ReviewDao.selectReviewListWroteReview()] conn : " + conn);
+				
+				// 리뷰 목록에 사용할 데이터를 가져오는 쿼리를 저장한다 
+				stmt= conn.prepareStatement(sql);
+				stmt.setString(1, customerId);
+				stmt.setInt(2, beginRow);
+				stmt.setInt(3, rowPerPage);
+				
+				// 테이블에 쿼리 내용들을 저장한다 
+				rs = stmt.executeQuery();
+				
+				while(rs.next()) {
+					// 1회용 VO HashMap 인스턴스 생성 
+					HashMap<String, Object> map = new HashMap<>();
+					
+					// map 인스턴스에 데이터 저장 
+					map.put("pvName", rs.getString("pvName"));
+					map.put("locationName", rs.getString("locationName"));
+					map.put("reservationBeginDate", rs.getString("reservationBeginDate"));
+					map.put("reservationLastDate", rs.getString("reservationLastDate"));
+					// map.put("updateDate", rs.getString("updateDate"));
+					// 리뷰 목록에서 풀빌라 상세 보기 페이지로 넘어가려면 pvNo가 필요해서 같이 가져옴 
+					map.put("pvNo", rs.getInt("pvNo"));
+					// 리뷰 작성이 없는 사용자가 리뷰를 작성하기 위해서는 reservationNo 필요 
+					map.put("reservationNo", rs.getString("reservationNo"));
+					// 동적 배열에 map 데이터 저장 
+					reviewListWroteReview.add(map);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					// DB 연결 종료 
+					conn.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} 
+			}
+			
+			// 반환값 
+			return reviewListWroteReview;
+		}
 	
 	// 리뷰 목록 전체 행의 수 구하는 메서드 
 	public int selectReviewListTotalRow(String customerId) {
