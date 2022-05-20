@@ -41,7 +41,7 @@
 							<div class="probootstrap-breadcrumbs">
 								<a href="${pageContext.request.contextPath}/template/#">Home</a><span>About</span>
 							</div>
-							<h1>Cooking Tool List</h1>
+							<h1>Ott List</h1>
 						</div>
 
 					</div>
@@ -80,7 +80,7 @@
 								<td>${o.getUpdateDate()}
 								<td>
 								<td><a
-									href="${pageContext.request.contextPath}/host/deleteOttController?ottNo=${o.getOttNo()}"
+									href="${pageContext.request.contextPath}/host/deleteOttController?ottNo=${o.getOttNo()}&pvNo=${ param.pvNo }"
 									class="btn btn-outline-secondary btn-sm">삭제</a></td>
 							</tr>
 						</c:forEach>
@@ -95,12 +95,13 @@
 				method="post" class="probootstrap-form mb60">
 				<div class="row">
 					<div class="form-group">
+						<input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
 						<input type="text" name="ottName" class="form-control"
-							placeholder="Please enter ott ">
+							placeholder="Please enter the ott ">
 					</div>
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary" id="submit"
-							name="submit" value="Save">Save</button>
+						<input type="submit" class="btn btn-primary" id="submit" name="submit" value="Save">
+						<a href="${pageContext.request.contextPath}/host/insertPoolvillaOttController?pvNo=${ pvNo }" class = "btn btn-primary float-right">Back</a>
 					</div>
 				</div>
 			</form>

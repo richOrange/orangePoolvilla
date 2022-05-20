@@ -12,9 +12,12 @@ import dao.OttDao;
 
 @WebServlet("/host/deleteOttController")
 public class DeleteOttController extends HttpServlet {
+	
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 삭제할 정보 번호 받아오기
+		int pvNo = Integer.parseInt(request.getParameter("pvNo"));
+		
 		int ottNo = 0;
 		if(request.getParameter("ottNo") != null) {
 			ottNo = Integer.parseInt(request.getParameter("ottNo"));
@@ -25,13 +28,14 @@ public class DeleteOttController extends HttpServlet {
 		
 		
 		OttDao ottDao = new OttDao(); // 메서드 사용을 위한 객체 생성
+		
 		int row = ottDao.deleteOtt(ottNo);
 		
 		if(row == 1 ) {
-			System.out.println("삭제 성공");
-			response.sendRedirect(request.getContextPath() + "/host/ottController");
+			System.out.println("[DeleteOttController] 삭제 성공");
+			response.sendRedirect(request.getContextPath() + "/host/ottController?pvNo=" + pvNo);
 		} else {
-			System.out.println("삭제 실패");
+			System.out.println("[DeleteOttController] 삭제 실패");
 			response.sendRedirect(request.getContextPath() + "/host/ottController?ottNo="+ottNo);
 		}
 

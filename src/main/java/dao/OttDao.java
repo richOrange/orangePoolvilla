@@ -201,7 +201,7 @@ public class OttDao {
 		}
 		
 		// pvNo와 ottNo에 따른 orangepoolvilla db의 poolvilla_ott 테이블 데이터 삭제
-		public void deletePoolvillOtt(int pvNo, int ottNo) {
+		public void deletePoolvillaOtt(int pvNo, int ottNo) {
 			// 데이터베이스 자원 준비
 			Connection conn = null;
 			PreparedStatement stmt = null;
