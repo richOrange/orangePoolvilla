@@ -72,7 +72,6 @@
 				<tr>
 				<c:if test="${ not empty prbList }">
 					<c:forEach var = "prb" items = "${ prbList }" varStatus = "status">
-						<form method="post" action="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBed">
 							<input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
 							<input type = "hidden" name = "roomNo" value = "${ prb.roomNo }" readonly>
 							<tr>
@@ -81,9 +80,8 @@
 								<td>${ prb.roomInfo }</td>
 								<td>${ prb.roomSize }</td>
 								<td>${ prb.bed }</td>
-								<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBed?pvNo=${ pvNo }&roomNo=${ prb.roomNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+								<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBedController?pvNo=${ pvNo }&roomNo=${ prb.roomNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
 							</tr>
-						</form>
 					</c:forEach>
 				</c:if>
 				</tr>
@@ -95,7 +93,7 @@
 		<h2>Enter the room info</h2>
 		<br>
         <!-- Form -->
-        <form action="${pageContext.request.contextPath}/host/insertPoolvillaRoom#########" method="post" class="probootstrap-form mb60">
+        <form action="${pageContext.request.contextPath}/host/insertPoolvillaRoomNBedController" method="post" class="probootstrap-form mb60">
             <div class="row">
             <div class="form-group">
             <input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
@@ -119,11 +117,11 @@
 		<h2>Enter the room bed</h2>
 		<br>
         <!-- Form -->
-        <form action="${pageContext.request.contextPath}/host/insertPoolvillaRoom#########" method="post" class="probootstrap-form mb60">
+        <form action="${pageContext.request.contextPath}/host/insertRoomNBedController" method="post" class="probootstrap-form mb60">
             <div class="row">
             <div class="form-group">
             <input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
-              <select name="roomName" class="form-control">
+              <select name="roomNo" class="form-control">
                	<option value="-1">:: room ::</option>
                  <c:forEach var ="r" items="${ roomNameList }">
                     <option value="${ r.roomNo }">${ r.roomName }</option>
