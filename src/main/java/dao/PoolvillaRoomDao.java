@@ -128,7 +128,7 @@ public class PoolvillaRoomDao {
 					+ "		LEFT JOIN room_bed rb "
 					+ "		ON pr.room_no = rb.room_no "
 					+ "		WHERE pr.pv_no = ? "
-					+ "		GROUP BY rb.room_no ";
+					+ "		GROUP BY pr.room_no ";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, pvNo);
 			rs = stmt.executeQuery();
