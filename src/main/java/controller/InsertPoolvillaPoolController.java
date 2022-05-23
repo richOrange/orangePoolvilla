@@ -62,7 +62,7 @@ public class InsertPoolvillaPoolController extends HttpServlet {
 					pvNo = Integer.parseInt(request.getParameter("pvNo"));
 				}
 				if(request.getParameter("poolNo") != null || request.getParameter("poolNo") !="") {
-					pvNo = Integer.parseInt(request.getParameter("pvNo"));
+					poolNo = Integer.parseInt(request.getParameter("poolNo"));
 				}
 				if(request.getParameter("poolName") != null || request.getParameter("poolName") !="") {
 					poolName = request.getParameter("poolName");
