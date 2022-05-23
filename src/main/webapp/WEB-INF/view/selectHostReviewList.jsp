@@ -86,28 +86,34 @@
 							<td>${r.satisfaction }</td>
 							<td>${r.cleanliness }</td>
 							<td>${r.revisit }</td>
-							<!-- 상세보기처럼 쿼리를 짜려면 customerId와 pvNo가 같이 있어야 함 -->
-							<!-- pvNo를 어떻게 받아서 쿼리에 넣을 수 있을지 ?  -->
+							
 							<td>
 								<button type = "submit" class="btn btn-light" name="checkOpinion" value = "${r.reservationNo}">의견보기</button>
 							</td>
-								<c:if test="${not empty checkOpinion && checkOpinion == r.resrvationNo }">
-									<td></td>
-									<td colspan = "7">${r.opinion}</td>
-									<td></td>
-								</c:if>
+							
 							<td>
-								<button type = "submit" class="btn btn-light" name="checkreviewContents" value = "${r.reservationNo}">리뷰내용보기</button>
-								<c:if test="${not empty checkreviewContents && checkreviewContents == r.resrvationNo }">
-									<input>
-									<td></td>
-									<td colspan = "7">${reviewContents}</td>
-									<td></td>
-								</c:if>
+								<button type = "submit" class="btn btn-light" name="checkReviewContents" value="${r.reservationNo}">리뷰내용보기</button>
+								
 							</td>
+							
 							<td>${r.updateDate }</td>
 							<td>${r.reviewActive }</td>						
 						</tr>
+								<c:if test="${(not empty checkedOpinion) && (checkedOpinion == r.reservationNo)}">
+									<tr>
+										<td>건의사항</td>
+										<td colspan = "7">${r.opinion}</td>
+										<td><button type = "submit" class="btn btn-light" name="checkOpinion" >닫기</button></td>
+									</tr>
+								</c:if>
+								
+								<c:if test="${not empty checkedReviewContents}">
+									<c:if test="${checkedReviewContents eq r.reservationNo}">
+										<td>사용자 개인 리뷰</td>
+										<td colspan = "7">${r.reviewContents}</td>
+										<td><button type = "submit" class="btn btn-light" name="checkReviewContents" >닫기</button></td>
+									</c:if>   
+								</c:if>
 					</c:forEach>
 				</tbody>
 			</table>
@@ -115,9 +121,9 @@
 		<!-- 검색부분 시작 -->
 		<div>
 			<select name = "search">
-				<option value = "${search}">${search }</option>
-				<option value = "${r.customerId }">${r.customerId }</option>
-				<option value = "${r.pvName }">${r.pvName }</option>
+				<option value = "${search}">search</option>
+				<option value = "rv.customer_id">customerId</option>
+				<option value = "pv.pv_name">pvName</option>
 			</select>
 			<input type = text name="keyword" value="${keyword }">
 			<button type = "submit" class="btn btn-outline-info">검색</button>

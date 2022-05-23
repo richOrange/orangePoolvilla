@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import dao.ReviewDao;
 
-@WebServlet("/host/selectCustomerReviewController")
-public class SelectCustomerReviewController extends HttpServlet {
+@WebServlet("/host/selectHostReviewController")
+public class SelectHostReviewController extends HttpServlet {
 	
 	private ReviewDao reviewDao;
 	
@@ -28,7 +28,7 @@ public class SelectCustomerReviewController extends HttpServlet {
 		
 		// 세션에 로그인된 사용자 아이디를 받는다 
 		String hostId = (String)sessionLoginMember.get("memberId");
-		System.out.println("[/host/selectCustomerReviewController.doGet()] hostId : " + hostId);	
+		System.out.println("[/host/selectHostReviewController.doGet()] hostId : " + hostId);	
 		
 		// 유효성 검사 코드. hostId 값을 받지 못하면 로그인 페이지로 이동 
 		if(hostId == null) {
@@ -54,12 +54,12 @@ public class SelectCustomerReviewController extends HttpServlet {
 		
 		// 시작 행 구하는 로직 
 		int beginRow = (currentPage-1) * rowPerPage;
-		System.out.println("[/customer/myWishListController.doGet()] beginRow : "+beginRow);
+		System.out.println("[/host/selectHostReviewController.doGet()] beginRow : "+beginRow);
 		request.setAttribute("beginRow", beginRow);
 		
 		// 전체 행의 개수 구하는 코드 
         int totalRow = reviewDao.selectReviewListTotalRow(hostId);
-        System.out.println("[/customer/myWishListController.doGet()] totalRow : "+totalRow);
+        System.out.println("[/host/selectHostReviewController.doGet()] totalRow : "+totalRow);
 		request.setAttribute("totalRow", totalRow);
 		
 		// 마지막 페이지 구하는 로직 
@@ -69,27 +69,59 @@ public class SelectCustomerReviewController extends HttpServlet {
 		} else {
 			lastPage = (totalRow / rowPerPage) + 1;
 		}
-		System.out.println("[/customer/myWishListController.doGet()] lastPage : "+lastPage);
+		System.out.println("[/host/selectHostReviewController.doGet()] lastPage : "+lastPage);
 		request.setAttribute("lastPage", lastPage);
 		
 		// ` 페이징 처리 코드 끝 `
 		
+		// 검색 카테고리 변수 초기화, 기본값 customerId 
+		String search = "rv.customer_id";
+		if(request.getParameter("search") != null ) {
+			search = request.getParameter("search");
+			System.out.println("[/host/selectHostReviewController.doGet()] search : " + search);
+			
+		}
+		request.setAttribute("search", search);
+		
+		// 검색창에 입력할 내용 
+		String keyword = "";
+		if(request.getParameter("keyword") != null) {
+			keyword = request.getParameter("keyword");
+			System.out.println("[/host/selectHostReviewController.doGet()] keyword : " + keyword); 
+			
+		}
+		request.setAttribute("keyword", keyword);
+		
 		// DAO 메서드 생성 후 받아오기 
 		// 리뷰 리스트 뽑아오는 메서드 호출 DAO 
-		ArrayList<HashMap<String, Object>> customerReviewList = reviewDao.selectCustomerReviewList(beginRow, rowPerPage);
 		// selectCustomerReviewList.jsp 페이지로 리뷰 목록 보냄 
-		
+		ArrayList<HashMap<String, Object>> customerReviewList = new ArrayList<>(); // reviewDao.selectCustomerReviewList(beginRow, rowPerPage);
+		// 검색 전 고객 리뷰 목록 호출 
+		if(keyword.equals("")) {
+			customerReviewList = reviewDao.selectCustomerReviewList(beginRow, rowPerPage);
+		} else {
+			customerReviewList = reviewDao.searchCustomerReviewList(search, keyword, beginRow, rowPerPage);
+		}
 		
 		request.setAttribute("customerReviewList", customerReviewList);
-		if(request.getParameter("checkreviewContents")!=null) {
-			request.setAttribute("checkreviewContents", request.getParameter("checkreviewContents"));
+		
+		String checkedReviewContents = null;
+		if(request.getParameter("checkReviewContents")!=null) {
+			checkedReviewContents = request.getParameter("checkReviewContents");
+			
+			System.out.println("[/host/selectHostReviewController.doGet()] checkedReviewContents : " + checkedReviewContents);
 		}
+		request.setAttribute("checkedReviewContents", checkedReviewContents);
+		
+		String checkedOpinion;
 		if(request.getParameter("checkOpinion")!=null) {
-			request.setAttribute("checkOpinion", request.getParameter("checkOpinion"));
+			checkedOpinion = request.getParameter("checkOpinion");
+			
+			System.out.println("[/host/selectHostReviewController.doGet()] checkedOpinion : " + checkedOpinion);
 		}
+		request.setAttribute("checkedOpinion", request.getParameter("checkOpinion"));
 		
-		
-		request.getRequestDispatcher("/WEB-INF/view/selectCustomerReviewList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/selectHostReviewList.jsp").forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

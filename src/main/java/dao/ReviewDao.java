@@ -82,7 +82,7 @@ public class ReviewDao {
 		return reviewList;
 	}
 	
-	// 풀빌라 구매는 했지만 리뷰는 작성하지 않는 경우를 확인하는 메서드 
+	// 풀빌라 구매는 했지만 리뷰 작성한 경우를 확인하는 메서드 
 		public ArrayList<HashMap<String, Object>> selectReviewListWroteReview(String customerId, int beginRow, int rowPerPage) {
 			
 			// 반환값으로 사용할 변수 선언 
@@ -338,8 +338,7 @@ public class ReviewDao {
 	}
 	
 	// 관리자가 확인하는 고객 리뷰 목록 
-	// 풀빌라 구매는 했지만 리뷰는 작성하지 않는 경우를 확인하는 메서드 
-		public ArrayList<HashMap<String, Object>> selectCustomerReviewList(int beginRow, int rowPerPage) {
+	public ArrayList<HashMap<String, Object>> selectCustomerReviewList(int beginRow, int rowPerPage) {
 			
 	// 반환값으로 사용할 변수 선언 
 	ArrayList<HashMap<String, Object>> customerReviewList = new ArrayList<>();
@@ -355,8 +354,8 @@ public class ReviewDao {
 			+ "					, r.satisfaction satisfaction"
 			+ "					, r.cleanliness cleanliness"
 			+ "					, r.revisit revisit"
-			+ " 				, LEFT(r.opinion, 5) opinion"
-			+ "					, LEFT(r.review_contents, 5) reviewContents "
+			+ " 				, r.opinion opinion"
+			+ "					, r.review_contents reviewContents "
 			+ "					, r.update_date updateDate"
 			+ "					, r.review_active reviewActive"
 			+ " 	FROM review r"
@@ -484,5 +483,84 @@ public class ReviewDao {
 			return poolvillaReviewList;
 		}
 		
-		
+		// 검색 기능 : 고객별, 풀빌라 이름별 모아보기 메서드 
+		public ArrayList<HashMap<String, Object>> searchCustomerReviewList(String search, String keyword, int beginRow, int rowPerPage) {
+			
+			// 반환값으로 사용할 변수 선언 
+			ArrayList<HashMap<String, Object>> customerReviewList = new ArrayList<>();
+			
+			// DB 자원 준비 
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			
+			String sql = "SELECT r.reservation_no reservationNo"
+					+ "		, rv.customer_id customerId"
+					+ "		, pv.pv_name pvName"
+					+ "		, r.satisfaction satisfaction"
+					+ "		, r.cleanliness cleanliness"
+					+ "		, r.revisit revisit"
+					+ "		, r.opinion opinion"
+					+ "		, r.review_contents reviewContents "
+					+ "		, r.update_date updateDate"
+					+ "		, r.review_active reviewActive"
+					+ "	FROM review r"
+					+ "	INNER JOIN reservation rv"
+					+ "	ON r.reservation_no = rv.reservation_no"
+					+ "	INNER JOIN poolvilla pv"
+					+ "	ON rv.pv_no = pv.pv_no"
+					+ "	WHERE "+search+" "
+					+ "	LIKE ?"
+					+ "	ORDER BY r.update_date DESC "
+					+ " LIMIT ?,?";
+			
+			try {
+				// DB 연결 
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+				// 디버깅 
+				System.out.println("[ReviewDao.searchCustomerReviewList()] conn : " + conn);
+				
+				// 리뷰 목록에 사용할 데이터를 가져오는 쿼리를 저장한다 
+				stmt= conn.prepareStatement(sql);
+				stmt.setString(1, "%"+keyword+"%");
+				stmt.setInt(2, beginRow);
+				stmt.setInt(3, rowPerPage);
+				
+				// 테이블에 쿼리 내용들을 저장한다 
+				rs = stmt.executeQuery();
+				
+				while(rs.next()) {
+					// 1회용 VO HashMap 인스턴스 생성 
+					HashMap<String, Object> map = new HashMap<>();
+					
+					// map 인스턴스에 데이터 저장 
+					map.put("reservationNo", rs.getInt("reservationNo"));
+					map.put("pvName", rs.getString("pvName"));
+					map.put("customerId", rs.getString("customerId"));
+					map.put("satisfaction", rs.getInt("satisfaction"));
+					map.put("cleanliness", rs.getInt("cleanliness"));
+					map.put("revisit", rs.getString("revisit"));
+					map.put("opinion", rs.getString("opinion"));
+					map.put("reviewContents", rs.getString("reviewContents"));
+					map.put("updateDate", rs.getString("updateDate"));
+					map.put("reviewActive", rs.getString("reviewActive"));
+					System.out.println(map);
+					// 동적 배열에 map 데이터 저장 
+					customerReviewList.add(map);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					// DB 연결 종료 
+					conn.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} 
+			}
+			
+			// 반환값 
+			return customerReviewList;
+		}
 }
