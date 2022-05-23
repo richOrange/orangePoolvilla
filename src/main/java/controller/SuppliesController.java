@@ -46,7 +46,7 @@ public class SuppliesController extends HttpServlet {
 		System.out.println("[CookingToolController.doPost()] pvNo : " + pvNo);
 		
 		String suppliesName = null;
-		if(request.getParameter("suppliesName") != null) {
+		if(request.getParameter("suppliesName") != null && request.getParameter("suppliesName") != "") {
 			suppliesName =  request.getParameter("suppliesName");
 			suppliesDao.insertSupplies(suppliesName);
 		}
