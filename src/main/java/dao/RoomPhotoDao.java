@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import vo.RoomPhoto;
 
@@ -20,30 +22,27 @@ public class RoomPhotoDao {
 				+ "							,photo_name"
 				+ "							,photo_original_name"
 				+ "							,photo_type"
-				+ "							,photo_size"
 				+ "							,photo_area"
 				+ "							,create_date"
 				+ "							,update_date)"
-				+ "	VALUES(?,?,?,?,?,?,?,NOW(),NOW())";
+				+ "	VALUES(?,?,?,?,?,?,NOW(),NOW())";
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/shoppingmall","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 			stmt = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);					
 			stmt.setInt(1, roomPhoto.getPhotoNo());
 			stmt.setInt(2, roomPhoto.getRoomNo());
 			stmt.setString(3, roomPhoto.getPhotoName());
 			stmt.setString(4, roomPhoto.getPhotoOriginalName());
 			stmt.setString(5, roomPhoto.getPhotoType());
-			stmt.setDouble(6, roomPhoto.getPhotoSize());
-			stmt.setString(7, roomPhoto.getPhotoArea());
+			stmt.setString(6, roomPhoto.getPhotoArea());
 			stmt.executeUpdate();
 			rs=stmt.getGeneratedKeys();
 			row=stmt.executeUpdate();
 			System.out.println("[RoomPhotoDao.RoomPhoto] row " + row);
-			if(rs.next()) {
-				row = 1;
-				System.out.println("[RoomPhotoDao.updatePassword] RoomPhoto 테이블 수정 성공");
+			if(row ==1 ) {
+				System.out.println("[RoomPhotoDao.updatePassword] RoomPhoto 추가 성공");
 			} else {
-				System.out.println("[RoomPhotoDao.updatePassword] RoomPhoto 테이블 수정 실패");
+				System.out.println("[RoomPhotoDao.updatePassword] RoomPhoto 추가 실패");
 			}
 			
 		} catch (SQLException e) {
@@ -56,9 +55,54 @@ public class RoomPhotoDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		}
-		
+	}
 		return row;
+	}
+	
+	public List<RoomPhoto> selectRoomPhoto(int roomNo){
+		List<RoomPhoto> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql ="SELECT photo_no"
+				+ "			,room_no"
+				+ "			,photo_name"
+				+ "			,photo_original_name"
+				+ "			,photo_type"
+				+ "			,photo_area"
+				+ "			,create_date"
+				+ "			,update_date"
+				+ "	FROM room_photo"
+				+ "	WHERE room_no = ?;";
+		try {
+			   conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/oragepoolvilla","root","java1234");
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, roomNo);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+            	RoomPhoto roomPhoto = new RoomPhoto();
+            	roomPhoto.setPhotoNo(rs.getInt("photoNo"));
+            	roomPhoto.setRoomNo(rs.getInt("roomNo"));
+            	roomPhoto.setPhotoName(rs.getString("photoName"));
+            	roomPhoto.setPhotoOriginalName(rs.getString("photoOriginalName"));
+            	roomPhoto.setPhotoType(rs.getString("photoType"));
+            	roomPhoto.setPhotoArea(rs.getString("photoArea"));
+            	roomPhoto.setCreateDate(rs.getString("createDate"));
+            	roomPhoto.setUpdateDate(rs.getString("updateDate"));
+				list.add(roomPhoto);
+           }
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   } finally {
+			   try {
+				   conn.close();
+			   } catch (SQLException e) {
+				   e.printStackTrace();
+			   }
+		   }
+		
+		
+		return list;
 	}
 
 }

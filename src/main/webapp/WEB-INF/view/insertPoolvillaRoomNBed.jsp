@@ -57,6 +57,7 @@
     
     		<h2>Room Info List</h2>
     		<br>
+    		<form action="${pageContext.request.contextPath}/host/insertRoomPhotoController" method="post" enctype="multipart/form-data">
     		<table class = "table table-hover text text-center">
 			<thead>
 				<tr>
@@ -65,6 +66,10 @@
 					<th class="text text-center">방 설명</th>
 					<th class="text text-center">방 크기</th>
 					<th class="text text-center">침대</th>
+					<th class="text text-center">사진 선택</th>
+					<th class="text text-center">등록</th>
+					<th class="text text-center">사진</th>
+					
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
@@ -80,6 +85,10 @@
 								<td>${ prb.roomInfo }</td>
 								<td>${ prb.roomSize }</td>
 								<td>${ prb.bed }</td>
+								<td><input type = "file" name = "roomPhoto" class = "custom-file"></td>
+								<td><button type = "submit" class = "btn btn-primary btn-sm" id="insertRoomPhotoButton">insert</button></td>
+								<td><img src="${pageContext.request.contextPath}/image/${prb.PhotoName}" width="50" height="50" alt=""></td>
+								<td>
 								<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBedController?pvNo=${ pvNo }&roomNo=${ prb.roomNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
 							</tr>
 					</c:forEach>
@@ -87,6 +96,7 @@
 				</tr>
 			</tbody>
 		</table>
+		</form>
 		
 		<hr>
       
@@ -117,33 +127,57 @@
 		<h2>Enter the room bed</h2>
 		<br>
         <!-- Form -->
+        <table>
+        
         <form action="${pageContext.request.contextPath}/host/insertRoomNBedController" method="post" class="probootstrap-form mb60">
-            <div class="row">
-            <div class="form-group">
-            <input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
-              <select name="roomNo" class="form-control">
-               	<option value="-1">:: room ::</option>
-                 <c:forEach var ="r" items="${ roomNameList }">
-                    <option value="${ r.roomNo }">${ r.roomName }</option>
-                 </c:forEach>
-              </select>
-              <select name="bedSize" class="form-control">
-               	<option value="-1">:: bed Size ::</option>
-                    <option value="싱글">싱글</option>
-                    <option value="슈퍼싱글">슈퍼싱글</option>
-                    <option value="더블">더블</option>
-                    <option value="퀸">퀸</option>
-                    <option value="킹">킹</option>
-                    <option value="라지킹">라지킹</option>
-              </select>
+        	<div class="row">
+           		<div class="form-group">
+            		<input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
+              			<select name="roomNo" class="form-control">
+               			<option value="-1">:: room ::</option>
+                 			<c:forEach var ="r" items="${ roomNameList }">
+                    			<option value="${ r.roomNo }">${ r.roomName }</option>
+                 		</c:forEach>
+              			</select>
+              		<select name="bedSize" class="form-control">
+	               		<option value="-1">:: bed Size ::</option>
+	                    <option value="싱글">싱글</option>
+	                    <option value="슈퍼싱글">슈퍼싱글</option>
+	                    <option value="더블">더블</option>
+	                    <option value="퀸">퀸</option>
+	                    <option value="킹">킹</option>
+                    	<option value="라지킹">라지킹</option>
+              		</select>
               <input type="text" name="bedCnt" class="form-control" placeholder="Please enter the bed count">
             </div>
-            <div class="form-group">
+		<div class="form-group">
               <input type="submit" class="btn btn-primary btn-sm" id="submit" name="submit" value="추가">
+        </div>
             </div>
-          </form>
+        </form>
 		</table>
 		<hr>
+		<h2>Enter the room image</h2>
+		<br>
+		<form action="${pageContext.request.contextPath}/host/insertRoomPhotoController" method="post" enctype="multipart/form-data">
+			<table class = "table table-active" id="insertRoomPhotoForm">
+				<tr>
+					<td>insert image</td>
+					<td><input type = "hidden" name="pvNo" value="${param.pvNo}">
+					<td><input type = "file" name = "roomPhoto" class = "custom-file"></td>
+					<td><input type = "hidden" name="roomNo" value="${param.roomNo}"></td>
+					<td><button type = "submit" class = "btn btn-primary btn-sm" id="insertRoomPhotoButton">insert</button></td>
+					<td><span id="RoomPhotoHelper" class="helper"></span></td>
+				</tr>
+					
+				<c:forEach var="rp" items="${roomPhotoList }">
+				<tr>
+                    <th>사진</th>
+                    <td><img src="${pageContext.request.contextPath}/image/${rp.PhotoName}"></td>
+                </tr>
+            	</c:forEach>
+			</table>
+		</form>
 		
 		
 		
