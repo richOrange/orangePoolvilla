@@ -88,15 +88,11 @@ public class FacilityDao {
 			//오토커밋해제
 			conn.setAutoCommit(false);
 			//1. reservation테이블의 상태를 변경
-			String deletePoolvillaFacilitySpl = "DELETE FROM poolvilla_facility WHERE facility_no = ? ";
-			stmt1 = conn.prepareStatement(deletePoolvillaFacilitySpl);
+			String deletePoolvillaFacilitySql = "DELETE FROM poolvilla_facility WHERE facility_no = ? ";
+			stmt1 = conn.prepareStatement(deletePoolvillaFacilitySql);
 			stmt1.setInt(1, facilityNo);//
 			row =stmt1.executeUpdate();//check
-			if(row==0) { // 삭제실패
-				System.out.println("poolvilla_facility 삭제 실패");
-			}else { //삭제성공 시에만 다음 진행
-				System.out.println("poolvilla_facility 삭제 성공");
-	
+				System.out.println("poolvilla_facility 삭제한 행의 수 :"+row);
 				String sql = "DELETE FROM facility WHERE facility_no = ?;";
 				stmt2 = conn.prepareStatement(sql);
 	
@@ -109,7 +105,6 @@ public class FacilityDao {
 				System.out.println("facility 삭제 성공");
 				conn.commit();
 				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

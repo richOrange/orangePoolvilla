@@ -19,7 +19,11 @@
 	href="${pageContext.request.contextPath}/template/css/style.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/template/css/custom.css">
-
+<style>
+	    .helper {
+	    	color : #FF0000;
+	    }
+	</style>
 </head>
 <!-- jquery -->
 <script
@@ -79,7 +83,7 @@
 								<td>${f.getUpdateDate()}
 								<td>
 								<td><a
-									href="${pageContext.request.contextPath}/host/deleteFacilityController?facilityNo=${ f.getFacilityNo()}&pvNo=${ param.pvNo }"
+									href="${pageContext.request.contextPath}/host/deleteFacilityController?facilityNo=${ f.getFacilityNo()}&pvNo=${param.pvNo}"
 									class="btn btn-outline-secondary btn-sm">삭제</a></td>
 							</tr>
 						</c:forEach>
@@ -91,11 +95,12 @@
 			<h2>Enter</h2>
 
 			<!-- Form -->
-			<form action="${pageContext.request.contextPath}/host/facilityController" method="post" class="probootstrap-form mb60">
+			<form action="${pageContext.request.contextPath}/host/facilityController" method="post" class="probootstrap-form mb60" id="insertForm">
             <div class="row">
             <div class="form-group">
             <input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
-              <input type="text" name="facilityName" class="form-control" placeholder="Please enter the facility">
+              <input type="text" name="facilityName" id="insert" class="form-control" placeholder="Please enter the facility">
+              <span id="facilityNameHelper" class="helper"></span>
             </div>
             <div class="form-group">
               <input type="submit" class="btn btn-primary" id="submit" name="submit" value="Save">
@@ -120,6 +125,16 @@
 <script>
         $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
         $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+        
+        // facility list 등록 유효성 검사
+//         $('#insert').click(function(){
+//         	if($('#facilityName').val()==''){
+//         		$('#facilityNameHelper').text('부대시설을 입력하세요');
+//         		$('#facilityName').focus();
+//         	}else{
+//         		$('#insertForm').submit();
+//         	}
+//         } 
   </script>
 
 <script

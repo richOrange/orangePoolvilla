@@ -17,7 +17,7 @@ public class DeleteFacilityController extends HttpServlet {
 		// 삭제할 정보 번호 받아오기
 		int pvNo = Integer.parseInt(request.getParameter("pvNo"));
 		
-		int facilityNo = 0;
+		int facilityNo = -1;
 		if(request.getParameter("facilityNo") != null) {
 			facilityNo = Integer.parseInt(request.getParameter("facilityNo"));
 		}
@@ -34,7 +34,7 @@ public class DeleteFacilityController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/host/facilityController?pvNo=" + pvNo);
 		} else {
 			System.out.println("삭제 실패");
-			response.sendRedirect(request.getContextPath() + "/host/facilityController?facilityNo="+facilityNo);
+			response.sendRedirect(request.getContextPath() + "/host/facilityController?facilityNo="+facilityNo + "&pvNo=" + pvNo);
 		}
 
 	}

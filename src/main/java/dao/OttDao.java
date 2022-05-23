@@ -126,31 +126,41 @@ public class OttDao {
 		public int deleteOtt(int ottNo) {
 			// DB 자원 준비
 			Connection conn = null;
-			PreparedStatement stmt = null;
-			int row = 0;
+			PreparedStatement stmt1 = null;
+			PreparedStatement stmt2 = null;
+			int row = -1;
 
 			try {
 				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
 				System.out.println("deleteOtt DB 로딩");
-
-				String sql = "DELETE FROM ott WHERE ott_no = ?;";
-				stmt = conn.prepareStatement(sql);
-
-				stmt.setInt(1, ottNo);
-				row = stmt.executeUpdate();
+				// 오토커밋해제
+				conn.setAutoCommit(false);
+				String deletePoolvillaOttSql = "DELETE FROM poolvilla_ott WHERE ott_no = ? ";
+				stmt1 = conn.prepareStatement(deletePoolvillaOttSql);
+				stmt1.setInt(1, ottNo);
+				row = stmt1.executeUpdate();
+				if(row == 0) { // 삭제 실패
+					System.out.println("poolvilla_ott 삭제 실패");
+				} else {
+					System.out.println("poolvilla_ott 삭제 성공");
+					String sql = "DELETE FROM ott WHERE ott_no = ?;";
+					stmt2 = conn.prepareStatement(sql);
+					stmt2.setInt(1, ottNo);
+					row = stmt2.executeUpdate();
+					if(row==0) {//결과가 0이면 삭제 실패, 롤백
+						System.out.println("ott 삭제 실패");
+						conn.rollback();
+					} else {//결과가 0이 아니면 삭제 성공, 최종커밋
+					System.out.println("ott 삭제 성공");
+					conn.commit();
+					}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				try {
 					// DB 자원 반환
 					conn.close();
-
-					// 디버깅 코드
-					if (row == 1) {
-						System.out.println("삭제 성공");
-					} else {
-						System.out.println("삭제 실패");
-					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
