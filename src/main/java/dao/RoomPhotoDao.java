@@ -24,7 +24,7 @@ public class RoomPhotoDao {
 				+ "							,photo_area"
 				+ "							,create_date"
 				+ "							,update_date)"
-				+ "	VALUES(1,1,1,1,1,1,1,NOW(),NOW())";
+				+ "	VALUES(?,?,?,?,?,?,?,NOW(),NOW())";
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/shoppingmall","root","java1234");
 			stmt = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);					

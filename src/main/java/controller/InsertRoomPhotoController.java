@@ -22,7 +22,9 @@ public class InsertRoomPhotoController extends HttpServlet {
 	private RoomPhotoDao roomPhotoDao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		this.roomPhotoDao = new RoomPhotoDao();
+		
+				
 	}
 
 	
@@ -65,16 +67,16 @@ public class InsertRoomPhotoController extends HttpServlet {
 			if(row==1) {//성공시 insertRoomPhotoController로 돌려보냄
 				System.out.println("[/host/insertRoomPhotoController.doPost()] 이미지 추가 성공 ");
 				response.sendRedirect(request.getContextPath()+"/host/insertRoomPhotoController");
-			} else { //실패시 파일삭제 및 selectHostPoolvillaOneController로 되돌려 보냄
+			} else { //실패시 파일삭제 및 insertRoomNBedController로 되돌려 보냄
 				File file = new File(path+"/"+roomPhotoName);
 				file.delete();// 파일 삭제
-				response.sendRedirect(request.getContextPath()+"/host/selectHostPoolvillaOneController");
+				response.sendRedirect(request.getContextPath()+"/host/insertRoomNBedController");
 			}
 		}else { // 업로드 불가능한 파일을 올리면 파일삭제 및 selectHostPoolvillaOneController로 되돌려보냄
 			System.out.println("[/host/insertRoomPhotoController.doPost()] 업로드 불가능한 파일 형식 : img파일만 가능");
 			File file = new File(path+"/"+roomPhotoName);
 			file.delete();// 파일 삭제
-			response.sendRedirect(request.getContextPath()+"/host/selectHostPoolvillaOneController");
+			response.sendRedirect(request.getContextPath()+"/host/insertRoomNBedController");
 		}
 	}
 

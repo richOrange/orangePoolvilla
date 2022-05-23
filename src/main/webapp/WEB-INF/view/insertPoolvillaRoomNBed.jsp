@@ -145,6 +145,10 @@
 		</table>
 		<hr>
 		
+		
+		
+		<hr>
+		
 		<a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${ pvNo }" class = "btn btn-primary btn-sm">update완료</a>
 
     </div>
