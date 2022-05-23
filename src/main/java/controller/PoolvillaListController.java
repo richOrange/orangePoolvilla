@@ -2,15 +2,17 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import dao.FacilityDao;
 import dao.PoolvillaDao;
@@ -101,6 +103,21 @@ public class PoolvillaListController extends HttpServlet {
 		request.setAttribute("lastPage", lastPage); //lastPage
 		request.setAttribute("minPage", minPage); //minPage
 		//모델값 디버깅
+		
+		// 비교하기 기능 요청값
+		HttpSession session = request.getSession();
+		if(request.getParameter("compare") != null) {
+			if(session.getAttribute("sessionComparePvNoList") == null) {
+				List<Integer> list = new ArrayList<>();
+				list.add(Integer.parseInt(request.getParameter("compare")));
+				session.setAttribute("sessionComparePvNoList", list);
+			} else {
+				List<Integer> list = (List<Integer>)session.getAttribute("sessionComparePvNoList");
+				list.add(Integer.parseInt(request.getParameter("compare")));
+				session.setAttribute("sessionComparePvNoList", list);
+			}
+		}
+		
 		request.getRequestDispatcher("/WEB-INF/view/poolvillaList.jsp").forward(request, response);
 	}
 

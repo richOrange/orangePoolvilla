@@ -23,6 +23,7 @@ public class PoolvillaRoomDao {
 	 * [host] selectPoolvillaRoomNBedByPvNo() 메서드 : room과 bed 테이블 목록 가져오기
 	 * [host] selectPoolvillaRoomRoomName() 메서드 : pvNo에 따른 poolvilla_room 테이블 room_name 가져오기
 	 * [host] insertPoolvillaRoom() 메서드 : poolvilla_room 테이블 데이터 입력
+	 * [host] insertRoomBed() 메서드 : room_bed 테이블 데이터 입력
 	 * [host] deletePoolvillaRoomNBed() 메서드 : poolvilla_room 테이블 데이터와 room_bed 데이터 삭제
 	 */
 	
@@ -238,7 +239,7 @@ public class PoolvillaRoomDao {
 		return row;
 	}
 	
-	// orangepoolvilla db의 poolvilla_room 테이블 데이터 입력
+	// orangepoolvilla db의 room_bed 테이블 데이터 입력
 	public void insertRoomBed(int pvNo, String bedSize, int bedCnt) { 
 		
 		Connection conn = null;

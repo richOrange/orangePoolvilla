@@ -14,6 +14,23 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/style.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/custom.css">
 
+	<style>
+		.floating { 
+			position: fixed; 
+			right: 50%; 
+			top: 180px; 
+			margin-right: -720px; 
+			text-align:center; 
+			width: 120px; 
+			margin-top: 300px;
+			}
+	
+		  table {
+		    width: 100%;
+		    border: 1px solid #D8D8D8;
+		  }
+	</style>
+	
   </head>
   
   	<!-- jquery -->
@@ -72,7 +89,10 @@
 	          				<div class="probootstrap-listing-location">
 	            				<i class="icon-location2"></i> <span>${m.address}</span>
 	          				</div>
-	          				<div class="probootstrap-listing-category for-sale"><span>예약가능</span></div>
+	          				<div class="probootstrap-listing-category for-sale">
+	          					<span>예약가능</span>
+	          					<span class="btn"><input type="submit" name="compare" value="${m.pvNo}">비교하기</span>
+	          				</div>
 	          				<div class="probootstrap-listing-price"><strong>${m.price}원</strong> / Day</div>
 	       				</div>
 	        			<div class="probootstrap-card-extra">
@@ -163,6 +183,27 @@
 					</fieldset>
                   <button type="button" id="search" class="btn btn-success"  style="margin-top: 20px"><i class="icon-magnifying-glass t2"></i>상세검색</button>
 	      		
+	      		<div class="floating"> 
+	      			<div> 비교하기 </div> 
+	      			<br>
+	      			<div>
+	      			<c:forEach var="m" items="${sessionComparePvNoList}">
+	      				<table>
+	      					<tr>
+	      						<c:forEach var="m" items="${poolvillaList}">
+	      						<td>${ m.pvName }</td>
+	      						</c:forEach>
+	      					</tr>
+	      					<tr>
+	      						<td>${ m }</td>
+	      					</tr>
+	      				</table>
+	      				<br>
+      				</c:forEach>
+	      			</div>
+	      			<br>
+	      			<a href="${pageContext.request.contextPath}/all/comparePoolvillaController" class = "btn btn-primary float-right btn-sm">compare</a>
+	      		</div>
 	      </div>
 	      <!-- 상세검색부분 끝 -->
 	    </div>
