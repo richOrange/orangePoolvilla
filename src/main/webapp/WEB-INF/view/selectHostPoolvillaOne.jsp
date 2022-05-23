@@ -316,12 +316,14 @@
 				</div>
 			</div>
 			
-			<form action="${pageContext.request.contextPath}/host/insertPoolvillaPhoto" method="post" enctype="multipart/form-data">
+			<form action="${pageContext.request.contextPath}/host/insertPoolvillaPhotoController" method="post" enctype="multipart/form-data">
 				<table class = "table table-active" id="insertPoolvillaPhotoForm">
 					<tr>
 						<td>insert image</td>
+						<td><input type = "hidden" name="pvNo" value="${param.pvNo}">
+						<td><input type = "hidden" name="poolvillaPhotoNo" value="${param.poolvillaPhotoNo}"></td>
 						<td><input type = "file" name = "poolvillaPhoto" class = "custom-file"></td>
-						<td><button type = "button" class = "btn btn-dark" id="insertPoolvillaPhotoButton">insert</button></td>
+						<td><button type = "submit" class = "btn btn-dark" id="insertPoolvillaPhotoButton">insert</button></td>
 						<td><span id="poolvillaPhotoHelper" class="helper"></span></td>
 					</tr>
 				</table>
@@ -345,14 +347,8 @@
 			'${pageContext.request.contextPath}/includeHeaderController');
 	$("#includeFooter").load(
 			'${pageContext.request.contextPath}/includeFooterController');
-	$('#insertPoolvillaButton').click(function() {
-		if ($('#poolvillaPhoto').val == ''){
-			$('#poolvillaPhotoHelper').text('이미지를 선택해주세요');
-		} else {
-			$('#poolvillaPhotoHelper').text('');
-			$('#insertPoolvillaPhotoForm').submit();
-		}
-	});
+	
+	
 </script>
 
 

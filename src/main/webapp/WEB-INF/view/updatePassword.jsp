@@ -140,6 +140,7 @@
 				
 				}else if($('#customerPw1').val() == ''
 						|| $('#customerPw1').val().length < 4) {
+					$('#customerPwHelper').text('');
 					$('#customerPwHelper1').text('pw는 4자 이상 입력해주세요');
 					$('#customerPw1').focus();
 
