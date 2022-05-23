@@ -78,7 +78,11 @@ public class SelectCustomerReviewController extends HttpServlet {
 		// 리뷰 리스트 뽑아오는 메서드 호출 DAO 
 		ArrayList<HashMap<String, Object>> customerReviewList = reviewDao.selectCustomerReviewList(beginRow, rowPerPage);
 		// selectCustomerReviewList.jsp 페이지로 리뷰 목록 보냄 
+		
+		
 		request.setAttribute("customerReviewList", customerReviewList);
+		
+		
 		
 		request.getRequestDispatcher("/WEB-INF/view/selectCustomerReviewList.jsp").forward(request, response);
 	}

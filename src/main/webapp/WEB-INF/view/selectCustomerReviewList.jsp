@@ -86,14 +86,33 @@
 						<td>${r.satisfaction }</td>
 						<td>${r.cleanliness }</td>
 						<td>${r.revisit }</td>
-						<td>${r.opinion }</td>
-						<td>${r.reviewContents }</td>
+						<!-- 상세보기처럼 쿼리를 짜려면 customerId와 pvNo가 같이 있어야 함 -->
+						<!-- pvNo를 어떻게 받아서 쿼리에 넣을 수 있을지 ?  -->
+						<td>
+							<button type = "submit" class="btn btn-light" name="opinion">${r.opinion }</button>
+						</td>
+						<td>
+							<button type = "submit" class="btn btn-light" name="reviewContents">${r.reviewContents }</button>
+						</td>
 						<td>${r.updateDate }</td>
 						<td>${r.reviewActive }</td>						
 					</tr>
 				</c:forEach>
+				
 			</tbody>
 		</table>
+	</div>
+	
+	<div>
+		<select name = "search">
+			<option value = "${search}">${search }</option>
+			<option value = "${r.customerId }">${r.customerId }</option>
+			<option value = "${r.pvName }">${r.pvName }</option>
+		</select>
+		
+		<input type = text name="keyword" value="${keyword }">
+		
+		<button type = "submit" class="btn btn-outline-info">검색</button>
 	</div>
 
 <!-- 페이징 부분 시작 -->
