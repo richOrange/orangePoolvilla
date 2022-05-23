@@ -37,7 +37,7 @@
               <div class="probootstrap-breadcrumbs">
                 <a href="${pageContext.request.contextPath}/template/#">Home</a><span>About</span>
               </div>
-              <h1>Cooking Tool List</h1>
+              <h1>Supplies List</h1>
             </div>
 
           </div>

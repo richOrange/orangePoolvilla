@@ -49,7 +49,7 @@ public class FacilityController extends HttpServlet {
 		String facilityName = request.getParameter("facilityName");
 		System.out.println("facilityName : " + facilityName);
 		
-		if(facilityName != null) {
+		if(facilityName != null && facilityName != "") {
 			
 			facilityDao.insertFacility(facilityName);
 		}

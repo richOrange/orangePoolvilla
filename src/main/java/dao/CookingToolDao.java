@@ -105,22 +105,35 @@ public class CookingToolDao {
 	}
 	
 	// orangepoolvilla db의 cookingtool 테이블 데이터 삭제
-	public void deleteCookingTool(int cookingToolNo) {
+	public int deleteCookingTool(int cookingToolNo) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		PreparedStatement stmt = null;
-		int row = 0;
+		PreparedStatement stmt1 = null;
+		PreparedStatement stmt2 = null;
+		int row = -1;
 		
 		try {
 			// 데이터베이스 드라이버 연결
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
 			System.out.println("[CookingToolDao.deleteCookingTool()] 드라이버 로딩 성공");
-			
+			// 오토커밋 해제
+			conn.setAutoCommit(false);
+			String deletePoolvillaCookingToolSql = "DELETE FROM poolvilla_cooking_tool WHERE cooking_tool_no = ? ";
 			String sql = "DELETE FROM cooking_tool WHERE cooking_tool_no = ?";
-			stmt = conn.prepareStatement(sql);
+			stmt1 = conn.prepareStatement(deletePoolvillaCookingToolSql);
+			stmt1.setInt(1, cookingToolNo);
+			row = stmt1.executeUpdate();
+				System.out.println("poolvilla_cooking_tool 삭제한 행의 수 :" +row);
+			stmt2 = conn.prepareStatement(sql);
 			
-			stmt.setInt(1, cookingToolNo);
-			row = stmt.executeUpdate();
+			stmt2.setInt(1, cookingToolNo);
+			row = stmt2.executeUpdate();
+			if(row == 0) {
+				System.out.println("[CookingToolDao.deleteCookingTool()] cooking tool 삭제 성공");
+			} else {
+				System.out.println("[CookingToolDao.deleteCookingTool()] cooking tool 삭제 실패");
+				conn.commit();
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,15 +143,11 @@ public class CookingToolDao {
 				conn.close();
 				
 				// -디버깅 코드
-				if(row == 1) {
-					System.out.println("[CookingToolDao.deleteCookingTool()] cooking tool 삭제 성공");
-				} else {
-					System.out.println("[CookingToolDao.deleteCookingTool()] cooking tool 삭제 실패");
-				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		return row;
 	}
 	
 	// pvNo에 따른 orangepoolvilla db의 poolvilla_cooking_tool 테이블 목록 가져오기

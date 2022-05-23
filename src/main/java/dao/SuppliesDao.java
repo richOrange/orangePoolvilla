@@ -104,22 +104,37 @@ public class SuppliesDao {
 	}
 	
 	// orangepoolvilla db의 supplies 테이블 데이터 삭제
-	public void deleteSupplies(int suppliesNo) {
+	public int deleteSupplies(int suppliesNo) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		PreparedStatement stmt = null;
-		int row = 0;
+		PreparedStatement stmt1 = null;
+		PreparedStatement stmt2 = null;
+		int row = -1;
 		
 		try {
 			// 데이터베이스 드라이버 연결
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
 			System.out.println("[SuppliesDao.deleteSupplies()] 드라이버 로딩 성공");
+			// 오토커밋해제
+			conn.setAutoCommit(false);
 			
+			String deletePoolvillaSuppliesSql = "DELETE FROM poolvilla_supplies WHERE supplies_no = ? ";
+			stmt1 = conn.prepareStatement(deletePoolvillaSuppliesSql);
+			stmt1.setInt(1, suppliesNo);
+			row = stmt1.executeUpdate();
+				System.out.println("poolvilla_supplies 삭제한 행의 수 : " + row);
 			String sql = "DELETE FROM supplies WHERE supplies_no = ?";
-			stmt = conn.prepareStatement(sql);
+			stmt2 = conn.prepareStatement(sql);
 			
-			stmt.setInt(1, suppliesNo);
-			row = stmt.executeUpdate();
+			stmt2.setInt(1, suppliesNo);
+			row = stmt2.executeUpdate();
+			// -디버깅 코드
+			if(row == 0) {
+				System.out.println("[SuppliesDao.deleteSupplies()] supplies 삭제 성공");
+			} else {
+				System.out.println("[SuppliesDao.deleteSupplies()] supplies 삭제 실패");
+				conn.commit();
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,16 +143,12 @@ public class SuppliesDao {
 				// 데이터베이스 자원 반환
 				conn.close();
 				
-				// -디버깅 코드
-				if(row == 1) {
-					System.out.println("[SuppliesDao.deleteSupplies()] supplies 삭제 성공");
-				} else {
-					System.out.println("[SuppliesDao.deleteSupplies()] supplies 삭제 실패");
-				}
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		return row;
 	}
 	
 	// orangepoolvilla db의 해당 풀빌라의 poolvilla_supplies 테이블 목록 가져오기

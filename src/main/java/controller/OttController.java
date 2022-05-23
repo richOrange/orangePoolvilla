@@ -43,7 +43,7 @@ public class OttController extends HttpServlet {
 		ottDao = new OttDao();
 		String ottName = request.getParameter("ottName");
 		System.out.println("ottName : " + ottName);
-		if(ottName != null) {
+		if(ottName != null && ottName != "") {
 			ottDao.insertOtt(ottName);
 		}
 		

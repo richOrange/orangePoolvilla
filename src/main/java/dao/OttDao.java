@@ -139,10 +139,7 @@ public class OttDao {
 				stmt1 = conn.prepareStatement(deletePoolvillaOttSql);
 				stmt1.setInt(1, ottNo);
 				row = stmt1.executeUpdate();
-				if(row == 0) { // 삭제 실패
-					System.out.println("poolvilla_ott 삭제 실패");
-				} else {
-					System.out.println("poolvilla_ott 삭제 성공");
+					System.out.println("poolvilla_ott 삭제한 행의 수 :" + row);
 					String sql = "DELETE FROM ott WHERE ott_no = ?;";
 					stmt2 = conn.prepareStatement(sql);
 					stmt2.setInt(1, ottNo);
@@ -154,7 +151,6 @@ public class OttDao {
 					System.out.println("ott 삭제 성공");
 					conn.commit();
 					}
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
