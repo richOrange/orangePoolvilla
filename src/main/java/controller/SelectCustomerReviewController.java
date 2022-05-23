@@ -27,11 +27,11 @@ public class SelectCustomerReviewController extends HttpServlet {
 		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember");
 		
 		// 세션에 로그인된 사용자 아이디를 받는다 
-		String customerId = (String)sessionLoginMember.get("memberId");
-		System.out.println("[/host/selectCustomerReviewController.doGet()] customerId : " + customerId);	
+		String hostId = (String)sessionLoginMember.get("memberId");
+		System.out.println("[/host/selectCustomerReviewController.doGet()] hostId : " + hostId);	
 		
-		// 유효성 검사 코드. customerId 값을 받지 못하면 로그인 페이지로 이동 
-		if(customerId == null) {
+		// 유효성 검사 코드. hostId 값을 받지 못하면 로그인 페이지로 이동 
+		if(hostId == null) {
 			response.sendRedirect(request.getContextPath()+"/all/loginController");
 			return;
 		}
@@ -58,7 +58,7 @@ public class SelectCustomerReviewController extends HttpServlet {
 		request.setAttribute("beginRow", beginRow);
 		
 		// 전체 행의 개수 구하는 코드 
-        int totalRow = reviewDao.selectReviewListTotalRow(customerId);
+        int totalRow = reviewDao.selectReviewListTotalRow(hostId);
         System.out.println("[/customer/myWishListController.doGet()] totalRow : "+totalRow);
 		request.setAttribute("totalRow", totalRow);
 		
@@ -81,7 +81,12 @@ public class SelectCustomerReviewController extends HttpServlet {
 		
 		
 		request.setAttribute("customerReviewList", customerReviewList);
-		
+		if(request.getParameter("checkreviewContents")!=null) {
+			request.setAttribute("checkreviewContents", request.getParameter("checkreviewContents"));
+		}
+		if(request.getParameter("checkOpinion")!=null) {
+			request.setAttribute("checkOpinion", request.getParameter("checkOpinion"));
+		}
 		
 		
 		request.getRequestDispatcher("/WEB-INF/view/selectCustomerReviewList.jsp").forward(request, response);

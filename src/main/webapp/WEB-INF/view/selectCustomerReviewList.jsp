@@ -62,62 +62,69 @@
 	
 	<h3>사용자 리뷰 목록</h3>
 
-	<div>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>회원 아이디</th>
-					<th>풀빌라 이름</th>
-					<th>만족도</th>
-					<th>청결도</th>
-					<th>재방문 의사</th>
-					<th>판매자에게 보내는 의견</th>
-					<th>리뷰 내용</th>
-					<th>업데이트된 날짜</th>
-					<th>리뷰 가리기</th>		
-				</tr>
-			</thead>
-
-			<tbody>
-				<c:forEach var="r" items="${customerReviewList}">
+	<form method="get" action="${pageContext.request.contextPath}/host/selectHostReviewController">
+		<div>
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<td>${r.customerId }</td>
-						<td>${r.pvName }</td>
-						<td>${r.satisfaction }</td>
-						<td>${r.cleanliness }</td>
-						<td>${r.revisit }</td>
-						<!-- 상세보기처럼 쿼리를 짜려면 customerId와 pvNo가 같이 있어야 함 -->
-						<!-- pvNo를 어떻게 받아서 쿼리에 넣을 수 있을지 ?  -->
-						<td>
-							<button type = "submit" class="btn btn-light" name="opinion">${r.opinion }</button>
-						</td>
-						<td>
-							<button type = "submit" class="btn btn-light" name="reviewContents">${r.reviewContents }</button>
-						</td>
-						<td>${r.updateDate }</td>
-						<td>${r.reviewActive }</td>						
+						<th>회원 아이디</th>
+						<th>풀빌라 이름</th>
+						<th>만족도</th>
+						<th>청결도</th>
+						<th>재방문 의사</th>
+						<th>판매자에게 보내는 의견</th>
+						<th>리뷰 내용</th>
+						<th>업데이트된 날짜</th>
+						<th>리뷰 가리기</th>		
 					</tr>
-				</c:forEach>
-				
-			</tbody>
-		</table>
-	</div>
-	
-	<div>
-		<select name = "search">
-			<option value = "${search}">${search }</option>
-			<option value = "${r.customerId }">${r.customerId }</option>
-			<option value = "${r.pvName }">${r.pvName }</option>
-		</select>
-		
-		<input type = text name="keyword" value="${keyword }">
-		
-		<button type = "submit" class="btn btn-outline-info">검색</button>
-	</div>
+				</thead>
+				<tbody>
+					<c:forEach var="r" items="${customerReviewList}">
+						<tr>
+							<td>${r.customerId }</td>
+							<td>${r.pvName }</td>
+							<td>${r.satisfaction }</td>
+							<td>${r.cleanliness }</td>
+							<td>${r.revisit }</td>
+							<!-- 상세보기처럼 쿼리를 짜려면 customerId와 pvNo가 같이 있어야 함 -->
+							<!-- pvNo를 어떻게 받아서 쿼리에 넣을 수 있을지 ?  -->
+							<td>
+								<button type = "submit" class="btn btn-light" name="checkOpinion" value = "${r.reservationNo}">의견보기</button>
+							</td>
+								<c:if test="${not empty checkOpinion && checkOpinion == r.resrvationNo }">
+									<td></td>
+									<td colspan = "7">${r.opinion}</td>
+									<td></td>
+								</c:if>
+							<td>
+								<button type = "submit" class="btn btn-light" name="checkreviewContents" value = "${r.reservationNo}">리뷰내용보기</button>
+								<c:if test="${not empty checkreviewContents && checkreviewContents == r.resrvationNo }">
+									<input>
+									<td></td>
+									<td colspan = "7">${reviewContents}</td>
+									<td></td>
+								</c:if>
+							</td>
+							<td>${r.updateDate }</td>
+							<td>${r.reviewActive }</td>						
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+		<!-- 검색부분 시작 -->
+		<div>
+			<select name = "search">
+				<option value = "${search}">${search }</option>
+				<option value = "${r.customerId }">${r.customerId }</option>
+				<option value = "${r.pvName }">${r.pvName }</option>
+			</select>
+			<input type = text name="keyword" value="${keyword }">
+			<button type = "submit" class="btn btn-outline-info">검색</button>
+		</div>
 
-<!-- 페이징 부분 시작 -->
+	<!-- 페이징 부분 시작 -->
 	<div>
-
 		<!-- 이전 목록 표시 -->
 		<!--  
 						<c:if test="${minPage > 10 }">
@@ -125,7 +132,6 @@
 								class="btn">이전목록</button>
 						</c:if>
 						-->
-
 		<!-- 이전 부분 -->
 		<c:if test="${currentPage > 1}">
 			<button type="submit" value="${currentPage-1}" name="currentPage"
@@ -162,8 +168,8 @@
 								class="btn">다음목록</button>
 						</c:if>
 						-->
-	</div>
-	</div>
+			</div>
+		</form>
 	<!-- 페이징 부분 끝 -->
 
 	

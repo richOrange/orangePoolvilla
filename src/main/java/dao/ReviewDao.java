@@ -349,14 +349,22 @@ public class ReviewDao {
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	
-	String sql = "SELECT rv.customer_id customerId, pv.pv_name pvName, r.satisfaction satisfaction, r.cleanliness cleanliness, r.revisit revisit"
-			+ " , LEFT(r.opinion, 5) opinion, LEFT(r.review_contents, 5) reviewContents , r.update_date updateDate, r.review_active reviewActive"
-			+ " FROM review r"
-			+ " INNER JOIN reservation rv"
-			+ " ON r.reservation_no = rv.reservation_no"
-			+ " INNER JOIN poolvilla pv"
-			+ " ON rv.pv_no = pv.pv_no"
-			+ " LIMIT ?,?";
+	String sql = "SELECT r.reservation_no reservationNo"
+			+ "					, rv.customer_id customerId"
+			+ "					, pv.pv_name pvName"
+			+ "					, r.satisfaction satisfaction"
+			+ "					, r.cleanliness cleanliness"
+			+ "					, r.revisit revisit"
+			+ " 				, LEFT(r.opinion, 5) opinion"
+			+ "					, LEFT(r.review_contents, 5) reviewContents "
+			+ "					, r.update_date updateDate"
+			+ "					, r.review_active reviewActive"
+			+ " 	FROM review r"
+			+ " 	INNER JOIN reservation rv"
+			+ " 	ON r.reservation_no = rv.reservation_no"
+			+ " 	INNER JOIN poolvilla pv"
+			+ " 	ON rv.pv_no = pv.pv_no"
+			+ " 	LIMIT ?,?";
 	
 	try {
 		// DB 연결 
@@ -377,10 +385,9 @@ public class ReviewDao {
 			HashMap<String, Object> map = new HashMap<>();
 			
 			// map 인스턴스에 데이터 저장 
+			map.put("reservationNo", rs.getInt("reservationNo"));
 			map.put("pvName", rs.getString("pvName"));
-			
 			map.put("customerId", rs.getString("customerId"));
-			map.put("pvName", rs.getString("pvName"));
 			map.put("satisfaction", rs.getInt("satisfaction"));
 			map.put("cleanliness", rs.getInt("cleanliness"));
 			map.put("revisit", rs.getString("revisit"));
