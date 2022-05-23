@@ -32,7 +32,8 @@
           <div class="col-md-8 col-md-offset-2">
  
             <div class="probootstrap-home-search probootstrap-animate">
-              <form id ="searchForm" action="${pageContext.request.contextPath}/all/poolvillaListController" method="get">
+            <!-- 날짜, 지역 검색 부분 내용이 많으므로 post로 보냄 -->
+              <form id ="searchForm" action="${pageContext.request.contextPath}/all/poolvillaListController" method="post">
               <!-- 유효성 메세지 출력 부분-->
               <c:if test="${msg = needLevel}">
               		<h2>권한이 없는 페이지 입니다.</h2>

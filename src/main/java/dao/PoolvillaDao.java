@@ -14,8 +14,8 @@ import vo.CookingTool;
 import vo.Poolvilla;
 import vo.PoolvillaPool;
 public class PoolvillaDao {
-	//지역과 날짜로만 검색 기능, homeController에서 호출
-	public List<Map<String,Object>> selectPoolvillaListByDateLocation(String reservationBeginDate, String reservationLastDate,int locationNo,int beginRow,int rowPerPage){
+	//지역과 날짜로만 검색 기능, 검색 속도를 위해 상세검색과 분리 homeController에서 호출
+	public List<Map<String,Object>> selectPoolvillaListByDateLocation(String reservationBeginDate, String reservationLastDate,int locationNo,String orderValue,int beginRow,int rowPerPage,List<String> checkedFacilityList){
 		List<Map<String,Object>> list = new ArrayList<>();
 		//DB자원 준비
 		Connection conn = null;
@@ -23,15 +23,18 @@ public class PoolvillaDao {
 		ResultSet rs = null;
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			// select 컬럼, 테이블, 조인 쿼리 입력
 			String sql = "SELECT pv.pv_no pvNo"
 					+ "					, pv.location_no locationNo"
 					+ "					, loc.location_name locationName"
 					+ "					, CONCAT(addr.province,' ', addr.city,' ',addr.town,' ',addr.street,' ',addr.building1) address"
 					+ "					, pv.price price, pv.pv_size pvSize"
 					+ "					, pv.pv_people pvPeople, pv.pv_floor pvFloor"
-					+ "					, pv.pv_name pvName,COUNT(room.room_no) roomCnt"
+					+ "					, pv.pv_name pvName"
+					+ "					,COUNT(room.room_no) roomCnt"
 					+ "					, AVG(review.satisfaction) reviewSatisfaction "
 					+ "					, pv_photo.photo_name photoName"
+					+ "					,COUNT(*) cnt"
 					+ "		FROM poolvilla pv "
 					+ "		INNER JOIN poolvilla_location loc "
 					+ "		ON pv.location_no = loc.location_no "
@@ -46,25 +49,44 @@ public class PoolvillaDao {
 					+ "		LEFT JOIN review review "
 					+ "		ON res.reservation_no = review.reservation_no "
 					+ "		LEFT JOIN poolvilla_photo pv_photo "
-					+ "		ON pv_photo.pv_no = pv.pv_no "
-					+ "		WHERE pv.location_no = ?  "
-					+ "		AND pv.pv_no NOT IN ( select res.reservation_no "
+					+ "		ON pv_photo.pv_no = pv.pv_no ";
+			//WHERE 쿼리 입력
+			List<Object> setObject = new ArrayList<>(); // ? 값 넣을 ArrayList<String>
+			//1. location 검색 (필수)
+			sql= sql + " WHERE pv.location_no = ? ";
+			setObject.add(locationNo); //?에 들어갈 값 , locationNo
+			//2. 설정한 체크인,체크아웃 기간내에 예약가능한지 확인 <- 기간내에 검색되는 예약이 있는지 없는지
+			sql = sql + "		AND pv.pv_no NOT IN ( select res.reservation_no "
 					+ "										from reservation res "
 					+ "										WHERE ((res.reservation_begin_date >= STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_begin_date < STR_TO_DATE(?,'%Y-%m-%d'))  "
-					+ "													OR (res.reservation_last_date > STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_last_date < STR_TO_DATE(?,'%Y-%m-%d')))) "
-					+ "		GROUP BY pv.pv_no "
-					+ "		ORDER BY pv.update_date DESC"
-					+ "		LIMIT ?, ?";
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, locationNo);
-			stmt.setString(2,reservationBeginDate);
-			stmt.setString(3,reservationLastDate);
-			stmt.setString(4,reservationBeginDate);
-			stmt.setString(5,reservationLastDate);
-			stmt.setInt(6, beginRow);
-			stmt.setInt(7, rowPerPage);
-			rs = stmt.executeQuery();
+					+ "													OR (res.reservation_last_date > STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_last_date < STR_TO_DATE(?,'%Y-%m-%d')))) ";
+			setObject.add(reservationBeginDate); // ?에 들어갈 값 , 체크인 날짜
+			setObject.add(reservationLastDate); // ?에 들어갈 값 ,체크아웃 날짜
+			setObject.add(reservationBeginDate); // ?에 들어갈 값,체크인 날짜
+			setObject.add(reservationLastDate); // ?에 들어갈 값,체크아웃 날짜
+			//3.부대시설 검색 (필수아님), 조건에 넣은 부대시설 모두가 있어야만 출력하는 쿼리 입력
+			if(checkedFacilityList.size()!=0){
+				for (String s : checkedFacilityList) {
+					sql = sql + "AND pv.pv_no IN (SELECT pv_no FROM poolvilla_facility WHERE facility_no ="+s+") ";
+				}
+			}
+			//group by 추가
+			sql = sql + "		GROUP BY pv.pv_no ";
+			//order by 추가
+			sql = sql + "		ORDER BY  ? ";
+			setObject.add(orderValue); // ?에 들어갈 값, 정렬할 컬럼 + 내림차순,오름차순
+			//LIMIT 추가
+			sql = sql+ "		LIMIT ?, ?";
+			setObject.add(beginRow); // ?에 들어갈 값, 시작 행수
+			setObject.add(rowPerPage); // ?에 들어갈 값, 페이지당 출력할 행수
 			
+			//최종쿼리 디버깅
+			System.out.println("[PoolvillaDao.selectPoolvillaListByDateLocation] 쿼리 :"+sql);
+			stmt = conn.prepareStatement(sql);
+			for(int i =0;i<setObject.size();i=i+1) {// stmt에 ? 값 셋팅
+				stmt.setObject(i+1, setObject.get(i));
+			}
+			rs = stmt.executeQuery();
 			while(rs.next()) {
 				Map<String,Object> m = new HashMap<>();
 				m.put("pvNo", rs.getInt("pvNo")); //풀빌라 번호
@@ -95,6 +117,7 @@ public class PoolvillaDao {
 		}
 		return list;
 	};
+	
 	
 	// 풀빌라 상세보기 기능
 	public Poolvilla selectPoolvillaOne(int pvNo) {

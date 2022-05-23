@@ -52,14 +52,14 @@
   <!-- END: slider  -->
   
 	<!-- poolvillaList와 상세검색기능 부분 시작-->
-	<form method="get" action="${pageContext.request.contextPath}//all/poolvillaListController">
+	<form method="post" id="searchForm" action="${pageContext.request.contextPath}//all/poolvillaListController">
 	  <section class="probootstrap-section probootstrap-section-lighter">
 	    <div class="container">
 	    	<!-- poolvillaList 부분  시작-->
-	    	<div class ="col-sm-8">
+	    	<div class ="col-md-8">
 	    		<div class="row">
 	  				<c:forEach var="m" items="${poolvillaList}" varStatus="status">
-	    				<div class="col-md-6 col-sm-6">
+	    				<div class="col-md-6">
 	   					<div class="probootstrap-card probootstrap-listing">
 	        		<!-- 상품 img 부분 -->
 	        			<div class="probootstrap-card-media">
@@ -97,11 +97,6 @@
 	        			</div>
 	      			</div>
 	    		</div>
-	    		<!-- 한줄에 2개씩 나오게 하는 if문 -->
-	 			<c:if test="${status.index % 2 == 0 && status.index != 0 }">
-		  			</div>
-		  			<div class = "row">
-	 			</c:if>
 	    	</c:forEach>
 	      </div>
 	      <!-- 페이징 부분 시작 -->
@@ -139,21 +134,34 @@
 	      <!-- 페이징 부분 끝 -->
 	      <!-- poolvillaList 부분 끝 -->
 	      <!-- 상세검색 부분 시작 -->
-	      <div class = "col-sm-4">
+	      <div class = "col-md-4">
 	      		<h2>상세검색</h2>
-                <div>
-    	             체크인 :<input type="date" class="form-control" id="checkIn" name="reservationBeginDate" value="${reservationBeginDate}">
-	                 체크 아웃 :<input type="date" class="form-control" id="checkOut" name="reservationLastDate" value="${reservationLastDate}">
-                 </div>
+                <!-- 예약날짜 부분 -->
+                	오늘 날짜:<input type="date" class="form-control" id="today" name="reservationToday" value="${applicationToday}" readonly="readonly">
+    	            체크인 :<input type="date" class="form-control" id="checkIn" name="reservationBeginDate" value="${reservationBeginDate}">
+	                체크 아웃 :<input type="date" class="form-control" id="checkOut" name="reservationLastDate" value="${reservationLastDate}">
                  <!-- 지역검색부분 -->
-                      지역선택 : 
-                     <select name="locationNo" class="form-control" onchange ="this.form.submit()">
-                         <option value="${poolvillaList[0].locationNo}">${poolvillaList[0].locationName}</option>
+                	지역선택 : 
+                    <select name="locationNo" class="form-control" onchange ="this.form.submit()">
                      	<c:forEach var="m" items="${locationList}">
-                     	<option value="${m.locationNo}">${m.locationName}</option>
+                     		<c:if test="${m.locationNo==locationNo}">
+                     			<option value="${m.locationNo}" selected>${m.locationName}</option><!-- 기존 지역 검색 정보 selected -->
+                     		</c:if>
+                     			<option value="${m.locationNo}">${m.locationName}</option>
                      	</c:forEach>
                      </select>
-                  <button class="btn btn-success" type="submit" style="margin-top: 20px"><i class="icon-magnifying-glass t2"></i>상세검색</button>
+                <!-- 부대시설 검색 부분 -->
+             		<fieldset>
+					<legend>부대시설</legend>
+					<div class="row">
+               	    	<c:forEach var="m" items="${facilityList}">
+               	    	<div class= "col-md-6">
+	               	    	<label class="checkbox-inline"><input type="checkbox" name ="checkedFacilityNo" value="${m.facilityNo}">${m.facilityName}</label>
+               	    	</div>
+                   		</c:forEach>
+					</div>
+					</fieldset>
+                  <button type="button" id="search" class="btn btn-success"  style="margin-top: 20px"><i class="icon-magnifying-glass t2"></i>상세검색</button>
 	      		
 	      </div>
 	      <!-- 상세검색부분 끝 -->
@@ -249,6 +257,27 @@
   <script>
         $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
         $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+      	//유효성검사
+      	$('#search').click(function(){
+    		if($('#checkIn').val() == ''){
+    			$('#searchHelper').text('체크인 날짜를 선택해주세요');
+    			$('#checkIn').focus();
+    		}else if($('#checkIn').val() <= $('#today').val() ){
+    			$('#searchHelper').text('과거날짜 및 오늘날짜는 체크인 날짜로 지정할 수 없습니다.');
+    			$('#checkIn').focus();
+    		}else if($('#checkOut').val() == ''){
+    			$('#searchHelper').text('체크아웃 날짜를 선택해주세요');
+    			$('#checkOut').focus();
+    		}else if($('#checkIn').val() >= $('#checkOut').val() ){
+    			$('#searchHelper').text('체크아웃 날짜는 체크인 날짜이후여야합니다');
+    			$('#checkOut').focus();
+    		}else if($('#locationNo').val() == '-1') {
+    			$('#searchHelper').text('지역을 선택해주세요');
+    			$('#locationNo').focus();
+    		} else {
+    			$('#searchForm').submit();
+    		}
+    	});
   </script>
   
   <script src="js/scripts.min.js"></script>
