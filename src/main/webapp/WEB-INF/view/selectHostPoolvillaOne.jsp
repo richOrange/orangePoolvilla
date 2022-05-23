@@ -317,13 +317,12 @@
 			</div>
 			
 			<form action="${pageContext.request.contextPath}/host/insertPoolvillaPhotoController" method="post" enctype="multipart/form-data">
-				<table class = "table table-active" id="insertPoolvillaPhotoForm">
+				<table class = "table table-active" id = "insertPvPhotoForm">
 					<tr>
 						<td>insert image</td>
-						<td><input type = "hidden" name="pvNo" value="${param.pvNo}">
-						<td><input type = "hidden" name="poolvillaPhotoNo" value="${param.poolvillaPhotoNo}"></td>
+						<td><input type = "hidden" name="pvNo" id = "pvNo" value="${param.pvNo}">
 						<td><input type = "file" name = "poolvillaPhoto" class = "custom-file"></td>
-						<td><button type = "submit" class = "btn btn-dark" id="insertPoolvillaPhotoButton">insert</button></td>
+						<td><button type = "submit" class = "btn btn-dark" id="insertPoolvillaPhoto">insert ${param.pvNo}</button></td>
 						<td><span id="poolvillaPhotoHelper" class="helper"></span></td>
 					</tr>
 				</table>

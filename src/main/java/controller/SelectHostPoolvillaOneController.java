@@ -44,6 +44,7 @@ public class SelectHostPoolvillaOneController extends HttpServlet {
 		String reservationBeginDate = request.getParameter("reservationBeginDate");
 		String reservationLastDate = request.getParameter("reservationLastDate");
 		
+		
 		// 디버깅
 		System.out.println("[/host/selectHostPoolvillaOneController.doget()] pvNo : " + pvNo);
 		
@@ -84,6 +85,12 @@ public class SelectHostPoolvillaOneController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		int pvNo = Integer.parseInt(request.getParameter("pvNo"));
+		
+		response.sendRedirect(request.getContextPath()+"/host/insertPoolvillaPhotoController");
+		
+	
 	}
 
 }
