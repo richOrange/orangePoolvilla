@@ -23,7 +23,7 @@ public class DeleteFacilityController extends HttpServlet {
 		}
 		
 		// 디버깅
-		System.out.println("[DeleteFacilityController.doGet()] facilityNo : " + "facilityNo");
+		System.out.println("[DeleteFacilityController.doGet()] facilityNo : " + facilityNo);
 		
 		
 		FacilityDao facilityDao = new FacilityDao(); // 메서드 사용을 위한 객체 생성
