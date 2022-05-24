@@ -78,6 +78,11 @@
 			</div>
 		</div>
 	</section>
+	
+	<!-- START: footer -->
+	       <div id="includeFooter"></div>
+	<!-- END: footer -->
+	
 </body>
 
 <script>
