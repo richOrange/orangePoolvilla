@@ -116,20 +116,24 @@ public class PoolvillaRoomDao {
 			System.out.println("[PoolvillaDao.selectPoolvillaRoomNBedByPvNo()] 드라이버 로딩 성공");
 
 			String sql = "SELECT rb.bed_no bedNo"
-					+ "			, pr.room_no roomNo"
-					+ "			, GROUP_CONCAT(CONCAT(rb.bed_size, ' ', rb.bed_cnt) SEPARATOR ', ') bed"
-					+ "			, rb.update_date updateDateRB"
-					+ "			, pr.pv_no pvNo"
-					+ "			, pr.room_type roomType"
-					+ "			, pr.room_name roomName"
-					+ "			, pr.room_info roomInfo"
-					+ "			, pr.room_size roomSize"
-					+ "			, pr.update_date updateDatePR"
-					+ "		FROM poolvilla_room pr "
-					+ "		LEFT JOIN room_bed rb "
-					+ "		ON pr.room_no = rb.room_no "
-					+ "		WHERE pr.pv_no = ? "
-					+ "		GROUP BY pr.room_no ";
+					+ "									, pr.room_no roomNo"
+					+ "									, rb.bed_size bedSize"
+					+ "									, rb.bed_cnt bedCnt"
+					+ "									, rb.update_date updateDateRB"
+					+ "									, pr.pv_no pvNo"
+					+ "									, pr.room_type roomType"
+					+ "									, pr.room_name roomName"
+					+ "									, pr.room_info roomInfo"
+					+ "									, pr.room_size roomSize"
+					+ "									, pr.update_date updateDatePR"
+					+ "									, rp.photo_name photoName"
+					+ "									, rp.photo_original_name photoOriginalName"
+					+ "								FROM poolvilla_room pr"
+					+ "								LEFT JOIN room_bed rb"
+					+ "								ON pr.room_no = rb.room_no"
+					+ "								LEFT JOIN room_photo rp"
+					+ "								ON rp.room_no = pr.room_no"
+					+ "								WHERE pr.pv_no = ?;";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, pvNo);
 			rs = stmt.executeQuery();
