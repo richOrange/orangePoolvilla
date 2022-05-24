@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -55,7 +56,6 @@ public class InsertPoolvillaPhotoController extends HttpServlet {
 		
 		
 		
-		
 		//디버깅
 		System.out.println("[/host/insertPoolvillaPhotoController.doPost()] poolvillaPhotoName : "+ poolvillaPhotoName );
 		System.out.println("[/host/insertPoolvillaPhotoController.doPost()] poolvillaPhotoType : "+ poolvillaPhotoType );
@@ -66,7 +66,6 @@ public class InsertPoolvillaPhotoController extends HttpServlet {
 			
 			// 요청값 호출
 			PoolvillaPhoto pp = new PoolvillaPhoto();
-			
 			pp.setPvNo(pvNo);
 			pp.setPhotoName(poolvillaPhotoName);
 			pp.setPhotoType(poolvillaPhotoType);
@@ -78,6 +77,7 @@ public class InsertPoolvillaPhotoController extends HttpServlet {
 			//Dao에 요청
 			poolvillaPhotoDao = new PoolvillaPhotoDao();
 				
+			
 			
 			
 			int row = poolvillaPhotoDao.insertPoolvillaPhoto(pp);

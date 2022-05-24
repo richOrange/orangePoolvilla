@@ -61,27 +61,26 @@ public class PoolvillaPhotoDao {
 		return row;
 	}
 	
-	public List<PoolvillaPhoto> selectPoolvillaPhoto(int pvNo) {
-		List<PoolvillaPhoto> list = new ArrayList<>();
+	public PoolvillaPhoto selectPoolvillaPhoto(int pvNo) {
+		PoolvillaPhoto poolvillaPhoto = new PoolvillaPhoto();
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql ="SELECT photo_no"
-				+ "			,pv_no"
-				+ "			,photo_name"
-				+ "			,photo_original_name"
-				+ "			,photo_type"
-				+ "			,create_date"
-				+ "			,update_date"
+		String sql ="SELECT photo_no photoNo"
+				+ "			,pv_no pvNo"
+				+ "			,photo_name photoName"
+				+ "			,photo_original_name photoOriginalName"
+				+ "			,photo_type photoType"
+				+ "			,create_date createDate"
+				+ "			,update_date updateDate"
 				+ "	FROM poolvilla_photo"
 				+ "	WHERE pv_no = ?;";
 		try {
-			   conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/oragepoolvilla","root","java1234");
+			   conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
          stmt = conn.prepareStatement(sql);
          stmt.setInt(1, pvNo);
          rs = stmt.executeQuery();
-         while (rs.next()) {
-         	PoolvillaPhoto poolvillaPhoto = new PoolvillaPhoto();
+         if (rs.next()) {
          	poolvillaPhoto.setPhotoNo(rs.getInt("photoNo"));
          	poolvillaPhoto.setPvNo(rs.getInt("pvNo"));
          	poolvillaPhoto.setPhotoName(rs.getString("photoName"));
@@ -89,7 +88,6 @@ public class PoolvillaPhotoDao {
          	poolvillaPhoto.setPhotoType(rs.getString("photoType"));
          	poolvillaPhoto.setCreateDate(rs.getString("createDate"));
          	poolvillaPhoto.setUpdateDate(rs.getString("updateDate"));
-				list.add(poolvillaPhoto);
         }
 		   } catch (Exception e) {
 			   e.printStackTrace();
@@ -102,7 +100,7 @@ public class PoolvillaPhotoDao {
 		   }
 		
 		
-		return list;
+		return poolvillaPhoto;
 	
 	}
 }

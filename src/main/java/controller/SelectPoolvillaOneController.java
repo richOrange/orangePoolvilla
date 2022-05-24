@@ -134,7 +134,7 @@ public class SelectPoolvillaOneController extends HttpServlet {
 		List<Map<String, Object>> poolvillaRoomNBedList = poolvillaRoomDao.selectPoolvillaRoomNBedByPvNo(pvNo);
 		List<PoolvillaPool> selectPoolvillaPoolListByPvNo = poolvillaPoolDao.selectPoolvillaPoolListByPvNo(pvNo);
 		List<Map<String, Object>> selectPoolvillaFacilityListByPvNo = facilityDao.selectPoolvillaFacilityListByPvNo(pvNo);
-		List<PoolvillaPhoto> sppList = poolvillaPhotoDao.selectPoolvillaPhoto(pvNo);
+		PoolvillaPhoto poolvillaPhoto = poolvillaPhotoDao.selectPoolvillaPhoto(pvNo);
 		
 		ArrayList<HashMap<String, Object>> poolvillaReviewListPerPoolvilla = reviewDao.selectReviewListPerPoolvilla(pvNo, beginRow, rowPerPage);
 		
@@ -148,7 +148,7 @@ public class SelectPoolvillaOneController extends HttpServlet {
 		request.setAttribute("poolvillaRoomNBedList", poolvillaRoomNBedList); // 해당 풀빌라의 room_info 정보와 bed 정보 
 		request.setAttribute("selectPoolvillaPoolListByPvNo", selectPoolvillaPoolListByPvNo); // 해당 풀빌라의 pool 정보
 		request.setAttribute("selectPoolvillaFacilityListByPvNo", selectPoolvillaFacilityListByPvNo); // 해당 풀빌라의 facility 정보
-		request.setAttribute("sppList", sppList);
+		request.setAttribute("poolvillaPhoto", poolvillaPhoto);
 		request.setAttribute("poolvillaReviewListPerPoolvilla", poolvillaReviewListPerPoolvilla); // 풀빌라 한채의 리뷰 목록 
 		
 		//jsp 호출

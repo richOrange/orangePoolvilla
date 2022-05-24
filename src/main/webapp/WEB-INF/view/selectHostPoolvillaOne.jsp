@@ -72,25 +72,10 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-				
-							
-							
-					<c:if test="${ not empty sppList }">
-					<c:forEach var = "prb" items = "${ sppList }" varStatus = "status">
-							<tr>
-   								<form action="${pageContext.request.contextPath}/host/insertRoomPhotoController" method="post" enctype="multipart/form-data">
-									<input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
-									<input type = "hidden" name = "roomNo" value = "${ prb.roomNo }" readonly>
-									<td><input type="file" name="roomPhoto" ></td>
-									<td><button type = "submit" class = "btn btn-primary btn-sm" id="insertRoomPhotoButton">insert</button></td>
-									<td><img src="${pageContext.request.contextPath}/image/room/${prb.photoName}" width="200" height="200" alt=""></td>
-									<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBedController?pvNo=${ pvNo }&roomNo=${ prb.roomNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
-								</form>
-							</tr>
-					</c:forEach>
-				</c:if>
+   						<img src="${pageContext.request.contextPath}/image/poolvilla/${poolvillaPhoto.photoName}" width="1140" height="700" alt="">
 				</div>
 			</div>
+			<br>
 			<div class="row heading">
 				<h2 class="mt0 mb50 text-center">풀빌라 정보</h2>
 			</div>
