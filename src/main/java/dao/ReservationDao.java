@@ -16,7 +16,7 @@ public class ReservationDao {
 	
 	/*-----------------------------------------공통 영역-------------------------------------------*/
 	//요청값으로 예약상태 변경하는 메서드
-	public int updateReservationStatusOfReservation(String reservationStatus,int reservationNo) {
+	public int updateReservationStatusOfReservation(String reservationStatus,int reservationNo,String reservationStatusEditor ) {
 		int row = -1; // 쿼리문 실패시 -1 반환
 		String updateDate = null; // 변경된 updateDate 저장할 변수 초기화
 		//DB 자원 준비
@@ -34,11 +34,13 @@ public class ReservationDao {
 			//1. reservation테이블의 상태를 변경
 			String checkReservationsql = "UPDATE reservation"
 					+ "					 SET reservation_status = ?"
+					+ "							,reservation_status_editor =  ? "
 					+ "							,update_date= NOW() "
 					+ "					WHERE reservation_no = ? ";
 			stmt1 = conn.prepareStatement(checkReservationsql);
 			stmt1.setString(1, reservationStatus);//reservationStatus 입력
-			stmt1.setInt(2, reservationNo);//reservationStatus 입력
+			stmt1.setString(2, reservationStatusEditor);//수정한 아이디 및 시스템 입력
+			stmt1.setInt(3, reservationNo);//reservationStatus 입력
 			row =stmt1.executeUpdate();//check
 			if(row==0) { // 수정실패
 				System.out.println("[ReservationDao.updateReservationStatus] reservation테이블 수정실패");

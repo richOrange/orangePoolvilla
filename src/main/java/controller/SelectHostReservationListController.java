@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.ReservationDao;
 
@@ -18,6 +19,8 @@ public class SelectHostReservationListController extends HttpServlet {
 	private ReservationDao reservationDao;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Map<String,Object> sessionLoginMember = (Map<String,Object>)session.getAttribute("sessionLoginMember"); // 로그인 정보 요청 <- 예약상태변경 수정자
 		//dao 호출
 		reservationDao = new ReservationDao();
 		//예약상태 변경 기능
@@ -29,7 +32,7 @@ public class SelectHostReservationListController extends HttpServlet {
 			System.out.println("[selectHostReservationListController.doGet()] checkStatus : "+checkStatus);
 			System.out.println("[selectHostReservationListController.doGet()] reservationNo : "+reservationNo);
 			//Dao에 예약상태 변경요청
-			int row = reservationDao.updateReservationStatusOfReservation(checkStatus, reservationNo);
+			int row = reservationDao.updateReservationStatusOfReservation(checkStatus, reservationNo,(String)sessionLoginMember.get("memberId")); //memberId = hostId <-- 상태변경한 관리자 아이디를 이력에 저장
 			System.out.println("[selectHostReservationListController.doGet()] reservationDao.updateReservationStatusOfReservation 실패");
 			if(row==-1||row==0) {//-1일시 DB에 요청실패, 0일시 update or insert 실패
 			}else if(row==1) {//성공
