@@ -117,7 +117,7 @@ public class PoolvillaRoomDao {
 
 			String sql = "SELECT rb.bed_no bedNo"
 					+ "									, pr.room_no roomNo"
-					+ "									, CONCAT(rb.bed_size,' ',rb.bed_cnt,' , ') bed "
+					+ "									, CONCAT(rb.bed_size,' ',rb.bed_cnt,'') bed "
 					+ "									, rb.update_date updateDateRB"
 					+ "									, pr.pv_no pvNo"
 					+ "									, pr.room_type roomType"

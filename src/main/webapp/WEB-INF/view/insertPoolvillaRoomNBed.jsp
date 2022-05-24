@@ -66,9 +66,9 @@
 					<th class="text text-center">방 설명</th>
 					<th class="text text-center">방 크기</th>
 					<th class="text text-center">침대</th>
-					<th class="text text-center">사진 선택</th>
-					<th class="text text-center">등록</th>
 					<th class="text text-center">사진</th>
+					<th class="text text-center">&nbsp;</th>
+					
 					
 					<th>&nbsp;</th>
 				</tr>
@@ -86,9 +86,13 @@
    								<form action="${pageContext.request.contextPath}/host/insertRoomPhotoController" method="post" enctype="multipart/form-data">
 									<input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
 									<input type = "hidden" name = "roomNo" value = "${ prb.roomNo }" readonly>
-									<td><input type="file" name="roomPhoto" ></td>
+									<c:if test="${empty prb.photoName }">
+									<td><input type="file" placeholder="search images" name="roomPhoto" ></td>
 									<td><button type = "submit" class = "btn btn-primary btn-sm" id="insertRoomPhotoButton">insert</button></td>
-									<td><img src="${pageContext.request.contextPath}/image/room/${prb.photoName}" width="200" height="200" alt=""></td>
+									</c:if>
+									<c:if test="${not empty prb.photoName }">
+									<td><img src="${pageContext.request.contextPath}/image/room/${prb.photoName}" width="100" height="100" alt=""></td>
+									</c:if>
 									<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBedController?pvNo=${ pvNo }&roomNo=${ prb.roomNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
 							</form>
 							</tr>
