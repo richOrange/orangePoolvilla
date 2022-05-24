@@ -91,7 +91,7 @@
 	          				</div>
 	          				<div class="probootstrap-listing-category for-sale">
 	          					<span>예약가능</span>
-	          					<span class="btn"><input type="submit" name="compare" value="${m.pvNo}">비교하기</span>
+	          					<!-- <span class="btn"><input type="submit" name="compare" value="${m.pvNo}">비교하기</span>  -->
 	          				</div>
 	          				<div class="probootstrap-listing-price"><strong>${m.price}원</strong> / Day</div>
 	       				</div>
@@ -183,7 +183,7 @@
 					</fieldset>
                   <button type="button" id="search" class="btn btn-success"  style="margin-top: 20px"><i class="icon-magnifying-glass t2"></i>상세검색</button>
 	      		
-	      		<div class="floating"> 
+	      		<!-- <div class="floating"> 
 	      			<div> 비교하기 </div> 
 	      			<br>
 	      			<div>
@@ -203,7 +203,7 @@
 	      			</div>
 	      			<br>
 	      			<a href="${pageContext.request.contextPath}/all/comparePoolvillaController" class = "btn btn-primary float-right btn-sm">compare</a>
-	      		</div>
+	      		</div>  -->
 	      </div>
 	      <!-- 상세검색부분 끝 -->
 	    </div>
