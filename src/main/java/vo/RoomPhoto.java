@@ -6,10 +6,25 @@ public class RoomPhoto {
 	private String photoName;
 	private String photoOriginalName;
 	private String photoType;
-	private double photoSize;
 	private String photoArea;
 	private String createDate;
 	private String updateDate;
+	public RoomPhoto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public RoomPhoto(int photoNo, int roomNo, String photoName, String photoOriginalName, String photoType,
+			String photoArea, String createDate, String updateDate) {
+		super();
+		this.photoNo = photoNo;
+		this.roomNo = roomNo;
+		this.photoName = photoName;
+		this.photoOriginalName = photoOriginalName;
+		this.photoType = photoType;
+		this.photoArea = photoArea;
+		this.createDate = createDate;
+		this.updateDate = updateDate;
+	}
 	public int getPhotoNo() {
 		return photoNo;
 	}
@@ -40,12 +55,6 @@ public class RoomPhoto {
 	public void setPhotoType(String photoType) {
 		this.photoType = photoType;
 	}
-	public double getPhotoSize() {
-		return photoSize;
-	}
-	public void setPhotoSize(double photoSize) {
-		this.photoSize = photoSize;
-	}
 	public String getPhotoArea() {
 		return photoArea;
 	}
@@ -67,27 +76,10 @@ public class RoomPhoto {
 	@Override
 	public String toString() {
 		return "RoomPhoto [photoNo=" + photoNo + ", roomNo=" + roomNo + ", photoName=" + photoName
-				+ ", photoOriginalName=" + photoOriginalName + ", photoType=" + photoType + ", photoSize=" + photoSize
-				+ ", photoArea=" + photoArea + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
-	}
-	public RoomPhoto(int photoNo, int roomNo, String photoName, String photoOriginalName, String photoType,
-			double photoSize, String photoArea, String createDate, String updateDate) {
-		super();
-		this.photoNo = photoNo;
-		this.roomNo = roomNo;
-		this.photoName = photoName;
-		this.photoOriginalName = photoOriginalName;
-		this.photoType = photoType;
-		this.photoSize = photoSize;
-		this.photoArea = photoArea;
-		this.createDate = createDate;
-		this.updateDate = updateDate;
-	}
-	public RoomPhoto() {
-		super();
-		// TODO Auto-generated constructor stub
+				+ ", photoOriginalName=" + photoOriginalName + ", photoType=" + photoType + ", photoArea=" + photoArea
+				+ ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
 	}
 	
 	
-
+	
 }

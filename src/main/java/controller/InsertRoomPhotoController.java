@@ -40,12 +40,12 @@ public class InsertRoomPhotoController extends HttpServlet {
 		System.out.println("[/host/insertRoomPhotoController.doPost()] path :" + path);
 		// 요청값 처리
 		MultipartRequest multipartRequest = new MultipartRequest(request, path, 1024*1024*100, "utf-8", new DefaultFileRenamePolicy());
-//		if (request.getParameter("pvNo") == null) {
-//			response.sendRedirect(request.getContextPath() + "/all/homeController?msg=null");
-//			return;
-//		}
-//		
-//		int pvNo = Integer.parseInt(request.getParameter("pvNo"));
+
+		
+		int pvNo = -1;
+		if(request.getParameter("pvNo") == null || request.getParameter("pvNo") =="") {
+			pvNo = Integer.parseInt(multipartRequest.getParameter("pvNo"));
+		}
 		int roomNo = -1;
 		if(request.getParameter("roomNo") == null || request.getParameter("roomNo") =="") {
 			roomNo = Integer.parseInt(multipartRequest.getParameter("roomNo"));
@@ -96,11 +96,11 @@ public class InsertRoomPhotoController extends HttpServlet {
 			System.out.println("[/host/insertRoomPhotoController.doPost()] row : " + row);
 			if(row==1) {//성공시 insertRoomPhotoController로 돌려보냄
 				System.out.println("[/host/insertRoomPhotoController.doPost()] 이미지 추가 성공 ");
-				response.sendRedirect(request.getContextPath()+"/host/insertRoomPhotoController");
+				response.sendRedirect(request.getContextPath()+"/host/insertPoolvillaRoomNBedController?pvNo=" + pvNo);
 			} else { //실패시 파일삭제 및 insertRoomNBedController로 되돌려 보냄
 				File file = new File(path+"/"+photoName);
 				file.delete();// 파일 삭제
-				response.sendRedirect(request.getContextPath()+"/host/insertRoomNBedController?roomNo=" + roomNo);
+				response.sendRedirect(request.getContextPath()+"/host/insertRoomNBedController?pvNo=" + pvNo);
 			}
 		}else { // 업로드 불가능한 파일을 올리면 파일삭제 및 selectHostPoolvillaOneController로 되돌려보냄
 			System.out.println("[/host/insertRoomPhotoController.doPost()] 업로드 불가능한 파일 형식 : img파일만 가능");
