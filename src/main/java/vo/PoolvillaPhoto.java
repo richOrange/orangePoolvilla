@@ -6,7 +6,6 @@ public class PoolvillaPhoto {
 	private String photoName;
 	private String photoOriginalName;
 	private String photoType;
-	private String photoArea;
 	private String createDate;
 	private String updateDate;
 	public PoolvillaPhoto() {
@@ -14,14 +13,13 @@ public class PoolvillaPhoto {
 		// TODO Auto-generated constructor stub
 	}
 	public PoolvillaPhoto(int photoNo, int pvNo, String photoName, String photoOriginalName, String photoType,
-			 String photoArea, String createDate, String updateDate) {
+			 String createDate, String updateDate) {
 		super();
 		this.photoNo = photoNo;
 		this.pvNo = pvNo;
 		this.photoName = photoName;
 		this.photoOriginalName = photoOriginalName;
 		this.photoType = photoType;
-		this.photoArea = photoArea;
 		this.createDate = createDate;
 		this.updateDate = updateDate;
 	}
@@ -29,7 +27,7 @@ public class PoolvillaPhoto {
 	public String toString() {
 		return "PoolvillaPhoto [photoNo=" + photoNo + ", pvNo=" + pvNo + ", photoName=" + photoName
 				+ ", photoOriginalName=" + photoOriginalName + ", photoType=" + photoType 
-				+ ", photoArea=" + photoArea + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
+				+ ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
 	}
 	public int getPhotoNo() {
 		return photoNo;
@@ -60,12 +58,6 @@ public class PoolvillaPhoto {
 	}
 	public void setPhotoType(String photoType) {
 		this.photoType = photoType;
-	}
-	public String getPhotoArea() {
-		return photoArea;
-	}
-	public void setPhotoArea(String photoArea) {
-		this.photoArea = photoArea;
 	}
 	public String getCreateDate() {
 		return createDate;

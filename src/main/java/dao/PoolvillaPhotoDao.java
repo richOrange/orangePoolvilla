@@ -5,8 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import vo.PoolvillaPhoto;
+import vo.RoomPhoto;
 
 public class PoolvillaPhotoDao {
 	public int insertPoolvillaPhoto( PoolvillaPhoto poolvillaPhoto ) {
@@ -24,26 +27,21 @@ public class PoolvillaPhotoDao {
 					+ "								,photo_name"
 					+ "								,photo_original_name"
 					+ "								,photo_type"
-					+ "								,photo_area"
 					+ "								,create_date"
 					+ "								,update_date)"
-					+ "	VALUES(?,?,?,?,?,NOW(),NOW())";
+					+ "	VALUES(?,?,?,?,NOW(),NOW())";
 			
 			
-			stmt = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);					
+			stmt = conn.prepareStatement(sql);					
 			
 			stmt.setInt(1, poolvillaPhoto.getPvNo());
 			stmt.setString(2, poolvillaPhoto.getPhotoName());
 			stmt.setString(3, poolvillaPhoto.getPhotoOriginalName());
 			stmt.setString(4, poolvillaPhoto.getPhotoType());
-			stmt.setString(5, poolvillaPhoto.getPhotoArea());
-			stmt.executeUpdate();
-			rs=stmt.getGeneratedKeys();
 			row=stmt.executeUpdate();
 			System.out.println("[PoolvillaDao.PoolvillaPhoto] row " + row);
 			
-			if(rs.next()) {
-				row = 1;
+			if(row==1) {
 				System.out.println("[PoolvillaPhotoDao.updatePassword] PoolvillaPhoto 테이블 수정 성공");
 			} else {
 				System.out.println("[PoolvillaPhotoDao.updatePassword] PoolvillaPhoto 테이블 수정 실패");
@@ -53,7 +51,6 @@ public class PoolvillaPhotoDao {
 			e.printStackTrace();
 		}finally {										
 				try {
-					rs.close();
 					stmt.close();
 					conn.close();
 				} catch (SQLException e) {
@@ -62,5 +59,50 @@ public class PoolvillaPhotoDao {
 		}
 		
 		return row;
+	}
+	
+	public List<PoolvillaPhoto> selectPoolvillaPhoto(int pvNo) {
+		List<PoolvillaPhoto> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql ="SELECT photo_no"
+				+ "			,pv_no"
+				+ "			,photo_name"
+				+ "			,photo_original_name"
+				+ "			,photo_type"
+				+ "			,create_date"
+				+ "			,update_date"
+				+ "	FROM poolvilla_photo"
+				+ "	WHERE pv_no = ?;";
+		try {
+			   conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/oragepoolvilla","root","java1234");
+         stmt = conn.prepareStatement(sql);
+         stmt.setInt(1, pvNo);
+         rs = stmt.executeQuery();
+         while (rs.next()) {
+         	PoolvillaPhoto poolvillaPhoto = new PoolvillaPhoto();
+         	poolvillaPhoto.setPhotoNo(rs.getInt("photoNo"));
+         	poolvillaPhoto.setPvNo(rs.getInt("pvNo"));
+         	poolvillaPhoto.setPhotoName(rs.getString("photoName"));
+         	poolvillaPhoto.setPhotoOriginalName(rs.getString("photoOriginalName"));
+         	poolvillaPhoto.setPhotoType(rs.getString("photoType"));
+         	poolvillaPhoto.setCreateDate(rs.getString("createDate"));
+         	poolvillaPhoto.setUpdateDate(rs.getString("updateDate"));
+				list.add(poolvillaPhoto);
+        }
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   } finally {
+			   try {
+				   conn.close();
+			   } catch (SQLException e) {
+				   e.printStackTrace();
+			   }
+		   }
+		
+		
+		return list;
+	
 	}
 }
