@@ -206,6 +206,8 @@ public class ReviewDao {
 		return totalRow; 
 	}
 	
+	
+	
 	public void insertReview(Review review) {
 		
 		// DB 자원 준비 
@@ -413,75 +415,7 @@ public class ReviewDao {
 	// 반환값 
 	return customerReviewList;
 }
-		// 풀빌라 상세보기에 리뷰 모아서 보는 기능 
-		public ArrayList<HashMap<String, Object>> selectReviewListPerPoolvilla(String pvName,int beginRow, int rowPerPage) {
-			
-			// 반환값으로 사용할 변수 선언 
-			ArrayList<HashMap<String, Object>> poolvillaReviewList = new ArrayList<>();
-			
-			// DB 자원 준비 
-			Connection conn = null;
-			PreparedStatement stmt = null;
-			ResultSet rs = null;
-			
-			String sql = "SELECT pv.pv_name pvName, rv.customer_id customerId, r.satisfaction satisfaction, r.cleanliness cleanliness"
-					+ " , r.revisit revisit, r.review_contents reviewContens, r.update_date updateDate"
-					+ " FROM review r"
-					+ " INNER JOIN reservation rv"
-					+ " ON r.reservation_no = rv.reservation_no"
-					+ " INNER JOIN poolvilla pv"
-					+ " ON rv.pv_no = pv.pv_no"
-					+ " WHERE pv.pv_name = ?"
-					+ " AND r.review_active = 'Y'"
-					+ " LIMIT ?,?";
-			
-			try {
-				// DB 연결 
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
-				// 디버깅 
-				System.out.println("[ReviewDao.selectReviewListPerPoolvilla()] conn : " + conn);
-				
-				// 리뷰 목록에 사용할 데이터를 가져오는 쿼리를 저장한다 
-				stmt= conn.prepareStatement(sql);
-				stmt.setString(1, pvName);
-				stmt.setInt(2, beginRow);
-				stmt.setInt(3, rowPerPage);
-				
-				// 테이블에 쿼리 내용들을 저장한다 
-				rs = stmt.executeQuery();
-				
-				while(rs.next()) {
-					// 1회용 VO HashMap 인스턴스 생성 
-					HashMap<String, Object> map = new HashMap<>();
-					
-					// map 인스턴스에 데이터 저장 
-					map.put("pvName", rs.getString("pvName"));
-					map.put("customerId", rs.getString("customerId"));
-					map.put("satisfaction", rs.getInt("satisfaction"));
-					map.put("cleanliness", rs.getInt("cleanliness"));
-					map.put("revisit", rs.getString("revisit"));
-					map.put("reviewContents", rs.getString("reviewContents"));
-					map.put("updateDate", rs.getString("updateDate"));
-					
-					
-					// 동적 배열에 map 데이터 저장 
-					poolvillaReviewList.add(map);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				try {
-					// DB 연결 종료 
-					conn.close();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				} 
-			}
-			
-			// 반환값 
-			return poolvillaReviewList;
-		}
+		
 		
 		// 검색 기능 : 고객별, 풀빌라 이름별 모아보기 메서드 
 		public ArrayList<HashMap<String, Object>> searchCustomerReviewList(String search, String keyword, int beginRow, int rowPerPage) {
@@ -563,4 +497,138 @@ public class ReviewDao {
 			// 반환값 
 			return customerReviewList;
 		}
+		
+		//  풀빌라 상세보기 페이지 리뷰 목록 전체 행의 수 구하는 메서드 
+		public int selectReviewListPerPoolvillaTotalRow(int pvNo) {
+			int totalRow = 0; 
+			
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+
+			String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
+			// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
+			String dbuser = "root";
+			// 연결하려는 DB의 아이디를 문자열 변수에 저장
+			String dbpw = "java1234";
+			// 연결하려는 DB의 패스워드를 문자열 변수에 저장
+
+			String sql = "SELECT COUNT(*) cnt"
+					+ "	  FROM review r"
+					+ "	  INNER JOIN reservation rv"
+					+ "   ON r.reservation_no = rv.reservation_no"
+					+ "   INNER JOIN poolvilla pv"
+					+ "   ON rv.pv_no = pv.pv_no"
+					+ "   WHERE pv.pv_no = ?"
+					+ "   AND r.review_active = 'Y'";
+			
+			try {
+			
+
+				conn = DriverManager.getConnection(dburl, dbuser, dbpw);
+				System.out.println("[ReviewDao.selectReviewListPerPoolvillaTotalRow()] conn:" + conn);
+
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, pvNo);
+
+				rs = stmt.executeQuery();
+
+				if (rs.next()) {
+					totalRow = rs.getInt("cnt");
+					System.out.println("[ReviewDao.selectReviewListPerPoolvillaTotalRow()] totalRow :" + totalRow);
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					rs.close();
+					stmt.close();
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO: handle exception
+					e1.printStackTrace();
+				}
+			}
+			
+			return totalRow; 
+		}
+		
+		// 풀빌라 상세보기에 리뷰 모아서 보는 기능 
+				public ArrayList<HashMap<String, Object>> selectReviewListPerPoolvilla(int pvNo,int beginRow, int rowPerPage) {
+					
+					// 반환값으로 사용할 변수 선언 
+					ArrayList<HashMap<String, Object>> poolvillaReviewList = new ArrayList<>();
+					
+					// DB 자원 준비 
+					Connection conn = null;
+					PreparedStatement stmt = null;
+					ResultSet rs = null;
+					
+					String sql = "SELECT pv.pv_name pvName"
+							+ "	, rv.customer_id customerId"
+							+ "	, r.satisfaction satisfaction"
+							+ "	, r.cleanliness cleanliness"
+							+ " , r.revisit revisit"
+							+ "	, r.review_contents reviewContents"
+							+ "	, r.update_date updateDate"
+							+ " , pv.pv_no pvNo"
+							+ " , rv.reservation_no reservationNo"
+							+ "   FROM review r"
+							+ "   INNER JOIN reservation rv"
+							+ "   ON r.reservation_no = rv.reservation_no"
+							+ "   INNER JOIN poolvilla pv"
+							+ "   ON rv.pv_no = pv.pv_no"
+							+ "   WHERE pv.pv_no = ?"
+							+ "   AND r.review_active = 'Y'"
+							+ "   LIMIT ?,?";
+					
+					try {
+						// DB 연결 
+						conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+						// 디버깅 
+						System.out.println("[ReviewDao.selectReviewListPerPoolvilla()] conn : " + conn);
+						
+						// 리뷰 목록에 사용할 데이터를 가져오는 쿼리를 저장한다 
+						stmt= conn.prepareStatement(sql);
+						stmt.setInt(1, pvNo);
+						stmt.setInt(2, beginRow);
+						stmt.setInt(3, rowPerPage);
+						
+						// 테이블에 쿼리 내용들을 저장한다 
+						rs = stmt.executeQuery();
+						
+						while(rs.next()) {
+							// 1회용 VO HashMap 인스턴스 생성 
+							HashMap<String, Object> map = new HashMap<>();
+							
+							// map 인스턴스에 데이터 저장 
+							map.put("pvName", rs.getString("pvName"));
+							map.put("customerId", rs.getString("customerId"));
+							map.put("satisfaction", rs.getInt("satisfaction"));
+							map.put("cleanliness", rs.getInt("cleanliness"));
+							map.put("revisit", rs.getString("revisit"));
+							map.put("reviewContents", rs.getString("reviewContents"));
+							map.put("updateDate", rs.getString("updateDate"));
+							
+							map.put("pvNo", rs.getInt("pvNo"));
+							map.put("reservationNo", rs.getInt("reservationNo"));
+							// 동적 배열에 map 데이터 저장 
+							poolvillaReviewList.add(map);
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						try {
+							// DB 연결 종료 
+							conn.close();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						} 
+					}
+					
+					// 반환값 
+					return poolvillaReviewList;
+				}
 }

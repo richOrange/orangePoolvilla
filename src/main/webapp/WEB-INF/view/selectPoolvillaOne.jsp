@@ -357,6 +357,52 @@
 			</div>
 		</div>
 	</section>
+	
+	<section>
+		
+			
+					<h2 class="mt0 mb50 text-center">리뷰</h2>
+						<div>
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>풀빌라 이름</th>
+										<th>사용자 아이디</th>
+										<th>만족도</th>
+										<th>청결도</th>
+										<th>재방문 의사</th>
+										
+										<th>최종 수정 날짜</th>
+									</tr>
+								</thead>
+		
+								<tbody>
+									<c:forEach var="p" items="${poolvillaReviewListPerPoolvilla}">
+										<tr>
+											<td>${p.pvName }</td>
+											<td>${p.customerId }</td>
+											<td>${p.satisfaction }</td>
+											<td>${p.cleanliness }</td>
+											<td>${p.revisit }</td>
+											
+											
+											<td>${p.updateDate }</td>
+										</tr>
+										<tr>
+											<td>
+												<h5>리뷰 작성 내용</h5>
+											</td>
+											<td>${p.reviewContents }</td>
+										</tr>
+										
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+				
+			
+	</section>
+	
 
 	<!-- START: footer -->
 	<div id="includeFooter"></div>
