@@ -51,7 +51,7 @@ public class HomeController extends HttpServlet {
     		//체크인이 오늘날짜인 예약을 결제완료 -> 이용중으로 변경 하는 기능
     		if(reservationBytodayCheckInlist.size()!=0) {//리스트가 비어있지 않으면 리스트안에 있는 예약은 예약상태를 이용중으로 변경
     			for (Integer integer : reservationBytodayCheckInlist) {
-    				row = reservationDao.updateReservationStatusOfReservation(reservationStatus, integer); // integer = reservationNo
+    				row = reservationDao.updateReservationStatusOfReservation(reservationStatus, integer, "poolvillaSystem"); // integer = reservationNo, poolvillaSystem <- 설정에서 변경 했을시 변경자
     				System.out.println("[/all/homeController]예약번호"+integer+" 이용중으로 변경 결과:"+row+"<- 1:성공 0 :실패");		
 				}
     		}
@@ -63,7 +63,7 @@ public class HomeController extends HttpServlet {
     		System.out.println("[/all/homeController] reservationBytodayCheckOutlist.size() : "+reservationBytodayCheckOutlist.size());
     		if(reservationBytodayCheckOutlist.size()!=0) {//리스트가 비어있지 않으면 리스트안에 있는 예약은 예약상태를 이용완료으로 변경
     			for (Integer integer : reservationBytodayCheckOutlist) {
-    				row = reservationDao.updateReservationStatusOfReservation(reservationStatus, integer); // integer = reservationNo
+    				row = reservationDao.updateReservationStatusOfReservation(reservationStatus, integer, "poolvillaSystem"); // integer = reservationNo, poolvillaSystem <- 설정에서 변경 했을시 변경자
     				System.out.println("[/all/homeController]예약번호"+integer+" 이용완료로 변경 결과:"+row+"<- 1:성공 0 :실패");		
     			}
     		}

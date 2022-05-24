@@ -42,7 +42,7 @@ public class MyReservationListController extends HttpServlet {
 			System.out.println("[myReservationListController.doGet()] checkStatus : "+checkStatus);
 			System.out.println("[myReservationListController.doGet()] reservationNo : "+reservationNo);
 			//Dao에 예약상태 변경요청
-			int row = reservationDao.updateReservationStatusOfReservation(checkStatus, reservationNo);
+			int row = reservationDao.updateReservationStatusOfReservation(checkStatus, reservationNo,(String)sessionLoginMember.get("memberId")); // memberId = customerId 예약상태 변경한 회원 Id
 			if(row==-1) {//-1일시 reservationDao.updateReservationStatus 쿼리문 작동안함,다른 성공 실패 여부는 dao에서 출력됨
 				System.out.println("[ReservationController.doGet()] reservationDao.updateReservationStatus 요청실패 ");
 			}else if(row==1) {//성공시 /customer/myReservationListController목록으로 redirect

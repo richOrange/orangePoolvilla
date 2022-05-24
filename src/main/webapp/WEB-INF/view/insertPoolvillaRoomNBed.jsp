@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page import = "java.io.File" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -57,7 +58,6 @@
     
     		<h2>Room Info List</h2>
     		<br>
-    		<form action="${pageContext.request.contextPath}/host/insertRoomPhotoController" method="post" enctype="multipart/form-data">
     		<table class = "table table-hover text text-center">
 			<thead>
 				<tr>
@@ -77,25 +77,26 @@
 				<tr>
 				<c:if test="${ not empty prbList }">
 					<c:forEach var = "prb" items = "${ prbList }" varStatus = "status">
-							<input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
-							<input type = "hidden" name = "roomNo" value = "${ prb.roomNo }" readonly>
 							<tr>
 								<td>${ prb.roomName }</td>
 								<td>${ prb.roomType }</td>
 								<td>${ prb.roomInfo }</td>
 								<td>${ prb.roomSize }</td>
-								<td>${ prb.bed }</td>
-								<td><input type = "file" name = "roomPhoto" class = "custom-file"></td>
-								<td><button type = "submit" class = "btn btn-primary btn-sm" id="insertRoomPhotoButton">insert</button></td>
-								<td><img src="${pageContext.request.contextPath}/image/room/${prb.photoName}" width="200" height="200" alt=""></td>
-								<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBedController?pvNo=${ pvNo }&roomNo=${ prb.roomNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+								<td>${prb.bed}</td>
+   								<form action="${pageContext.request.contextPath}/host/insertRoomPhotoController" method="post" enctype="multipart/form-data">
+									<input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
+									<input type = "hidden" name = "roomNo" value = "${ prb.roomNo }" readonly>
+									<td><input type="file" name="roomPhoto" ></td>
+									<td><button type = "submit" class = "btn btn-primary btn-sm" id="insertRoomPhotoButton">insert</button></td>
+									<td><img src="${pageContext.request.contextPath}/image/room/${prb.photoName}" width="200" height="200" alt=""></td>
+									<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBedController?pvNo=${ pvNo }&roomNo=${ prb.roomNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
+							</form>
 							</tr>
 					</c:forEach>
 				</c:if>
 				</tr>
 			</tbody>
 		</table>
-		</form>
 		
 		<hr>
       
@@ -155,32 +156,6 @@
             </div>
         </form>
 		</table>
-		<hr>
-		<h2>Enter the room image</h2>
-		<br>
-		<form action="${pageContext.request.contextPath}/host/insertRoomPhotoController" method="post" enctype="multipart/form-data">
-			<table class = "table table-active" id="insertRoomPhotoForm">
-				<tr>
-					<td>insert image</td>
-					<td><input type = "hidden" name="pvNo" value="${param.pvNo}">
-					<td><input type = "file" name = "roomPhoto" class = "custom-file"></td>
-					<td><input type = "hidden" name="roomNo" value="${param.roomNo}"></td>
-					<td><button type = "submit" class = "btn btn-primary btn-sm" id="insertRoomPhotoButton">insert</button></td>
-					<td><span id="RoomPhotoHelper" class="helper"></span></td>
-				</tr>
-					
-				<c:forEach var="rp" items="${roomPhotoList }">
-				<tr>
-                    <th>사진</th>
-                    <td><img src="${pageContext.request.contextPath}/image/${rp.PhotoName}"></td>
-                </tr>
-            	</c:forEach>
-			</table>
-		</form>
-		
-		
-		
-		<hr>
 		
 		<a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${ pvNo }" class = "btn btn-primary btn-sm">update완료</a>
 

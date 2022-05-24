@@ -153,9 +153,7 @@
 		</div>
 	      <!-- 페이징 부분 끝 -->
 	      <!-- poolvillaList 부분 끝 -->
-	      <!-- 상세검색 부분 시작 -->
 	      <div class = "col-md-4">
-	      		<h2>상세검색</h2>
                 <!-- 예약날짜 부분 -->
                 	오늘 날짜:<input type="date" class="form-control" id="today" name="reservationToday" value="${applicationToday}" readonly="readonly">
     	            체크인 :<input type="date" class="form-control" id="checkIn" name="reservationBeginDate" value="${reservationBeginDate}">
@@ -170,13 +168,17 @@
                      			<option value="${m.locationNo}">${m.locationName}</option>
                      	</c:forEach>
                      </select>
+	      <!-- 상세검색 부분 시작 -->
+	      		<h2>상세검색</h2>
                 <!-- 부대시설 검색 부분 -->
              		<fieldset>
 					<legend>부대시설</legend>
 					<div class="row">
                	    	<c:forEach var="m" items="${facilityList}">
                	    	<div class= "col-md-6">
-	               	    	<label class="checkbox-inline"><input type="checkbox" name ="checkedFacilityNo" value="${m.facilityNo}">${m.facilityName}</label>
+	               	    	<label class="checkbox-inline">
+	               	    		<input type="checkbox" name ="checkedFacilityNo" value="${m.facilityNo}" <c:forEach var="ch" items="${checkedFacilityList}"><c:if test="${ch == m.facilityNo}">checked</c:if></c:forEach>>${m.facilityName}
+	               	    	</label>
                	    	</div>
                    		</c:forEach>
 					</div>

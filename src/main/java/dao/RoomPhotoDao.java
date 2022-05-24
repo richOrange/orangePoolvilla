@@ -27,13 +27,11 @@ public class RoomPhotoDao {
 				+ "	VALUES(?,?,?,?,NOW(),NOW())";
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
-			stmt = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);					
+			stmt = conn.prepareStatement(sql);					
 			stmt.setInt(1, roomPhoto.getRoomNo());
 			stmt.setString(2, roomPhoto.getPhotoName());
 			stmt.setString(3, roomPhoto.getPhotoOriginalName());
 			stmt.setString(4, roomPhoto.getPhotoType());
-			stmt.executeUpdate();
-			rs=stmt.getGeneratedKeys();
 			row=stmt.executeUpdate();
 			System.out.println("[RoomPhotoDao.RoomPhoto] row " + row);
 			if(row ==1 ) {
@@ -46,7 +44,6 @@ public class RoomPhotoDao {
 			e.printStackTrace();
 		}finally {										
 		try {
-			rs.close();
 			stmt.close();
 			conn.close();
 		} catch (SQLException e) {
