@@ -17,24 +17,23 @@ public class RoomPhotoDao {
 		Connection conn=null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql="INSERT INTO room_photo(photo_no"
-				+ "							,room_no"
+		String sql="INSERT INTO room_photo("
+				+ "							room_no"
 				+ "							,photo_name"
 				+ "							,photo_original_name"
 				+ "							,photo_type"
 				+ "							,photo_area"
 				+ "							,create_date"
 				+ "							,update_date)"
-				+ "	VALUES(?,?,?,?,?,?,NOW(),NOW())";
+				+ "	VALUES(?,?,?,?,?,NOW(),NOW())";
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 			stmt = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);					
-			stmt.setInt(1, roomPhoto.getPhotoNo());
-			stmt.setInt(2, roomPhoto.getRoomNo());
-			stmt.setString(3, roomPhoto.getPhotoName());
-			stmt.setString(4, roomPhoto.getPhotoOriginalName());
-			stmt.setString(5, roomPhoto.getPhotoType());
-			stmt.setString(6, roomPhoto.getPhotoArea());
+			stmt.setInt(1, roomPhoto.getRoomNo());
+			stmt.setString(2, roomPhoto.getPhotoName());
+			stmt.setString(3, roomPhoto.getPhotoOriginalName());
+			stmt.setString(4, roomPhoto.getPhotoType());
+			stmt.setString(5, roomPhoto.getPhotoArea());
 			stmt.executeUpdate();
 			rs=stmt.getGeneratedKeys();
 			row=stmt.executeUpdate();

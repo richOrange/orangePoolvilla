@@ -87,8 +87,7 @@
 								<td>${ prb.bed }</td>
 								<td><input type = "file" name = "roomPhoto" class = "custom-file"></td>
 								<td><button type = "submit" class = "btn btn-primary btn-sm" id="insertRoomPhotoButton">insert</button></td>
-								<td><img src="${pageContext.request.contextPath}/image/${prb.PhotoName}" width="50" height="50" alt=""></td>
-								<td>
+								<td><img src="${pageContext.request.contextPath}/image/${prb.photoName}" width="50" height="50" alt=""></td>
 								<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBedController?pvNo=${ pvNo }&roomNo=${ prb.roomNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
 							</tr>
 					</c:forEach>
