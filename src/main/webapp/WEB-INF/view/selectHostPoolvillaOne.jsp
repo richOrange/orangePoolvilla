@@ -322,7 +322,7 @@
 						<td>insert image</td>
 						<td><input type = "hidden" name="pvNo" id = "pvNo" value="${param.pvNo}">
 						<td><input type = "file" name = "poolvillaPhoto" class = "custom-file"></td>
-						<td><button type = "submit" class = "btn btn-dark" id="insertPoolvillaPhoto">insert ${param.pvNo}</button></td>
+						<td><button type = "submit" class = "btn btn-dark" id="insertPoolvillaPhoto">insert</button></td>
 						<td><span id="poolvillaPhotoHelper" class="helper"></span></td>
 					</tr>
 				</table>
