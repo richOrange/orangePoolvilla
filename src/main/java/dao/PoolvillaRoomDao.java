@@ -117,8 +117,7 @@ public class PoolvillaRoomDao {
 
 			String sql = "SELECT rb.bed_no bedNo"
 					+ "									, pr.room_no roomNo"
-					+ "									, rb.bed_size bedSize"
-					+ "									, rb.bed_cnt bedCnt"
+					+ "									, CONCAT(rb.bed_size,' ',rb.bed_cnt,' , ') bed "
 					+ "									, rb.update_date updateDateRB"
 					+ "									, pr.pv_no pvNo"
 					+ "									, pr.room_type roomType"
@@ -133,7 +132,8 @@ public class PoolvillaRoomDao {
 					+ "								ON pr.room_no = rb.room_no"
 					+ "								LEFT JOIN room_photo rp"
 					+ "								ON rp.room_no = pr.room_no"
-					+ "								WHERE pr.pv_no = ?;";
+					+ "								WHERE pr.pv_no = ?"
+					+ "								GROUP BY pr.room_no";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, pvNo);
 			rs = stmt.executeQuery();
@@ -142,13 +142,14 @@ public class PoolvillaRoomDao {
 				Map<String,Object> m = new HashMap<>();
 				m.put("bedNo", rs.getInt("bedNo")); // 침대 번호
 				m.put("roomNo", rs.getInt("roomNo")); // 방 번호
-				m.put("bedCnt", rs.getString("bedCnt")); // 침대 사이즈 + 수량
+				m.put("bed", rs.getString("bed")); // 침대 사이즈 + 수량
 				m.put("updateDateRB", rs.getString("updateDateRB")); // room_bed 테이블의 글 수정 날짜
 				m.put("pvNo", rs.getInt("pvNo")); // 풀빌라 번호
 				m.put("roomType", rs.getString("roomType")); // 방 유형
 				m.put("roomName", rs.getString("roomName")); // 방 이름
 				m.put("roomInfo", rs.getString("roomInfo")); // 방 정보
 				m.put("roomSize", rs.getInt("roomSize")); // 방 사이즈
+				m.put("photoName", rs.getString("photoName")); //방사진 경로에 사진 이름
 				m.put("updateDatePR", rs.getString("updateDatePR")); // poolvilla_room 테이블의 글 수정 날짜
 				list.add(m);
 			}

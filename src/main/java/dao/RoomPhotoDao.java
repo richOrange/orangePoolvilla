@@ -44,7 +44,6 @@ public class RoomPhotoDao {
 			e.printStackTrace();
 		}finally {										
 		try {
-			rs.close();
 			stmt.close();
 			conn.close();
 		} catch (SQLException e) {

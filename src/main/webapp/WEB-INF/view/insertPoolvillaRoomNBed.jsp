@@ -82,10 +82,7 @@
 								<td>${ prb.roomType }</td>
 								<td>${ prb.roomInfo }</td>
 								<td>${ prb.roomSize }</td>
-								<td>${ prb.bed }</td>
-							</tr>
-							<tr>
-   								
+								<td>${prb.bed}</td>
    								<form action="${pageContext.request.contextPath}/host/insertRoomPhotoController" method="post" enctype="multipart/form-data">
 									<input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
 									<input type = "hidden" name = "roomNo" value = "${ prb.roomNo }" readonly>
@@ -159,11 +156,6 @@
             </div>
         </form>
 		</table>
-		<hr>
-		
-		
-		
-		<hr>
 		
 		<a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${ pvNo }" class = "btn btn-primary btn-sm">update완료</a>
 
