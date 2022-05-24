@@ -142,7 +142,7 @@ public class PoolvillaRoomDao {
 				Map<String,Object> m = new HashMap<>();
 				m.put("bedNo", rs.getInt("bedNo")); // 침대 번호
 				m.put("roomNo", rs.getInt("roomNo")); // 방 번호
-				m.put("bed", rs.getString("bed")); // 침대 사이즈 + 수량
+				m.put("bedCnt", rs.getString("bedCnt")); // 침대 사이즈 + 수량
 				m.put("updateDateRB", rs.getString("updateDateRB")); // room_bed 테이블의 글 수정 날짜
 				m.put("pvNo", rs.getInt("pvNo")); // 풀빌라 번호
 				m.put("roomType", rs.getString("roomType")); // 방 유형
