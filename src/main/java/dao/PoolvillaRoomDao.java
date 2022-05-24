@@ -280,6 +280,7 @@ public class PoolvillaRoomDao {
 	public void deletePoolvillaRoomNBed(int pvNo, int roomNo) {
 		// DB 자원 준비
 		Connection conn = null;
+		PreparedStatement rpStmt = null;
 		PreparedStatement rbStmt = null;
 		PreparedStatement prStmt = null;
 		
@@ -289,6 +290,13 @@ public class PoolvillaRoomDao {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
 			System.out.println("[PoolvillaRoomDao.deletePoolvillaRoomNBed] DB 로딩");
 			conn.setAutoCommit(false); // 자동 커밋을 해제
+			
+			String rpSql = "DELETE FROM room_photo WHERE room_no = ?";
+			rpStmt = conn.prepareStatement(rpSql);
+			
+			rpStmt.setInt(1, roomNo);
+			
+			rpStmt.executeUpdate();
 			
 			String rbSql = "DELETE FROM room_bed WHERE room_no = ?";
 			rbStmt = conn.prepareStatement(rbSql);
