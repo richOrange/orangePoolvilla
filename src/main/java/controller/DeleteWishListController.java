@@ -39,7 +39,7 @@ public class DeleteWishListController extends HttpServlet {
 		// 페이지 옮기는 코드 수정 필요함 
 		// 상품 목록 페이지로 이동 
 		// 만약 풀빌라 상품 정보를 확인하는 페이지(poolvillaList.jsp)에서 찜 표시 기능을 제대로 사용한다면 수정이 되야 할 수도 있음 
-		request.getRequestDispatcher("/WEB-INF/view/myWishList.jsp?customerId="+customerId).forward(request, response);
+		response.sendRedirect(request.getContextPath()+"/customer/myWishListController");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

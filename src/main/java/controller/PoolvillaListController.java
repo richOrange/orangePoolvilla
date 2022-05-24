@@ -57,7 +57,7 @@ public class PoolvillaListController extends HttpServlet {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 			System.out.println("[/all/poolvillaListController.dopost()] currentPage : " + currentPage);
 		}
-		int rowPerPage = 6;//페이지당 상품 수 : 기본값 6 
+		int rowPerPage = 4;//페이지당 상품 수 : 기본값 6 
 		int beginRow = (currentPage-1)*rowPerPage; //시작 행의 값
 		int minPage =1; // 목록 첫 페이지 표시 숫자 1
 		if(request.getParameter("minPage")!=null) { //minPage 요청값이 0이 아니라면 요청값 받기
@@ -81,8 +81,8 @@ public class PoolvillaListController extends HttpServlet {
 		List<Facility> facilityList = facilityDao.selectFacilityList();
 		System.out.println("[/all/poolvillaListController.dopost()] facilityList.size() : " + facilityList.size());
 		
-		//totalRow : 전체 행의 수 변수
-		int totalRow = 13; 
+		//totalRow : 전체 행의 수 Dao에 요청
+		int totalRow = poolvillaDao.selectPoolvillaTotalRowByDateLocation(reservationBeginDate, reservationLastDate, locationNo, orderValue, beginRow, rowPerPage, checkedFacilityList); 
 		//마지막 페이지를 구하는 연산식
 		int lastPage = ((totalRow - 1) / rowPerPage + 1); 
 		//디버깅

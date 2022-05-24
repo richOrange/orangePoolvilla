@@ -117,6 +117,83 @@ public class PoolvillaDao {
 		}
 		return list;
 	};
+	//위의 검색쿼리에서 totalRow을 구하기 위한 메서드
+	public int selectPoolvillaTotalRowByDateLocation(String reservationBeginDate, String reservationLastDate,int locationNo,String orderValue,int beginRow,int rowPerPage,List<String> checkedFacilityList){
+		int totalRow = 0;
+		//DB자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			// select 컬럼, 테이블, 조인 쿼리 입력
+			String sql = "SELECT COUNT(*) cnt"
+					+ "		FROM poolvilla pv "
+					+ "		INNER JOIN poolvilla_location loc "
+					+ "		ON pv.location_no = loc.location_no "
+					+ "		INNER JOIN address addr "
+					+ "		ON addr.address_no = pv.address_no "
+					+ "		LEFT JOIN poolvilla_photo photo "
+					+ "		ON photo.pv_no = pv.pv_no "
+					+ "		LEFT JOIN poolvilla_room room "
+					+ "		ON pv.pv_no = room.pv_no "
+					+ "		LEFT JOIN reservation res "
+					+ "		ON res.pv_no = pv.pv_no "
+					+ "		LEFT JOIN review review "
+					+ "		ON res.reservation_no = review.reservation_no "
+					+ "		LEFT JOIN poolvilla_photo pv_photo "
+					+ "		ON pv_photo.pv_no = pv.pv_no ";
+			//WHERE 쿼리 입력
+			List<Object> setObject = new ArrayList<>(); // ? 값 넣을 ArrayList<String>
+			//1. location 검색 (필수)
+			sql= sql + " WHERE pv.location_no = ? ";
+			setObject.add(locationNo); //?에 들어갈 값 , locationNo
+			//2. 설정한 체크인,체크아웃 기간내에 예약가능한지 확인 <- 기간내에 검색되는 예약이 있는지 없는지
+			sql = sql + "		AND pv.pv_no NOT IN ( select res.reservation_no "
+					+ "										from reservation res "
+					+ "										WHERE ((res.reservation_begin_date >= STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_begin_date < STR_TO_DATE(?,'%Y-%m-%d'))  "
+					+ "													OR (res.reservation_last_date > STR_TO_DATE(?,'%Y-%m-%d') AND res.reservation_last_date < STR_TO_DATE(?,'%Y-%m-%d')))) ";
+			setObject.add(reservationBeginDate); // ?에 들어갈 값 , 체크인 날짜
+			setObject.add(reservationLastDate); // ?에 들어갈 값 ,체크아웃 날짜
+			setObject.add(reservationBeginDate); // ?에 들어갈 값,체크인 날짜
+			setObject.add(reservationLastDate); // ?에 들어갈 값,체크아웃 날짜
+			//3.부대시설 검색 (필수아님), 조건에 넣은 부대시설 모두가 있어야만 출력하는 쿼리 입력
+			if(checkedFacilityList.size()!=0){
+				for (String s : checkedFacilityList) {
+					sql = sql + "AND pv.pv_no IN (SELECT pv_no FROM poolvilla_facility WHERE facility_no ="+s+") ";
+				}
+			}
+			//group by 추가
+			sql = sql + "		GROUP BY pv.pv_no ";
+			//order by 추가
+			sql = sql + "		ORDER BY  ? ";
+			setObject.add(orderValue); // ?에 들어갈 값, 정렬할 컬럼 + 내림차순,오름차순
+			
+			//최종쿼리 디버깅
+			System.out.println("[PoolvillaDao.selectPoolvillaListByDateLocation] 쿼리 :"+sql);
+			stmt = conn.prepareStatement(sql);
+			for(int i =0;i<setObject.size();i=i+1) {// stmt에 ? 값 셋팅
+				stmt.setObject(i+1, setObject.get(i));
+			}
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				totalRow = rs.getInt("cnt");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				rs.close();
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return totalRow;
+	};
 	
 	
 	// 풀빌라 상세보기 기능

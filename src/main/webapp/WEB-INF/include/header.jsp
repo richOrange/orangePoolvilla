@@ -28,12 +28,12 @@
           </c:if>
           <!-- host 로그인 정보가 있을 경우 -->
           <c:if test="${sessionLoginMember.level > 4}">
-          	<li><a href="${pageContext.request.contextPath}/all/homeController">${sessionLoginMember.memberId}님 환영합니다</a></li>
-            <li><a href="${pageContext.request.contextPath}/host/customerCheckController">회원 관리 페이지</a></li>
-            <li><a href="${pageContext.request.contextPath}/host/selectHostReservationListController">거래 목록 관리 페이지</a></li>
-            <li><a href="${pageContext.request.contextPath}/host/hostController">관리자 계정 리스트 관리 페이지</a></li>
-            <li><a href="${pageContext.request.contextPath}/host/selectHostPoolvillaListController">풀빌라 리스트 관리 페이지</a></li>
-            <li><a href="${pageContext.request.contextPath}/host/selectHostReviewController">고객 설문 조사 관리 페이지</a></li>
+          	<li><a href="${pageContext.request.contextPath}/all/homeController">${sessionLoginMember.memberId} 관리자</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/customerCheckController">회원 관리</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/selectHostReservationListController">거래 목록 관리</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/hostController">관리자 계정 리스트 관리</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/selectHostPoolvillaListController">풀빌라 리스트 관리</a></li>
+            <li><a href="${pageContext.request.contextPath}/host/selectHostReviewController">고객 설문 조사 관리</a></li>
             <li><a href="${pageContext.request.contextPath}/all/logoutController">로그아웃</a></li>
           </c:if>
           <!-- 로그인정보가 없을경우 -->

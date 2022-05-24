@@ -59,66 +59,34 @@
 	</section>
 	<!-- END: slider  -->
 	
-	<div>
-		<!-- 자바스크립트 적용 해야함 -->
-		<form method="post" action="${pageContext.request.contextPath}/customer/insertReviewController">
-			<table class = "table table-hover">
-				<tr>
-					<td>청결도(0~5)</td>
-					<td>
-						<input type="number" name="cleanliness">
-					</td>
-				</tr>
-				<tr>
-					<td>재방문 의사</td>
-					<td>
-						<select name="revisit">
-							<option value="">::선택::</option>
-							<option value="Y">있음</option>
-							<option value="N">없음</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>만족도(0~5)</td>
-					<td>
-						<input type="number" name="satisfaction">
-					</td>
-				</tr>
-				<tr>
-					<td>판매자에게 보내는 의견 (공백 가능)</td>
-					<td>
-						<input type="text" name="opinin">
-					</td>
-				</tr>
-				<tr>
-					<td>리뷰 내용 (공백 가능)</td>
-					<td>
-						<input type="text" name="reviewContents">
-					</td>
-				</tr>
-				
-				<!--  -->
-				<tr>
-					<td><input type="hidden" name="예약 번호"></td>
-					<td>
-						 <input type="hidden" id="reservationNo" name="reservationNo" value="${reservationNo }">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<button type = "submit" class="btn btn-info">리뷰 입력</button>
-					</td>
-					
-				</tr>
-			</table>
-		</form>
-		
-	</div>
-
-
-
-	<!-- START: footer -->
+	<table class="table table-bordered">
+		<tr>
+			<td>청결도</td>
+			<td>${review.cleanliness }</td>
+		</tr>
+		<tr>
+			<td>재방문 의사</td>
+			<td>${review.revisit }</td>
+		</tr>
+		<tr>
+			<td>만족도</td>
+			<td>${review.satisfaction }</td>
+		</tr>
+		<tr>
+			<td>판매자에게 보내는 의견(공백 가능)</td>
+			<td>${review.opinion }</td>
+		</tr>
+		<tr>
+			<td>리뷰 내용(공백 가능)</td>
+			<td>${review.reviewContents }</td>
+		</tr>
+	</table>
+	
+	<a href="${pageContext.request.contextPath}/customer/deleteReviewController?reservationNo=${reservationNo}">
+		리뷰 삭제
+	</a>
+	
+<!-- START: footer -->
 	<div id="includeFooter"></div>
 	<!-- END: footer -->
 

@@ -113,7 +113,7 @@ public class InsertReviewController extends HttpServlet {
 	    // 리뷰 추가하는 메서드 작성 
 	    reviewDao.insertReview(review);
 	    
-	    request.getRequestDispatcher("/WEB-INF/view/myReviewList.jsp").forward(request, response);
+	    response.sendRedirect(request.getContextPath()+"/customer/myReviewController");
 	}
 
 }
