@@ -111,10 +111,13 @@ public class CustomerDao {
 
 	public int insertCustomer(Customer customer) {
 		int row = -1; 
-		String CustomerId =null;
+		String CustomerId = null;
+		String customerPw = null;
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
+		ResultSet rs = null;
 		
 		String sql ="INSERT INTO Customer (Customer_id "
 				+ "									,Customer_pw "
@@ -129,10 +132,14 @@ public class CustomerDao {
 				+ "									,update_date)"
 				+ "									VALUES (?,PASSWORD(?),NOW(),?,?,?,?,?,3,NOW(),NOW()) ";
 		
+		String sql2 = "INSERT INTO customer_pw_history(customer_id, customer_pw, customer_pw_update_date) VALUES (?, PASSWORD(?), NOW())";
+		
 		try {
 			
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
-			stmt = conn.prepareStatement(sql);
+			conn.setAutoCommit(false); // 자동 커밋을 해제
+			
+			stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, customer.getCustomerId());
 			stmt.setString(2, customer.getCustomerPw());
 			stmt.setString(3, customer.getName());
@@ -142,7 +149,19 @@ public class CustomerDao {
 			stmt.setString(7, customer.getPhone());
 			row = stmt.executeUpdate();
 			
+			rs = stmt.getGeneratedKeys();
+			stmt2 = conn.prepareStatement(sql2);
+			stmt2.setString(1, customer.getCustomerId());
+			stmt2.setString(2, customer.getCustomerPw());
+			stmt2.executeUpdate();
+			
+			conn.commit();	
 		} catch (Exception e) {
+			try { 
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			} 
 			e.printStackTrace();
 		}finally {
 			try {

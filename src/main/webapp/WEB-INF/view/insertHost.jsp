@@ -69,7 +69,7 @@
 			</tr>
 			<tr>
 				<td>관리자 비밀번호</td>
-				<td><input type="text" name="hostPw"></td>
+				<td><input type="password" name="hostPw"></td>
 			</tr>
 			<tr>
 				<td>이름</td>
