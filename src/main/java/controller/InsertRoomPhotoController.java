@@ -53,13 +53,13 @@ public class InsertRoomPhotoController extends HttpServlet {
 		// int roomNo = Integer.parseInt(multipartRequest.getParameter("roomNo"));
 		String photoName = multipartRequest.getFilesystemName("roomPhoto");
 		String photoType = multipartRequest.getContentType("roomPhoto");
-		String originalPhotoName = multipartRequest.getOriginalFileName("roomPhoto");
-		String photoArea = String.valueOf(photoType.length());
+		String photoOriginalName = multipartRequest.getOriginalFileName("roomPhoto");
+//		String photoArea = String.valueOf(photoType.length());
 		
 		System.out.println("[host/insertRoomPhotoController.doPost()] roomPhoto :" + photoName );
 		System.out.println("[host/insertRoomPhotoController.doPost()] photoType :" + photoType );
-		System.out.println("[host/insertRoomPhotoController.doPost()] originalPhotoName :" + originalPhotoName );
-		System.out.println("[host/insertRoomPhotoController.doPost()] photoArea :" + photoArea );
+		System.out.println("[host/insertRoomPhotoController.doPost()] photoOriginalName :" + photoOriginalName );
+//		System.out.println("[host/insertRoomPhotoController.doPost()] photoArea :" + photoArea );
 		// 디버깅
 		System.out.println("[host/insertRoomPhotoController.doPost()] multipartRequest : " + multipartRequest.toString());
 		
@@ -78,8 +78,8 @@ public class InsertRoomPhotoController extends HttpServlet {
 			roomPhoto.setRoomNo(roomNo);
 			roomPhoto.setPhotoName(photoName);
 			roomPhoto.setPhotoType(photoType);
-			roomPhoto.setPhotoOriginalName(originalPhotoName);
-			roomPhoto.setPhotoArea(photoArea);
+			roomPhoto.setPhotoOriginalName(photoOriginalName);
+//			roomPhoto.setPhotoArea(photoArea);
 			// 디버깅
 			System.out.println("[/host/insertRoomPhotoController.doPost()] roomPhoto.toString() : "+ roomPhoto.toString());
 			
@@ -90,8 +90,8 @@ public class InsertRoomPhotoController extends HttpServlet {
 			
 			System.out.println("[InsertRoomPhotoController.doPost()] roomPhotoName :" + photoName);		
 			System.out.println("[InsertRoomPhotoController.doPost()] roomPhotoType :" + photoType);		
-			System.out.println("[InsertRoomPhotoController.doPost()] roomOriginalPhotoName :" + originalPhotoName);		
-			System.out.println("[InsertRoomPhotoController.doPost()] roomPhotoArea :" + photoArea);		
+			System.out.println("[InsertRoomPhotoController.doPost()] photoOriginalName :" + photoOriginalName);		
+//			System.out.println("[InsertRoomPhotoController.doPost()] roomPhotoArea :" + photoArea);		
 			
 			System.out.println("[/host/insertRoomPhotoController.doPost()] row : " + row);
 			if(row==1) {//성공시 insertRoomPhotoController로 돌려보냄

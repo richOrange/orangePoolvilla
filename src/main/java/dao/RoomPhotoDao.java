@@ -22,10 +22,9 @@ public class RoomPhotoDao {
 				+ "							,photo_name"
 				+ "							,photo_original_name"
 				+ "							,photo_type"
-				+ "							,photo_area"
 				+ "							,create_date"
 				+ "							,update_date)"
-				+ "	VALUES(?,?,?,?,?,NOW(),NOW())";
+				+ "	VALUES(?,?,?,?,NOW(),NOW())";
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
 			stmt = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);					
@@ -33,7 +32,6 @@ public class RoomPhotoDao {
 			stmt.setString(2, roomPhoto.getPhotoName());
 			stmt.setString(3, roomPhoto.getPhotoOriginalName());
 			stmt.setString(4, roomPhoto.getPhotoType());
-			stmt.setString(5, roomPhoto.getPhotoArea());
 			stmt.executeUpdate();
 			rs=stmt.getGeneratedKeys();
 			row=stmt.executeUpdate();
