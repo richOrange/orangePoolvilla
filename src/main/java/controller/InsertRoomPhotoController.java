@@ -24,16 +24,6 @@ public class InsertRoomPhotoController extends HttpServlet {
 	private RoomPhotoDao roomPhotoDao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.roomPhotoDao = new RoomPhotoDao();
-		
-		int roomNo = Integer.parseInt(request.getParameter("roomNo")); // 사진 추가할 roomNo값 받아오기
-		System.out.println("InsertRoomPhotoController.doGet() roomNo" + roomNo);
-		
-		List<RoomPhoto> list = roomPhotoDao.selectRoomPhoto(roomNo);
-	
-		request.setAttribute("roomPhotoList", list);
-		
-		request.getRequestDispatcher("WEB-INF/view/insertPoolvillaRoomNBed.jsp").forward(request, response);
 		
 				
 	}
@@ -45,7 +35,7 @@ public class InsertRoomPhotoController extends HttpServlet {
 		// 모델 값 호출
 		this.roomPhotoDao = new RoomPhotoDao();
 		// 경로 값 설정
-		String path = request.getSession().getServletContext().getRealPath("/image/room");
+		String path = request.getSession().getServletContext().getRealPath("/") + "image/room";
 		// 디버깅
 		System.out.println("[/host/insertRoomPhotoController.doPost()] path :" + path);
 		// 요청값 처리
@@ -64,7 +54,7 @@ public class InsertRoomPhotoController extends HttpServlet {
 		String photoName = multipartRequest.getFilesystemName("roomPhoto");
 		String photoType = multipartRequest.getContentType("roomPhoto");
 		String originalPhotoName = multipartRequest.getOriginalFileName("roomPhoto");
-		String photoArea = multipartRequest.getParameter("roomPhoto");
+		String photoArea = String.valueOf(photoType.length());
 		
 		System.out.println("[host/insertRoomPhotoController.doPost()] roomPhoto :" + photoName );
 		System.out.println("[host/insertRoomPhotoController.doPost()] photoType :" + photoType );
