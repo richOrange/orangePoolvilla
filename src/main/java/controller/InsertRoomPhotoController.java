@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.oreilly.servlet.MultipartRequest;
 
 import dao.RoomPhotoDao;
 import vo.RoomPhoto;
@@ -40,28 +42,23 @@ public class InsertRoomPhotoController extends HttpServlet {
 		System.out.println("[/host/insertRoomPhotoController.doPost()] path :" + path);
 		// 요청값 처리
 		MultipartRequest multipartRequest = new MultipartRequest(request, path, 1024*1024*100, "utf-8", new DefaultFileRenamePolicy());
-
-		
 		int pvNo = -1;
-		if(request.getParameter("pvNo") == null || request.getParameter("pvNo") =="") {
+		if(request.getParameter("pvNo") != null || request.getParameter("pvNo") !="") { 	
 			pvNo = Integer.parseInt(multipartRequest.getParameter("pvNo"));
 		}
 		int roomNo = -1;
-		if(request.getParameter("roomNo") == null || request.getParameter("roomNo") =="") {
+		if(request.getParameter("roomNo") != null || request.getParameter("roomNo") !="") {
 			roomNo = Integer.parseInt(multipartRequest.getParameter("roomNo"));
 		}
-		// int roomNo = Integer.parseInt(multipartRequest.getParameter("roomNo"));
 		String photoName = multipartRequest.getFilesystemName("roomPhoto");
 		String photoType = multipartRequest.getContentType("roomPhoto");
 		String photoOriginalName = multipartRequest.getOriginalFileName("roomPhoto");
 //		String photoArea = String.valueOf(photoType.length());
 		
-		System.out.println("[host/insertRoomPhotoController.doPost()] roomPhoto :" + photoName );
-		System.out.println("[host/insertRoomPhotoController.doPost()] photoType :" + photoType );
+		System.out.println("[host/insertRoomPhotoController.doPost()] roomPhotoName :" + photoName );
+		System.out.println("[host/insertRoomPhotoController.doPost()] roomPhotoType :" + photoType );
 		System.out.println("[host/insertRoomPhotoController.doPost()] photoOriginalName :" + photoOriginalName );
 //		System.out.println("[host/insertRoomPhotoController.doPost()] photoArea :" + photoArea );
-		// 디버깅
-		System.out.println("[host/insertRoomPhotoController.doPost()] multipartRequest : " + multipartRequest.toString());
 		
 		if(photoType.equals("image/gif") || photoType.equals("image/png") || photoType.equals("image/jpeg")) {
 			System.out.println("[/host/insertRoomPhotoController.doPost()] 이미지 파일 넣기 성공 ");
