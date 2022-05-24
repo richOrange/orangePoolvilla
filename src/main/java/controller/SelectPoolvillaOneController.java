@@ -16,12 +16,14 @@ import dao.CookingToolDao;
 import dao.FacilityDao;
 import dao.OttDao;
 import dao.PoolvillaDao;
+import dao.PoolvillaPhotoDao;
 import dao.PoolvillaPoolDao;
 import dao.PoolvillaRoomDao;
 import dao.ReviewDao;
 import dao.SuppliesDao;
 import vo.CookingTool;
 import vo.Poolvilla;
+import vo.PoolvillaPhoto;
 import vo.PoolvillaPool;
 
 @WebServlet("/all/selectPoolvillaOneController")
@@ -34,7 +36,7 @@ public class SelectPoolvillaOneController extends HttpServlet {
 	private PoolvillaRoomDao poolvillaRoomDao;
 	private PoolvillaPoolDao poolvillaPoolDao;
 	private FacilityDao facilityDao;
-	
+	private PoolvillaPhotoDao poolvillaPhotoDao;
 	private ReviewDao reviewDao;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,6 +49,7 @@ public class SelectPoolvillaOneController extends HttpServlet {
 			response.sendRedirect(request.getContextPath()+"/all/homeController?msg=null");
 			return;
 		}
+		
 		
 		//요청값 호출
 		//풀빌라 상품 번호
@@ -76,7 +79,7 @@ public class SelectPoolvillaOneController extends HttpServlet {
 		poolvillaRoomDao = new PoolvillaRoomDao();
 		poolvillaPoolDao = new PoolvillaPoolDao();
 		facilityDao = new FacilityDao();
-		
+		poolvillaPhotoDao = new PoolvillaPhotoDao();
 		reviewDao = new ReviewDao();
 		
 		// ` 페이징 처리 코드 시작 `
@@ -131,6 +134,7 @@ public class SelectPoolvillaOneController extends HttpServlet {
 		List<Map<String, Object>> poolvillaRoomNBedList = poolvillaRoomDao.selectPoolvillaRoomNBedByPvNo(pvNo);
 		List<PoolvillaPool> selectPoolvillaPoolListByPvNo = poolvillaPoolDao.selectPoolvillaPoolListByPvNo(pvNo);
 		List<Map<String, Object>> selectPoolvillaFacilityListByPvNo = facilityDao.selectPoolvillaFacilityListByPvNo(pvNo);
+		List<PoolvillaPhoto> sppList = poolvillaPhotoDao.selectPoolvillaPhoto(pvNo);
 		
 		ArrayList<HashMap<String, Object>> poolvillaReviewListPerPoolvilla = reviewDao.selectReviewListPerPoolvilla(pvNo, beginRow, rowPerPage);
 		
@@ -144,7 +148,7 @@ public class SelectPoolvillaOneController extends HttpServlet {
 		request.setAttribute("poolvillaRoomNBedList", poolvillaRoomNBedList); // 해당 풀빌라의 room_info 정보와 bed 정보 
 		request.setAttribute("selectPoolvillaPoolListByPvNo", selectPoolvillaPoolListByPvNo); // 해당 풀빌라의 pool 정보
 		request.setAttribute("selectPoolvillaFacilityListByPvNo", selectPoolvillaFacilityListByPvNo); // 해당 풀빌라의 facility 정보
-		
+		request.setAttribute("sppList", sppList);
 		request.setAttribute("poolvillaReviewListPerPoolvilla", poolvillaReviewListPerPoolvilla); // 풀빌라 한채의 리뷰 목록 
 		
 		//jsp 호출
