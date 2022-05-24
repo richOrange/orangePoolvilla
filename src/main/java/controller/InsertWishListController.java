@@ -49,7 +49,7 @@ public class InsertWishListController extends HttpServlet {
 		// 페이지 옮기는 코드 수정 필요함 
 		// 상품 목록 페이지로 이동 
 		// 작동 확인 
-		response.sendRedirect(request.getContextPath()+"/all/poolvillaListController");
+		response.sendRedirect(request.getContextPath()+"/customer/myWishListController");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
