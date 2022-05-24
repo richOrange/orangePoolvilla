@@ -362,7 +362,6 @@
 							<table class="table table-hover">
 								<thead>
 									<tr>
-										<th>풀빌라 이름</th>
 										<th>사용자 아이디</th>
 										<th>만족도</th>
 										<th>청결도</th>
@@ -375,7 +374,6 @@
 								<tbody>
 									<c:forEach var="p" items="${poolvillaReviewListPerPoolvilla}">
 										<tr>
-											<td>${p.pvName }</td>
 											<td>${p.customerId }</td>
 											<td>${p.satisfaction }</td>
 											<td>${p.cleanliness }</td>

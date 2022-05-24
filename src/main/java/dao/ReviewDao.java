@@ -12,6 +12,65 @@ import vo.Review;
 
 public class ReviewDao {
 	
+public Review selectReviewOnePerCustomer(int reservationNo) {
+		
+		// 반환값으로 사용할 변수 선언 
+		Review reviewOne = new Review();
+		
+		// DB 자원 준비 
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT cleanliness"
+				+ "		, revisit"
+				+ "		, satisfaction"
+				+ "		, opinion"
+				+ "		, review_contents"
+				+ "		, update_date"
+				+ "		FROM review"
+				+ "		WHERE reservation_no = ?";
+				
+		
+		try {
+			// DB 연결 
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			// 디버깅 
+			System.out.println("[ReviewDao.selectReviewOnePerCustomer()] conn : " + conn);
+			
+			// 리뷰 목록에 사용할 데이터를 가져오는 쿼리를 저장한다 
+			stmt= conn.prepareStatement(sql);
+			stmt.setInt(1, reservationNo);
+			
+			
+			// 테이블에 쿼리 내용들을 저장한다 
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {		
+				
+				reviewOne.setCleanliness(rs.getInt("cleanliness"));
+				reviewOne.setRevisit(rs.getString("revisit"));
+				reviewOne.setSatisfaction(rs.getInt("satisfaction"));
+				reviewOne.setOpinion(rs.getString("opinion"));
+				reviewOne.setReviewContents(rs.getString("review_contents"));
+				reviewOne.setUpdateDate(rs.getString("update_date"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				// DB 연결 종료 
+				conn.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			} 
+		}
+		
+		// 반환값 
+		return reviewOne;
+	}
+	
 	// 풀빌라 구매는 했지만 리뷰는 작성하지 않는 경우를 확인하는 메서드 
 	public ArrayList<HashMap<String, Object>> selectReviewList(String customerId, int beginRow, int rowPerPage) {
 		
@@ -226,7 +285,7 @@ public class ReviewDao {
 		String sql = "INSERT INTO review"
 				+ " (cleanliness, revisit, satisfaction, opinion, review_contents"
 				+ " , review_active, create_date, update_date, reservation_no)"
-				+ " VALUES (?, ?, ?, ?, ?, ?, now(), now(), ?)";
+				+ " VALUES (?, ?, ?, ?, ?,'Y', now(), now(), ?)";
 		
 		try {
 			conn = DriverManager.getConnection(dburl,dbuser,dbpw);
@@ -242,8 +301,8 @@ public class ReviewDao {
 			stmt.setInt(3, review.getSatisfaction());
 			stmt.setString(4, review.getOpinion());
 			stmt.setString(5, review.getReviewContents());
-			stmt.setString(6, review.getReviewActive());
-			stmt.setInt(7, review.getReservationNo());
+			// stmt.setString(6, review.getReviewActive());
+			stmt.setInt(6, review.getReservationNo());
 			
 			// 찜 목록이 생성되면 1이라는 숫자값을 row에 저장 
 			int row = stmt.executeUpdate();
