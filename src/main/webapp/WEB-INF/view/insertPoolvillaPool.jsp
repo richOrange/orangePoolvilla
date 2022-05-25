@@ -74,7 +74,7 @@
 					<c:if test="${ not empty ppList }">
 						<c:forEach var = "pp" items = "${ ppList }" varStatus = "status">
 							<form method="post" action="${pageContext.request.contextPath}/host/insertPoolvillaPoolController">
-								<input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
+								<input type = "hidden" name = "pvNo" value = "${ pp.pvNo }" readonly>
 								<input type = "hidden" name = "poolNo" value = "${ pp.poolNo }" readonly>
 								<tr>
 									<td>${ pp.poolName }</td>
@@ -94,14 +94,13 @@
 		
 		<hr>
       
-		<h2>Enter the pool info</h2>
+		<h2>Enter the pool info$</h2>
 		<br>
         <!-- Form -->
         <form action="${pageContext.request.contextPath}/host/insertPoolvillaPoolController?pvNo=${pvNo }" method="post" class="probootstrap-form mb60">
             <div class="row">
             	<div class="form-group">
             		<input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
-            		<td><input type = "hidden" name = "poolNo" value = "${ pp.poolNo }" readonly>${ status.count }</td>
              		<input type="text" name="poolName" class="form-control" placeholder="Please enter the pool name">
               		<input type="text" name="poolWidth" class="form-control" placeholder="Please enter the pool width">
               		<input type="text" name="poolLength" class="form-control" placeholder="Please enter the pool length">
