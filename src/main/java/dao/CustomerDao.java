@@ -60,7 +60,7 @@ public class CustomerDao {
 		
 		//select customer_id
 		String selectCustomerIdSql = "SELECT customer_id, name, level"
-				+ "					  FROM Customer WHERE Customer_id= ?";
+				+ "					  FROM customer WHERE customer_id= ?";
 		
 		
 		try {
@@ -73,11 +73,11 @@ public class CustomerDao {
 			rs = stmt1.executeQuery();
 			List<Integer> list = new ArrayList<>(); 
 			while(rs.next()) {
-				list.add(rs.getInt("CustomerId"));
+				list.add(rs.getInt("customerId"));
 				
 			}
-			String deleteCustomerSql = "UPDATE FROM Customer WHERE Customer_id=? "
-					+ "					AND Customer_pw=PASSWORD(?)";
+			String deleteCustomerSql = "UPDATE FROM customer WHERE customer_id=? "
+					+ "					AND customer_pw=PASSWORD(?)";
 			
 			stmt2 = conn.prepareStatement(deleteCustomerSql);
 			stmt2.setString(1, customerId);
@@ -111,7 +111,7 @@ public class CustomerDao {
 
 	public int insertCustomer(Customer customer) {
 		int row = -1; 
-		String CustomerId = null;
+		String customerId = null;
 		String customerPw = null;
 		
 		Connection conn = null;
@@ -119,12 +119,12 @@ public class CustomerDao {
 		PreparedStatement stmt2 = null;
 		ResultSet rs = null;
 		
-		String sql ="INSERT INTO Customer (Customer_id "
-				+ "									,Customer_pw "
+		String sql ="INSERT INTO customer (customer_id "
+				+ "									,customer_pw "
 				+ "									,customer_pw_update_date"
 				+ " 								,name "
 				+ "									,gender "
-				+ "									,Birth_date "
+				+ "									,birth_date "
 				+ "									,email"
 				+ "									,phone"
 				+ "									,level"
@@ -176,7 +176,7 @@ public class CustomerDao {
 	
 	public int updatePassword(Customer customer,String newMemberPw) {
 		int row = -1; // 쿼리문 실패시 -1 반환
-		String CustomerId = null;// 변경된 Customer 저장할 변수 초기화
+		String customerId = null;// 변경된 Customer 저장할 변수 초기화
 		String updateDate = null;// 변경된 updateDate 저장할 변후 초기화
 		//DB 자원 준비
 		Connection conn = null;
@@ -210,21 +210,21 @@ public class CustomerDao {
 				
 			} else if(row==0) {//중복 없음 비밀번호 변경가능 다음 작업 진행
 				// 1. customer테이블의 비밀번호 변경
-				String sql ="UPDATE customer SET Customer_pw = PASSWORD(?)"
+				String sql ="UPDATE customer SET customer_pw = PASSWORD(?)"
 						+ "							,customer_pw_update_date = NOW()"
 						+ "							,update_date = NOW()"
-						+ "							WHERE Customer_id = ?"
-						+ "							AND Customer_pw = PASSWORD(?)";
+						+ "							WHERE customer_id = ?"
+						+ "							AND customer_pw = PASSWORD(?)";
 				stmt1 = conn.prepareStatement(sql);
 				stmt1.setString(1, newMemberPw);
 				stmt1.setString(2, customer.getCustomerId());
 				stmt1.setString(3, customer.getCustomerPw());
 				row =stmt1.executeUpdate();
 				if(row==0) { // 수정실패
-					System.out.println("[CustomerDao.updatePassword] Customer테이블 수정실패");
+					System.out.println("[CustomerDao.updatePassword] customer테이블 수정실패");
 					conn.rollback();//롤백
 				}else if(row==1) { //수정성공 시에만 다음 진행
-					System.out.println("[CustomerDao.updatePassword] Customer테이블 수정성공");
+					System.out.println("[CustomerDao.updatePassword] customer테이블 수정성공");
 				
 					//2. customer테이블의 update_date값을 select
 					String selecPasswordUpdateDateSpl = "SELECT update_date updateDate"
@@ -276,13 +276,13 @@ public class CustomerDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		
-		String sql ="UPDATE Customer SET name = ?"
+		String sql ="UPDATE customer SET name = ?"
 				+ "									,gender=? "
 				+ "									,birth_date=? "
 				+ "									,email=?"
 				+ "									,phone=?"
 				+ "									,update_date=NOW()"
-				+ "									WHERE Customer_id = ? ";
+				+ "									WHERE customer_id = ? ";
 		
 		try {
 			
