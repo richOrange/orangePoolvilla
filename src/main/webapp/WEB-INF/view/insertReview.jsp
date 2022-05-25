@@ -6,6 +6,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Orange-poolvilla:myReviewList</title>
+<style>
+	.helper {
+    	color: #FF0000;
+    }
+</style>
+
 <meta name="description" content="Free Bootstrap Theme by uicookies.com">
 <meta name="keywords"
 	content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
@@ -66,23 +72,26 @@
 				<tr>
 					<td>청결도(0~5)</td>
 					<td>
-						<input type="number" name="cleanliness">
+						<input type="number" id = "cleanliness" name="cleanliness">
+						<span id="cleanlinessHelper" class="helper"></span>
 					</td>
 				</tr>
 				<tr>
 					<td>재방문 의사</td>
 					<td>
-						<select name="revisit">
+						<select id = "revisit" name="revisit">
 							<option value="">::선택::</option>
 							<option value="Y">있음</option>
 							<option value="N">없음</option>
 						</select>
+						<span id="revisitHelper" class="helper"></span>
 					</td>
 				</tr>
 				<tr>
 					<td>만족도(0~5)</td>
 					<td>
-						<input type="number" name="satisfaction">
+						<input type="number" id = "satisfaction" name="satisfaction">
+						<span id = "satisfactionHelper" class="helper"></span>
 					</td>
 				</tr>
 				<tr>
@@ -107,7 +116,8 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<button type = "submit" class="btn btn-info">리뷰 입력</button>
+						<button type = "submit" id="submit" class="btn btn-info">리뷰 입력</button>
+						<button type="reset">reset</button>
 					</td>
 					
 				</tr>
@@ -129,9 +139,14 @@
 </body>
 
 <script>
-        $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
-        $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
-  </script>
+	$("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
+	$("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+	
+	// (1) 청결도 유효성 확인 
+	document.querySelector('#cleanliness').addEventListener('blur',function(){
+		if
+	});
+</script>
 
 <script src="js/scripts.min.js"></script>
 <script src="js/main.min.js"></script>

@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import util.DBUtil;
+
 public class ComparePoolvillaDao {
 	
 	// orangepoolvilla db의 poolvilla_room 테이블 room_name 가져오기
@@ -18,11 +20,11 @@ public class ComparePoolvillaDao {
 		
 		// DB 자원준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT pv_no pvNo"
 					+ "			, pv_name pvName"
 					+ "		FROM poolvilla "

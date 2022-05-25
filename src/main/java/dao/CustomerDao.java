@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import util.DBUtil;
 import vo.CookingTool;
 import vo.Customer;
 
@@ -22,38 +23,39 @@ public class CustomerDao {
 	public Map<String,Object> loginCustomer(Customer customer) {
 		Map<String,Object> sessionLoginMember = new HashMap<>();
 		
-	      Connection conn = null;
-	      PreparedStatement stmt = null;
-	      ResultSet rs = null;
-	      String sql = "SELECT customer_id customerId, level FROM customer WHERE customer_id=? AND customer_pw=PASSWORD(?)";
-	      try {
-	         
-	         conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
-	         stmt = conn.prepareStatement(sql);
-	         stmt.setString(1, customer.getCustomerId());
-	         stmt.setString(2, customer.getCustomerPw());
-	         rs = stmt.executeQuery();
-	         if(rs.next()) {
-	        	 sessionLoginMember.put("memberId", rs.getString("customerId"));
-	        	 sessionLoginMember.put("level", rs.getInt("level"));
-	         }
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	      } finally {
-	         try {
-	            conn.close();
-	         } catch (SQLException e) {
-	            e.printStackTrace();
-	         }
-	      }
-	      return sessionLoginMember;
-	   }
+		Connection conn = null;
+		conn = DBUtil.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT customer_id customerId, level FROM customer WHERE customer_id=? AND customer_pw=PASSWORD(?)";
+		try {
+         
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customer.getCustomerId());
+			stmt.setString(2, customer.getCustomerPw());
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				sessionLoginMember.put("memberId", rs.getString("customerId"));
+				sessionLoginMember.put("level", rs.getInt("level"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return sessionLoginMember;
+	}
 	
 	
 	public void deleteCustomer(String customerId, String customerPw) {
 		int row = -1;
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt1 = null; // selectCustomersql 에 사용
 		PreparedStatement stmt2 = null; // deleteCustomerSql 에 사용
 		ResultSet rs = null;
@@ -65,7 +67,6 @@ public class CustomerDao {
 		
 		try {
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			conn.setAutoCommit(false); 
 			//0. select customer_id
 			stmt1 = conn.prepareStatement(selectCustomerIdSql);
@@ -115,6 +116,7 @@ public class CustomerDao {
 		String customerPw = null;
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
 		ResultSet rs = null;
@@ -136,7 +138,6 @@ public class CustomerDao {
 		
 		try {
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			conn.setAutoCommit(false); // 자동 커밋을 해제
 			
 			stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -180,6 +181,7 @@ public class CustomerDao {
 		String updateDate = null;// 변경된 updateDate 저장할 변후 초기화
 		//DB 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt0 = null; // checkPwSpl에 사용
 		PreparedStatement stmt1 = null; // customer 에 사용
 		PreparedStatement stmt2 = null; // select custmomer_password_update_date에 사용
@@ -190,7 +192,6 @@ public class CustomerDao {
 		
 		try {
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			//오토커밋해제
 			conn.setAutoCommit(false);
 			// 0. 기존비밀번호와 중복여부 확인
@@ -274,6 +275,7 @@ public class CustomerDao {
 		int row = -1;
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		
 		String sql ="UPDATE customer SET name = ?"
@@ -286,7 +288,6 @@ public class CustomerDao {
 		
 		try {
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customer.getName());
 			stmt.setString(2, customer.getGender());
@@ -314,12 +315,11 @@ public int checkIdInCustomer(String customerId) {
 	int row = -1; //쿼리가 정상적으로 작동 되지 않으면 -1
 	// 데이터베이스 자원 준비
 	Connection conn = null;
+	conn = DBUtil.getConnection();
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	
 	try {
-		// 데이터베이스 드라이버 연결
-		conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 		String sql = "SELECT * FROM customer WHERE customer_id = ?";
 		stmt = conn.prepareStatement(sql);
 		stmt.setString(1, customerId);
@@ -352,6 +352,7 @@ public int checkIdInCustomer(String customerId) {
 		Customer customer = null; 
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		
@@ -360,7 +361,6 @@ public int checkIdInCustomer(String customerId) {
 				+ " WHERE customer_id = ?"; 
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 		
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customerId);
@@ -401,6 +401,7 @@ public int checkIdInCustomer(String customerId) {
 		ArrayList<HashMap<String, Object>> customerList = new ArrayList<>();
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		
@@ -409,8 +410,7 @@ public int checkIdInCustomer(String customerId) {
 				+ " ORDER BY update_date DESC"; 
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
-		
+			
 			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
@@ -439,19 +439,12 @@ public int checkIdInCustomer(String customerId) {
 		int totalRow = 0;
 
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
-
 		String sql = "SELECT COUNT(*) cnt FROM customer";
 		try {
-			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 			System.out.println("[customerDao.selectTotalRow()] conn:" + conn);
 
 			stmt = conn.prepareStatement(sql);
@@ -483,15 +476,9 @@ public int checkIdInCustomer(String customerId) {
 		String date = null; // 마지막 비밀번호 변경 날짜 들어갈 변수 초기화
 		//DB 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 		
 		//비밀번호 변경날짜를 내림차순으로 정렬하는 쿼리, 시간 제외 날짜만 불러옴
 		String sql = "SELECT STR_TO_DATE(customer_pw_update_date,'%Y-%m-%d') date "
@@ -499,7 +486,6 @@ public int checkIdInCustomer(String customerId) {
 				+ "WHERE customer_id = ? "
 				+ "ORDER BY customer_pw_update_date DESC";
 		try {
-			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 			System.out.println("[customerDao.selectLastUpdateDateCustomerPw()] conn:" + conn);
 
 			stmt = conn.prepareStatement(sql);

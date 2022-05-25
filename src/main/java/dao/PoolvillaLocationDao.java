@@ -8,16 +8,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.DBUtil;
 import vo.PoolvillaLocation;
 
 public class PoolvillaLocationDao {
 	// orangepoolvilla db의 poolvilla_location 테이블 데이터 입력
 	public void insertPoolvillaLocation(String locationName) {
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		String sql = "INSERT INTO poolvilla_location(location_name, update_date) VALUES (?, NOW());";
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, locationName);
 			int row = stmt.executeUpdate();
@@ -43,10 +44,10 @@ public class PoolvillaLocationDao {
 	public List<PoolvillaLocation> selectPoolvillaLocationList() {
 		List<PoolvillaLocation> list = new ArrayList<>();
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT location_no locationNo, location_name locationName, update_date updateDate FROM poolvilla_location";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
@@ -74,11 +75,11 @@ public class PoolvillaLocationDao {
 	public int deletePoolvillaLocation(int locationNo) {
 		// DB 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		int row = 0;
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("deletePoolvillaLocation DB 로딩");
 
 			String sql = "DELETE FROM poolvilla_location WHERE location_no = ?;";

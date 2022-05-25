@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import util.DBUtil;
+
 public class PoolvillaAddressDao {
 	
 	
@@ -17,6 +19,7 @@ public class PoolvillaAddressDao {
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
@@ -25,7 +28,6 @@ public class PoolvillaAddressDao {
 				+ "				 WHERE CONCAT(street, ' ', building1)"
 				+ "				 LIKE ?";
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "%"+searchAddress+"%");
 			rs = stmt.executeQuery();
