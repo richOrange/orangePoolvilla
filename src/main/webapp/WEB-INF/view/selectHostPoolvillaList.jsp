@@ -52,7 +52,7 @@
   <!-- END: slider  -->
   
 	<!-- poolvillaList와 상세검색기능 부분 시작-->
-	<form method="get" action="${pageContext.request.contextPath}//all/poolvillaListController">
+	<form method="get" action="${pageContext.request.contextPath}/all/poolvillaListController">
 	  <section class="probootstrap-section probootstrap-section-lighter">
 	    <div class="container">
 	    	<!-- poolvillaList 부분  시작-->
@@ -62,7 +62,7 @@
 	   					<div class="probootstrap-card probootstrap-listing">
 	        		<!-- 상품 img 부분 -->
 	        			<div class="probootstrap-card-media">
-	        				<img src="${pageContext.request.contextPath}/template/img/slider_1.jpg" class="img-responsive" alt="Free HTML5 Template by uicookies.com">
+	        				<img src="${pageContext.request.contextPath}/image/poolvilla/${m.photoName}">
 	        			</div>
 	        		<!-- 이미지 내 상품설명부분 -->
 	        			<div class="probootstrap-card-text"> 

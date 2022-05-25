@@ -15,7 +15,7 @@ import vo.CookingTool;
 import vo.Poolvilla;
 import vo.PoolvillaPool;
 public class PoolvillaDao {
-	//지역과 날짜로만 검색 기능, 검색 속도를 위해 상세검색과 분리 homeController에서 호출
+	//예약가능한 상품만 검색, 지역,날짜 검색 필수 homeController에서 호출
 	public List<Map<String,Object>> selectPoolvillaListByDateLocation(String reservationBeginDate, String reservationLastDate,int locationNo,String orderValue,int beginRow,int rowPerPage,List<String> checkedFacilityList){
 		List<Map<String,Object>> list = new ArrayList<>();
 		//DB자원 준비
@@ -29,13 +29,14 @@ public class PoolvillaDao {
 					+ "					, pv.location_no locationNo"
 					+ "					, loc.location_name locationName"
 					+ "					, CONCAT(addr.province,' ', addr.city,' ',addr.town,' ',addr.street,' ',addr.building1) address"
-					+ "					, pv.price price, pv.pv_size pvSize"
-					+ "					, pv.pv_people pvPeople, pv.pv_floor pvFloor"
+					+ "					, pv.price price"
+					+ "					, pv.pv_size pvSize"
+					+ "					, pv.pv_people pvPeople"
+					+ "					, pv.pv_floor pvFloor"
 					+ "					, pv.pv_name pvName"
 					+ "					,COUNT(room.room_no) roomCnt"
 					+ "					, AVG(review.satisfaction) reviewSatisfaction "
 					+ "					, pv_photo.photo_name photoName"
-					+ "					,COUNT(*) cnt"
 					+ "		FROM poolvilla pv "
 					+ "		INNER JOIN poolvilla_location loc "
 					+ "		ON pv.location_no = loc.location_no "
@@ -101,6 +102,7 @@ public class PoolvillaDao {
 				m.put("pvName", rs.getString("pvName"));//풀빌라이름
 				m.put("roomCnt", rs.getInt("roomCnt"));//방갯수
 				m.put("reviewSatisfaction", rs.getInt("reviewSatisfaction"));//평균만족도
+				m.put("photoName",rs.getString("photoName"));//등록된 사진이름
 				list.add(m);
 			}
 			
