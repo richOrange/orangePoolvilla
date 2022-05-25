@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import util.DBUtil;
 import vo.Review;
 
 public class ReviewDao {
@@ -19,6 +20,7 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 		
 		// DB 자원 준비 
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
@@ -33,8 +35,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 				
 		
 		try {
-			// DB 연결 
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			// 디버깅 
 			System.out.println("[ReviewDao.selectReviewOnePerCustomer()] conn : " + conn);
 			
@@ -79,6 +79,7 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 		
 		// DB 자원 준비 
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
@@ -94,8 +95,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 				+ " LIMIT ?,?";
 		
 		try {
-			// DB 연결 
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			// 디버깅 
 			System.out.println("[ReviewDao.selectReviewList()] conn : " + conn);
 			
@@ -149,6 +148,7 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 			
 			// DB 자원 준비 
 			Connection conn = null;
+			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			
@@ -163,8 +163,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 					+ " AND rv.reservation_no IN (SELECT reservation_no FROM review)";
 			
 			try {
-				// DB 연결 
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 				// 디버깅 
 				System.out.println("[ReviewDao.selectReviewListWroteReview()] conn : " + conn);
 				
@@ -215,15 +213,9 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 		int totalRow = 0; 
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 		String sql = "SELECT COUNT(*) cnt"
 				+ " FROM review r"
@@ -234,9 +226,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 				+ " WHERE c.customer_id = ? AND rv.reservation_status = '이용완료'";
 		
 		try {
-		
-
-			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 			System.out.println("[ReviewDao.selectReviewListTotalRow()] conn:" + conn);
 
 			stmt = conn.prepareStatement(sql);
@@ -271,16 +260,10 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 		
 		// DB 자원 준비 
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
-		
+
 		// 찜 목록 테이블 생성 쿼리 
 		String sql = "INSERT INTO review"
 				+ " (cleanliness, revisit, satisfaction, opinion, review_contents"
@@ -288,7 +271,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 				+ " VALUES (?, ?, ?, ?, ?,'Y', now(), now(), ?)";
 		
 		try {
-			conn = DriverManager.getConnection(dburl,dbuser,dbpw);
 			System.out.println("[ReviewDao.insertReview()] conn : " + conn);
 			// 자동 커밋을 해제 
 			conn.setAutoCommit(false);
@@ -344,19 +326,10 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
-		
 		// 리뷰 테이블 삭제 쿼리 
 		String sql = "DELETE FROM review WHERE reservation_no = ?";
 		
 		try {
-			// DB 연결 
-			conn = DriverManager.getConnection(dburl,dbuser,dbpw);
 			System.out.println("[ReviewDao.deleteReview()] conn : " + conn);
 			// 자동 커밋을 해제 
 			conn.setAutoCommit(false);
@@ -406,6 +379,7 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 	
 	// DB 자원 준비 
 	Connection conn = null;
+	conn = DBUtil.getConnection();
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	
@@ -427,8 +401,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 			+ " 	LIMIT ?,?";
 	
 	try {
-		// DB 연결 
-		conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 		// 디버깅 
 		System.out.println("[ReviewDao.selectCustomerReviewList()] conn : " + conn);
 		
@@ -484,6 +456,7 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 			
 			// DB 자원 준비 
 			Connection conn = null;
+			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			
@@ -508,8 +481,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 					+ " LIMIT ?,?";
 			
 			try {
-				// DB 연결 
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 				// 디버깅 
 				System.out.println("[ReviewDao.searchCustomerReviewList()] conn : " + conn);
 				
@@ -562,15 +533,9 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 			int totalRow = 0; 
 			
 			Connection conn = null;
+			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
-
-			String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-			// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-			String dbuser = "root";
-			// 연결하려는 DB의 아이디를 문자열 변수에 저장
-			String dbpw = "mariadb1234";
-			// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 			String sql = "SELECT COUNT(*) cnt"
 					+ "	  FROM review r"
@@ -582,9 +547,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 					+ "   AND r.review_active = 'Y'";
 			
 			try {
-			
-
-				conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 				System.out.println("[ReviewDao.selectReviewListPerPoolvillaTotalRow()] conn:" + conn);
 
 				stmt = conn.prepareStatement(sql);
@@ -621,6 +583,7 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 					
 					// DB 자원 준비 
 					Connection conn = null;
+					conn = DBUtil.getConnection();
 					PreparedStatement stmt = null;
 					ResultSet rs = null;
 					
@@ -643,8 +606,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 							+ "   LIMIT ?,?";
 					
 					try {
-						// DB 연결 
-						conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 						// 디버깅 
 						System.out.println("[ReviewDao.selectReviewListPerPoolvilla()] conn : " + conn);
 						

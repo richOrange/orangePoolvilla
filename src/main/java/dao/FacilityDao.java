@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import util.DBUtil;
 import vo.Facility;
 import vo.PoolvillaFacility;
 
@@ -18,10 +19,10 @@ public class FacilityDao {
 	// orangepoolvilla db의 facility 테이블 데이터 입력
 	public void insertFacility(String facilityName) {
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		String sql = "INSERT INTO facility(facility_name, update_date) VALUES (?, NOW());";
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, facilityName);
 			int row = stmt.executeUpdate();
@@ -47,10 +48,10 @@ public class FacilityDao {
 	public List<Facility> selectFacilityList() {
 		List<Facility> list = new ArrayList<>();
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT facility_no facilityNo, facility_name facilityName, update_date updateDate FROM facility";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
@@ -78,12 +79,12 @@ public class FacilityDao {
 	public int deleteFacility(int facilityNo) {
 		// DB 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt1 = null; //1. poolvilla_facility에서 삭제
 		PreparedStatement stmt2 = null; //2. facility에서 삭제
 		int row = -1;
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("deleteFacility DB 로딩");
 			//오토커밋해제
 			conn.setAutoCommit(false);
@@ -122,10 +123,10 @@ public class FacilityDao {
 	public List<Map<String, Object>> selectPoolvillaFacilityListByPvNo(int pvNo){
 		List<Map<String, Object>> list = new ArrayList<>();
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT pf.pv_no pvNo"
 					+ "		, pf.facility_no facilityNo"
 					+ "		, pf.update_date updateDate"
@@ -164,13 +165,13 @@ public class FacilityDao {
 				
 				// 데이터베이스 자원 준비
 				Connection conn = null;
+				conn = DBUtil.getConnection();
 				PreparedStatement stmt = null;
 				ResultSet rs = null;
 				int row = 0;
 				
 				try {
 					// 데이터베이스 드라이버 연결
-					conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 					System.out.println("[FacilityDao.insertPoolvillaFacility()] 드라이버 로딩 성공");
 					
 					String sql = "INSERT INTO poolvilla_facility(pv_no, facility_no, facility_cnt, update_date) VALUES (?, ?, ?, NOW())";
@@ -206,12 +207,12 @@ public class FacilityDao {
 			public void deletePoolvillFacility(int pvNo, int facilityNo) {
 				// 데이터베이스 자원 준비
 				Connection conn = null;
+				conn = DBUtil.getConnection();
 				PreparedStatement stmt = null;
 				int row = 0;
 				
 				try {
 					// 데이터베이스 드라이버 연결
-					conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 					System.out.println("[FacilityDao.deletePoolvillaFacility()] 드라이버 로딩 성공");
 					
 					String sql = "DELETE FROM poolvilla_facility WHERE pv_no = ? AND facility_no = ?";

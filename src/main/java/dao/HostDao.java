@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import util.DBUtil;
 import vo.Customer;
 import vo.Host;
 import vo.Reservation;
@@ -20,32 +21,32 @@ public class HostDao {
 	public Map<String,Object> loginHost(Host host) {
 		Map<String,Object> sessionLoginMember = new HashMap<String,Object>();
 		
-	      Connection conn = null;
-	      PreparedStatement stmt = null;
-	      ResultSet rs = null;
-	      String sql = "SELECT host_id hostId, level FROM host WHERE host_id=? AND host_pw=PASSWORD(?)";
-	      try {
+		Connection conn = null;
+		conn = DBUtil.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+	    String sql = "SELECT host_id hostId, level FROM host WHERE host_id=? AND host_pw=PASSWORD(?)";
+	    try {
 	         
-	         conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
-	         stmt = conn.prepareStatement(sql);
-	         stmt.setString(1, host.getHostId());
-	         stmt.setString(2, host.getHostPw());
-	         rs = stmt.executeQuery();
-	         if(rs.next()) {
-	        	 sessionLoginMember.put("memberId", rs.getString("hostId")); //memberId에 hostId저장
-	        	 sessionLoginMember.put("level", rs.getInt("level"));//level저장
-	         }
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	      } finally {
-	         try {
-	            conn.close();
-	         } catch (SQLException e) {
-	            e.printStackTrace();
-	         }
-	      }
-	      return sessionLoginMember;
-	   }
+	       stmt = conn.prepareStatement(sql);
+	       stmt.setString(1, host.getHostId());
+	       stmt.setString(2, host.getHostPw());
+	       rs = stmt.executeQuery();
+	       if(rs.next()) {
+	    	    sessionLoginMember.put("memberId", rs.getString("hostId")); //memberId에 hostId저장
+	        	sessionLoginMember.put("level", rs.getInt("level"));//level저장
+	       }
+	    } catch (Exception e) {
+	       e.printStackTrace();
+	    } finally {
+	       try {
+	          conn.close();
+	       } catch (SQLException e) {
+	          e.printStackTrace();
+	       }
+	    }
+	    return sessionLoginMember;
+	 }
 
 
 	
@@ -54,15 +55,9 @@ public class HostDao {
 		ArrayList<Host> hostList = new ArrayList<>();
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 		String sql = "SELECT host_id hostId, host_pw hostPw, level, name, email, phone"
 				+ ", create_date createDate, update_date updateDate"
@@ -71,7 +66,6 @@ public class HostDao {
 				+ " ORDER BY level desc";
 		
 		try {
-			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 			System.out.println("[HostDao.selectHostList()] conn:" + conn);
 			
 			stmt = conn.prepareStatement(sql);
@@ -112,21 +106,14 @@ public class HostDao {
 	public void insertHost(Host host) {
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 		String sql = "INSERT INTO host (host_id, host_pw, level, name, email, phone, create_date, update_date)"
 				+ " VALUES (?,PASSWORD(?),5,?,?,?,NOW(),NOW())";
 		
 		try {
-			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 			System.out.println("[HostDao.insertHost()] conn:" + conn);
 			// 자동 커밋을 해제
 			conn.setAutoCommit(false);
@@ -173,22 +160,15 @@ public class HostDao {
 	public void deleteHost(String hostId, String hostPw) {
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 
 		// 관리자 삭제 쿼리가 적용이 되었는제 확인하기 위해 만든 정수형 변수 
 		int row = 0;
 		
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
-		
 		String sql = "DELETE FROM host WHERE host_id = ? AND host_pw = PASSWORD(?)";
 		
 		try {
-			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 			// 자동 커밋을 해제 
 			conn.setAutoCommit(false);
 			
@@ -226,16 +206,10 @@ public class HostDao {
 	public void updateHost(Host host) {
 		
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		
 		int row = 0;
-		
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 		
 		// comma 자리에 AND 사용하면 에러 발생함 
 		String sql = "UPDATE host"
@@ -244,7 +218,6 @@ public class HostDao {
 				+ " WHERE host_id = ?";
 		
 		try {
-			conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 			conn.setAutoCommit(false);
 			
 			stmt = conn.prepareStatement(sql);
@@ -288,22 +261,14 @@ public class HostDao {
 			int totalRow = 0;
 
 			Connection conn = null;
+			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 
-			String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-			// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-			String dbuser = "root";
-			// 연결하려는 DB의 아이디를 문자열 변수에 저장
-			String dbpw = "mariadb1234";
-			// 연결하려는 DB의 패스워드를 문자열 변수에 저장
-
 			String sql = "SELECT COUNT(*) cnt FROM host";
 			try {
-				Class.forName("org.mariadb.jdbc.Driver");
 				System.out.println("[HostDao.selectTotalRow()] : 드라이버 로딩 성공");
 
-				conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 				System.out.println("[HostDao.selectTotalRow()] conn:" + conn);
 
 				stmt = conn.prepareStatement(sql);
@@ -336,12 +301,12 @@ public class HostDao {
 			int row = -1; //쿼리가 정상적으로 작동 되지 않으면 -1
 			// 데이터베이스 자원 준비
 			Connection conn = null;
+			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			
 			try {
 				// 데이터베이스 드라이버 연결
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				System.out.println("[HostDao.checkIdInHost()] 드라이버 로딩 성공");
 				
 				String sql = "SELECT * FROM host WHERE host_id = ?";

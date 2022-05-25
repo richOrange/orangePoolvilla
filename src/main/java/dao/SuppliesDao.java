@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import util.DBUtil;
+
 import java.sql.Connection;
 
 import vo.Supplies;
@@ -32,12 +35,12 @@ public class SuppliesDao {
 		
 		// 데이터베이스 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[SuppliesDao.selectSupplies()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT supplies_no suppliesNo, supplies_name suppliesName, update_date updateDate FROM supplies";
@@ -70,12 +73,12 @@ public class SuppliesDao {
 	public void insertSupplies(String suppliesName) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		int row = 0;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[SuppliesDao.insertSupplies()] 드라이버 로딩 성공");
 			
 			String sql = "INSERT INTO supplies(supplies_name, update_date) VALUES (?, NOW())";
@@ -107,13 +110,13 @@ public class SuppliesDao {
 	public int deleteSupplies(int suppliesNo) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt1 = null;
 		PreparedStatement stmt2 = null;
 		int row = -1;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[SuppliesDao.deleteSupplies()] 드라이버 로딩 성공");
 			// 오토커밋해제
 			conn.setAutoCommit(false);
@@ -157,12 +160,12 @@ public class SuppliesDao {
 		
 		// 데이터베이스 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[PoolvillaDao.selectPoolvillaSuppliesByPvNo()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT ps.pv_no pvNo"
@@ -206,12 +209,12 @@ public class SuppliesDao {
 	public void insertPoolvillaSupplies(int pvNo, int suppliesNo, int suppliesCnt) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		int row = 0;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[SuppliesDao.insertPoolvillaSupplies()] 드라이버 로딩 성공");
 			
 			String sql = "INSERT INTO poolvilla_supplies(pv_no, supplies_no, supplies_cnt, update_date) VALUES (?, ?, ?, NOW())";
@@ -245,12 +248,12 @@ public class SuppliesDao {
 	public void deletePoolvillaSupplies(int pvNo, int suppliesNo) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		int row = 0;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[SuppliesDao.deletePoolvillaSupplies()] 드라이버 로딩 성공");
 			
 			String sql = "DELETE FROM poolvilla_supplies WHERE pv_no = ? AND supplies_no = ?";

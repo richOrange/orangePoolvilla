@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import util.DBUtil;
 import vo.WishList;
 
 public class WishListDao {
@@ -18,18 +19,10 @@ public class WishListDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-		String dbuser = "root";
-		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "mariadb1234";
-		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
-		
 		// 찜 목록 테이블 생성 쿼리 
 		String sql = "INSERT INTO wish_list VALUES (?,?,NOW())";
 		
 		try {
-			conn = DriverManager.getConnection(dburl,dbuser,dbpw);
 			System.out.println("[WishListDao.insertWishList()] conn : " + conn);
 			// 자동 커밋을 해제 
 			conn.setAutoCommit(false);
@@ -79,6 +72,7 @@ public class WishListDao {
 		
 		// DB 자원 준비 
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		
@@ -111,8 +105,6 @@ public class WishListDao {
 				+ " LIMIT ?,?";
 		
 		try {
-			// DB 연결 
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			// 디버깅 
 			System.out.println("[WishListDao.selectWishList()] conn : " + conn);
 			
@@ -166,21 +158,12 @@ public class WishListDao {
 			int totalRow = 0;
 
 			Connection conn = null;
+			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 
-			String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-			// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-			String dbuser = "root";
-			// 연결하려는 DB의 아이디를 문자열 변수에 저장
-			String dbpw = "mariadb1234";
-			// 연결하려는 DB의 패스워드를 문자열 변수에 저장
-
 			String sql = "SELECT COUNT(*) cnt FROM wish_list wishList WHERE customer_id = ?";
 			try {
-			
-
-				conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 				System.out.println("[WishListDao.selectWishListTotalRow()] conn:" + conn);
 
 				stmt = conn.prepareStatement(sql);
@@ -213,22 +196,14 @@ public class WishListDao {
 		public void deleteWishList(int pvNo, String customerId) {
 			// DB 자원 준비 
 			Connection conn = null;
+			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
-			
-			String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
-			// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
-			String dbuser = "root";
-			// 연결하려는 DB의 아이디를 문자열 변수에 저장
-			String dbpw = "mariadb1234";
-			// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 			
 			// 찜 목록 테이블 생성 쿼리 
 			String sql = "DELETE FROM wish_list WHERE customer_id = ? AND pv_no = ?";
 			
 			try {
-				// DB 연결 
-				conn = DriverManager.getConnection(dburl,dbuser,dbpw);
 				System.out.println("[WishListDao.deleteWishList()] conn : " + conn);
 				// 자동 커밋을 해제 
 				conn.setAutoCommit(false);

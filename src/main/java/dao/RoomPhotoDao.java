@@ -8,13 +8,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.DBUtil;
 import vo.RoomPhoto;
 
 public class RoomPhotoDao {
 	public int insertRoomPhoto(RoomPhoto roomPhoto) {
 		System.out.println("[PoolvillaDao.insertPoolvillaPhoto]");
 		int row=-1;
-		Connection conn=null;
+		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sql="INSERT INTO room_photo("
@@ -26,7 +28,6 @@ public class RoomPhotoDao {
 				+ "							,update_date)"
 				+ "	VALUES(?,?,?,?,NOW(),NOW())";
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			stmt = conn.prepareStatement(sql);					
 			stmt.setInt(1, roomPhoto.getRoomNo());
 			stmt.setString(2, roomPhoto.getPhotoName());
@@ -56,6 +57,7 @@ public class RoomPhotoDao {
 	public List<RoomPhoto> selectRoomPhoto(int roomNo){
 		List<RoomPhoto> list = new ArrayList<>();
 		Connection conn = null;
+		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sql ="SELECT photo_no"
@@ -69,7 +71,6 @@ public class RoomPhotoDao {
 				+ "	FROM room_photo"
 				+ "	WHERE room_no = ?;";
 		try {
-			   conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/oragepoolvilla","root","mariadb1234");
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, roomNo);
             rs = stmt.executeQuery();
