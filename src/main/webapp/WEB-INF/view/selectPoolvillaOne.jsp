@@ -70,35 +70,44 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12 text-center">
 					<img src="${pageContext.request.contextPath}/image/poolvilla/${poolvillaPhoto.photoName}" width="700" height="700" alt="">
 						${sppList.PhotoName}
 				</div>
 			</div>
-			<!-- 예약 기능 -->
-			<div class="row">
-				<form method="get" id="reservationForm"
-					action="${pageContext.request.contextPath}/customer/insertReservationController">
-					<!-- 고객 정보 -->
-					<c:if test="${not empty sessionLoginMember}">
-						<input type="hidden" id="memberId" name="memberId"
-							value="${sessionLoginMember.memberId}" readonly="readonly">
-					</c:if>
-					<!-- 방정보 -->
-					<input type="hidden" id="pvNo" name="pvNo"
-						value="${selectPoolvillaOne.pvNo}" readonly="readonly">
-					<!-- 예약날짜 정보 -->
-					<div class="container">
-						체크인 :<input type="date" class="form-control" id="checkIn"
-							name="reservationBeginDate" value="${reservationBeginDate}">
-						체크 아웃 :<input type="date" class="form-control" id="checkOut"
-							name="reservationLastDate" value="${reservationLastDate}">
-						<button type="button" id="reservation" class="btn">예약</button>
-						<div id="reservationHelper"></div>
+			
+			<!-- 예약 기능, 관리자이외의 모든사람에게 보임(관리자는 level 5 이상) -->
+			<c:if test="${sessionLoginMember.level < 5 }">
+				<div class="row">
+					<div class = "col-md-3"></div>
+					<div class = "col-md-6">
+					<form method="get" id="reservationForm" action="${pageContext.request.contextPath}/customer/insertReservationController">
+						<!-- 고객 정보 -->
+						<c:if test="${not empty sessionLoginMember}">
+							<input type="hidden" id="memberId" name="memberId"
+								value="${sessionLoginMember.memberId}" readonly="readonly">
+						</c:if>
+						<!-- 방정보 -->
+						<input type="hidden" id="pvNo" name="pvNo"
+							value="${selectPoolvillaOne.pvNo}" readonly="readonly">
+						<!-- 예약날짜 정보 -->
+							<h4>체크인:</h4> <input type="date" class="form-control" id="checkIn" name="reservationBeginDate" value="${reservationBeginDate}">
+							<h4>체크 아웃 :</h4> <input type="date" class="form-control" id="checkOut" name="reservationLastDate" value="${reservationLastDate}">
+							<button type="button" id="reservation" class="btn btn-success text-center">예약</button>
+							<div id="reservationHelper"></div>
+							<div class = "col-md-3"></div>
+					</form>
 					</div>
-				</form>
-
-			</div>
+				</div>
+			</c:if>
+			
+			<!-- 관리자의 경우 관리 페이지로 이동 버튼(관리자는 level 5이상 즉, 4초과) -->
+			<c:if test="${sessionLoginMember.level > 4}">
+				<div class="row text-center">
+					<a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${selectPoolvillaOne.pvNo}" type ="button" class="btn btn-info" >상품 관리 페이지로 이동</a>
+				</div>
+			</c:if>
+			
 		</div>
 	</section>
 	<br>
