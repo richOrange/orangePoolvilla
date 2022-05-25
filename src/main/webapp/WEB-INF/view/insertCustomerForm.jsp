@@ -64,7 +64,7 @@
 			사용하실 ID를 입력해 주세요 :
 			<form method="get" action="${pageContext.request.contextPath}/all/insertCustomerController" id="checkIdForm">
 				<input type="text" name="checkId" id="checkId">
-				<button type ="button" id="check" class="btn btn-outline-secondary btn-sm" >중복 확인</button>
+				<button type ="button" id="checkIdBtn" class="btn btn-outline-secondary btn-sm" >중복 확인</button>
 				<span id="checkIdHelper" class="helper"></span>
 				<span class="helper">${msg}</span>
 			</form>
@@ -179,8 +179,8 @@
     			$('#checkIdHelper').text('');
     		}
     	});
-    	$('#check').click(function() {
-    		if($('#checkId').val()==''){
+    	$('#checkIdBtn').click(function() {
+    		if($('#checkId').val().length< 4 ){
     			$('#checkIdHelper').text('id는 4자 이상 입력해주세요');
     			$('#checkId').focus();
     		}else{
