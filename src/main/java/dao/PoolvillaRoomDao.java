@@ -35,7 +35,7 @@ public class PoolvillaRoomDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT room_no roomNo, pv_no pvNo, room_type roomType, room_name roomName, room_info roomInfo, room_size roomSize, update_date updateDate FROM poolvilla_room";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
@@ -73,7 +73,7 @@ public class PoolvillaRoomDao {
 		int row = 0;
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("deletePoolvillaRoom DB 로딩");
 
 			String sql = "DELETE FROM poolvilla_room WHERE room_no = ?";
@@ -112,7 +112,7 @@ public class PoolvillaRoomDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[PoolvillaDao.selectPoolvillaRoomNBedByPvNo()] 드라이버 로딩 성공");
 
 			String sql = "SELECT rb.bed_no bedNo"
@@ -176,7 +176,7 @@ public class PoolvillaRoomDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT room_no roomNo"
 					+ "			, room_name roomName"
 					+ "		FROM poolvilla_room "
@@ -216,7 +216,7 @@ public class PoolvillaRoomDao {
 		
 		String sql = "INSERT INTO poolvilla_room(pv_no, room_type, room_name, room_info, room_size, update_date) VALUES(?, ?, ?, ?, ?, NOW())"; 
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, pr.getPvNo());
 			stmt.setString(2, pr.getRoomType()); 
@@ -253,7 +253,7 @@ public class PoolvillaRoomDao {
 		
 		String sql = "INSERT INTO room_bed(room_no, bed_size, bed_cnt, update_date) VALUES(?, ?, ?, NOW())"; 
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, pvNo);
 			stmt.setString(2, bedSize); 
@@ -292,7 +292,7 @@ public class PoolvillaRoomDao {
 		int row = 0;
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[PoolvillaRoomDao.deletePoolvillaRoomNBed] DB 로딩");
 			conn.setAutoCommit(false); // 자동 커밋을 해제
 			

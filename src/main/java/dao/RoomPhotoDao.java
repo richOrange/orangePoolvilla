@@ -26,7 +26,7 @@ public class RoomPhotoDao {
 				+ "							,update_date)"
 				+ "	VALUES(?,?,?,?,NOW(),NOW())";
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			stmt = conn.prepareStatement(sql);					
 			stmt.setInt(1, roomPhoto.getRoomNo());
 			stmt.setString(2, roomPhoto.getPhotoName());
@@ -69,7 +69,7 @@ public class RoomPhotoDao {
 				+ "	FROM room_photo"
 				+ "	WHERE room_no = ?;";
 		try {
-			   conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/oragepoolvilla","root","java1234");
+			   conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/oragepoolvilla","root","mariadb1234");
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, roomNo);
             rs = stmt.executeQuery();

@@ -25,7 +25,7 @@ public class PoolvillaAddressDao {
 				+ "				 WHERE CONCAT(street, ' ', building1)"
 				+ "				 LIKE ?";
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "%"+searchAddress+"%");
 			rs = stmt.executeQuery();

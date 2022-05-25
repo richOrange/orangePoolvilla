@@ -28,7 +28,7 @@ public class CustomerDao {
 	      String sql = "SELECT customer_id customerId, level FROM customer WHERE customer_id=? AND customer_pw=PASSWORD(?)";
 	      try {
 	         
-	         conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+	         conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 	         stmt = conn.prepareStatement(sql);
 	         stmt.setString(1, customer.getCustomerId());
 	         stmt.setString(2, customer.getCustomerPw());
@@ -65,7 +65,7 @@ public class CustomerDao {
 		
 		try {
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			conn.setAutoCommit(false); 
 			//0. select customer_id
 			stmt1 = conn.prepareStatement(selectCustomerIdSql);
@@ -136,7 +136,7 @@ public class CustomerDao {
 		
 		try {
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			conn.setAutoCommit(false); // 자동 커밋을 해제
 			
 			stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -190,7 +190,7 @@ public class CustomerDao {
 		
 		try {
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			//오토커밋해제
 			conn.setAutoCommit(false);
 			// 0. 기존비밀번호와 중복여부 확인
@@ -286,7 +286,7 @@ public class CustomerDao {
 		
 		try {
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customer.getName());
 			stmt.setString(2, customer.getGender());
@@ -319,7 +319,7 @@ public int checkIdInCustomer(String customerId) {
 	
 	try {
 		// 데이터베이스 드라이버 연결
-		conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+		conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 		String sql = "SELECT * FROM customer WHERE customer_id = ?";
 		stmt = conn.prepareStatement(sql);
 		stmt.setString(1, customerId);
@@ -360,7 +360,7 @@ public int checkIdInCustomer(String customerId) {
 				+ " WHERE customer_id = ?"; 
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 		
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customerId);
@@ -409,7 +409,7 @@ public int checkIdInCustomer(String customerId) {
 				+ " ORDER BY update_date DESC"; 
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 		
 			stmt = conn.prepareStatement(sql);
 			
@@ -446,7 +446,7 @@ public int checkIdInCustomer(String customerId) {
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 		String sql = "SELECT COUNT(*) cnt FROM customer";
@@ -490,7 +490,7 @@ public int checkIdInCustomer(String customerId) {
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 		
 		//비밀번호 변경날짜를 내림차순으로 정렬하는 쿼리, 시간 제외 날짜만 불러옴

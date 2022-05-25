@@ -17,7 +17,7 @@ public class PoolvillaLocationDao {
 		PreparedStatement stmt = null;
 		String sql = "INSERT INTO poolvilla_location(location_name, update_date) VALUES (?, NOW());";
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, locationName);
 			int row = stmt.executeUpdate();
@@ -46,7 +46,7 @@ public class PoolvillaLocationDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT location_no locationNo, location_name locationName, update_date updateDate FROM poolvilla_location";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
@@ -78,7 +78,7 @@ public class PoolvillaLocationDao {
 		int row = 0;
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("deletePoolvillaLocation DB 로딩");
 
 			String sql = "DELETE FROM poolvilla_location WHERE location_no = ?;";
