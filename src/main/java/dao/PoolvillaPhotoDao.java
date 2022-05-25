@@ -103,4 +103,41 @@ public class PoolvillaPhotoDao {
 		return poolvillaPhoto;
 	
 	}
+	
+	// orangepoolvilla db의 poolvilla_photo 테이블 데이터 삭제
+		public int deletePoolvillaPhoto(int photoNo) {
+			System.out.println("[PoolvillaPhotoDao.deletePoolvillaPhoto] 진행  시작");
+			// DB 자원 준비
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			int row = 0;
+
+			try {
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
+				
+
+				String sql = "DELETE FROM poolvilla_photo WHERE photo_no = ?";
+				stmt = conn.prepareStatement(sql);
+
+				stmt.setInt(1, photoNo);
+				row = stmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					// DB 자원 반환
+					conn.close();
+
+					// 디버깅 코드
+					if (row == 1) {
+						System.out.println("[PoolvillaPhotoDao.deletePoolvillaPhoto] 삭제 성공");
+					} else {
+						System.out.println("[PoolvillaPhotoDao.deletePoolvillaPhoto] 삭제 실패");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return row;
+		}
 }
