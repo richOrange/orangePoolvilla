@@ -22,7 +22,7 @@ public class WishListDao {
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 		
 		// 찜 목록 테이블 생성 쿼리 
@@ -112,7 +112,7 @@ public class WishListDao {
 		
 		try {
 			// DB 연결 
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			// 디버깅 
 			System.out.println("[WishListDao.selectWishList()] conn : " + conn);
 			
@@ -173,7 +173,7 @@ public class WishListDao {
 			// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 			String dbuser = "root";
 			// 연결하려는 DB의 아이디를 문자열 변수에 저장
-			String dbpw = "java1234";
+			String dbpw = "mariadb1234";
 			// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 			String sql = "SELECT COUNT(*) cnt FROM wish_list wishList WHERE customer_id = ?";
@@ -220,7 +220,7 @@ public class WishListDao {
 			// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 			String dbuser = "root";
 			// 연결하려는 DB의 아이디를 문자열 변수에 저장
-			String dbpw = "java1234";
+			String dbpw = "mariadb1234";
 			// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 			
 			// 찜 목록 테이블 생성 쿼리 

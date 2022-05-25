@@ -22,7 +22,7 @@ public class PoolvillaDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			// select 컬럼, 테이블, 조인 쿼리 입력
 			String sql = "SELECT pv.pv_no pvNo"
 					+ "					, pv.location_no locationNo"
@@ -125,7 +125,7 @@ public class PoolvillaDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			// select 컬럼, 테이블, 조인 쿼리 입력
 			String sql = "SELECT COUNT(*) cnt"
 					+ "		FROM poolvilla pv "
@@ -204,7 +204,7 @@ public class PoolvillaDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT pv.pv_no pvNo"
 					+ "					, pv.host_id hostId"
 					+ "					, loc.location_name locationName"
@@ -271,7 +271,7 @@ public class PoolvillaDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[PoolvillaDao.insertPoolvilla()] 드라이버 로딩 성공");
 			
 			String sql = "INSERT INTO poolvilla( host_id"
@@ -335,7 +335,7 @@ public class PoolvillaDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT p.pv_no pvNo"
 					+ "			, p.location_no locationNo"
 					+ "			, p.address_no"
@@ -414,7 +414,7 @@ public class PoolvillaDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT p.pv_no pvNo"
 					+ "			, p.location_no locationNo"
 					+ "			, p.address_no"

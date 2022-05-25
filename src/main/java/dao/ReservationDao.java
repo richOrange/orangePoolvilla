@@ -28,19 +28,17 @@ public class ReservationDao {
 		//DB에 요청
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			//오토커밋해제
 			conn.setAutoCommit(false);
 			//1. reservation테이블의 상태를 변경
 			String checkReservationsql = "UPDATE reservation"
 					+ "					 SET reservation_status = ?"
-					+ "							,reservation_status_editor =  ? "
 					+ "							,update_date= NOW() "
 					+ "					WHERE reservation_no = ? ";
 			stmt1 = conn.prepareStatement(checkReservationsql);
 			stmt1.setString(1, reservationStatus);//reservationStatus 입력
-			stmt1.setString(2, reservationStatusEditor);//수정한 아이디 및 시스템 입력
-			stmt1.setInt(3, reservationNo);//reservationStatus 입력
+			stmt1.setInt(2, reservationNo);//reservationStatus 입력
 			row =stmt1.executeUpdate();//check
 			if(row==0) { // 수정실패
 				System.out.println("[ReservationDao.updateReservationStatus] reservation테이블 수정실패");
@@ -61,12 +59,14 @@ public class ReservationDao {
 				//3. reservation_status_history에 insert
 				String insertReservationStatusHistorySql ="INSERT INTO reservation_status_history (reservation_no"
 						+ "																	,reservation_status"
-						+ "																	,reservation_status_update_date) "
-						+ "												VALUES (?,?,?) ";
+						+ "																	,reservation_status_update_date"
+						+ "																	,reservation_status_editor ) "
+						+ "												VALUES (?,?,?,?) ";
 				stmt3 = conn.prepareStatement(insertReservationStatusHistorySql);
 				stmt3.setInt(1, reservationNo);
 				stmt3.setString(2, reservationStatus);
 				stmt3.setString(3,updateDate);
+				stmt3.setString(4,reservationStatusEditor);
 				row = stmt3.executeUpdate(); // insert의 결과 물을 row에 저장
 				if(row==0) {//row가 0일시, insert실패 롤백
 					System.out.println("[ReservationDao.updateReservationStatus] reservation_status_history테이블 입력실패");
@@ -103,7 +103,7 @@ public class ReservationDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
 			//쿼리 입력
 			String sql = "SELECT reservation_no reservationNo"
@@ -142,7 +142,7 @@ public class ReservationDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
 			//쿼리 입력
 			String sql = "SELECT reservation_no reservationNo"
@@ -189,7 +189,7 @@ public class ReservationDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT res.reservation_no reservationNo"
@@ -250,7 +250,7 @@ public class ReservationDao {
 			//DB에 요청
 			try {
 				Class.forName("org.mariadb.jdbc.Driver");
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 				conn.setAutoCommit(false); // 오토커밋해제
 				//예약가능한지 검색하는 쿼리
 				String checkReservationsql = "SELECT COUNT(*) cnt  "
@@ -322,7 +322,7 @@ public class ReservationDao {
 				+ "GROUP BY reservationStatus";
 		String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 		String dbuser = "root";
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
@@ -375,7 +375,7 @@ public class ReservationDao {
 						+ "GROUP BY reservationStatus";
 				String dburl = "jdbc:mariadb://localhost:3306/orangepoolvilla";
 				String dbuser = "root";
-				String dbpw = "java1234";
+				String dbpw = "mariadb1234";
 				
 				try {
 					Class.forName("org.mariadb.jdbc.Driver");
@@ -424,7 +424,7 @@ public class ReservationDao {
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 		/*
@@ -515,7 +515,7 @@ public class ReservationDao {
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 		String sql = "SELECT COUNT(*) cnt FROM reservation";

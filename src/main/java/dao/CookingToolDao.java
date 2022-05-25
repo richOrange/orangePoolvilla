@@ -38,7 +38,7 @@ public class CookingToolDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[CookingToolDao.selectCookingTool()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT cooking_tool_no cookingToolNo, cooking_tool_name cookingToolName, update_date updateDate FROM cooking_tool";
@@ -76,7 +76,7 @@ public class CookingToolDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[CookingToolDao.insertCookingTool()] 드라이버 로딩 성공");
 			
 			String sql = "INSERT INTO cooking_tool(cooking_tool_name, update_date) VALUES (?, NOW())";
@@ -114,7 +114,7 @@ public class CookingToolDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[CookingToolDao.deleteCookingTool()] 드라이버 로딩 성공");
 			// 오토커밋 해제
 			conn.setAutoCommit(false);
@@ -161,7 +161,7 @@ public class CookingToolDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[CookingToolDao.selectPoolvillaCookingTool()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT pct.pv_no pvNo"
@@ -213,7 +213,7 @@ public class CookingToolDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[CookingToolDao.insertPoolvillaCookingTool()] 드라이버 로딩 성공");
 			
 			String sql = "INSERT INTO poolvilla_cooking_tool(pv_no, cooking_tool_no, cooking_tool_cnt, update_date) VALUES (?, ?, ?, NOW())";
@@ -254,7 +254,7 @@ public class CookingToolDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			System.out.println("[CookingToolDao.deletePoolvillaCookingTool()] 드라이버 로딩 성공");
 			
 			String sql = "DELETE FROM poolvilla_cooking_tool WHERE pv_no = ? AND cooking_tool_no = ?";

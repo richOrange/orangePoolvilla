@@ -21,7 +21,7 @@ public class PoolvillaPhotoDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 			// 풀빌라 포토에 포토정보 저장
 			String sql="INSERT INTO poolvilla_photo(pv_no"
 					+ "								,photo_name"
@@ -76,7 +76,7 @@ public class PoolvillaPhotoDao {
 				+ "	FROM poolvilla_photo"
 				+ "	WHERE pv_no = ?;";
 		try {
-			   conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+			   conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
          stmt = conn.prepareStatement(sql);
          stmt.setInt(1, pvNo);
          rs = stmt.executeQuery();

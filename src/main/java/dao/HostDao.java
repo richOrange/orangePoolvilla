@@ -26,7 +26,7 @@ public class HostDao {
 	      String sql = "SELECT host_id hostId, level FROM host WHERE host_id=? AND host_pw=PASSWORD(?)";
 	      try {
 	         
-	         conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","java1234");
+	         conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla","root","mariadb1234");
 	         stmt = conn.prepareStatement(sql);
 	         stmt.setString(1, host.getHostId());
 	         stmt.setString(2, host.getHostPw());
@@ -61,7 +61,7 @@ public class HostDao {
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 		String sql = "SELECT host_id hostId, host_pw hostPw, level, name, email, phone"
@@ -119,7 +119,7 @@ public class HostDao {
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 		String sql = "INSERT INTO host (host_id, host_pw, level, name, email, phone, create_date, update_date)"
@@ -182,7 +182,7 @@ public class HostDao {
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 		
 		String sql = "DELETE FROM host WHERE host_id = ? AND host_pw = PASSWORD(?)";
@@ -234,7 +234,7 @@ public class HostDao {
 		// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 		String dbuser = "root";
 		// 연결하려는 DB의 아이디를 문자열 변수에 저장
-		String dbpw = "java1234";
+		String dbpw = "mariadb1234";
 		// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 		
 		// comma 자리에 AND 사용하면 에러 발생함 
@@ -295,7 +295,7 @@ public class HostDao {
 			// 연결하려는 DB의 IP 주소를 문자열 변수에 저장
 			String dbuser = "root";
 			// 연결하려는 DB의 아이디를 문자열 변수에 저장
-			String dbpw = "java1234";
+			String dbpw = "mariadb1234";
 			// 연결하려는 DB의 패스워드를 문자열 변수에 저장
 
 			String sql = "SELECT COUNT(*) cnt FROM host";
@@ -341,7 +341,7 @@ public class HostDao {
 			
 			try {
 				// 데이터베이스 드라이버 연결
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				System.out.println("[HostDao.checkIdInHost()] 드라이버 로딩 성공");
 				
 				String sql = "SELECT * FROM host WHERE host_id = ?";

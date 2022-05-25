@@ -20,7 +20,7 @@ public class PoolvillaPoolDao {
 			int row = -1;
 			String sql = "INSERT INTO poolvilla_pool(pv_no, pool_name, pool_width, pool_length, depth, hot_water, indoor_outdoor, update_date) VALUES(?, ?, ?, ?, ?, ?, ?, NOW());"; 
 			try {
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, pp.getPvNo());
 				stmt.setString(2, pp.getPoolName());
@@ -57,7 +57,7 @@ public class PoolvillaPoolDao {
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			try {
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				String sql = "SELECT pool_no poolNo, pv_no pvNo, pool_name poolName, pool_width poolWidth, pool_length poolLength, depth, hot_water hotWater, indoor_outdoor indoorOutdoor, update_date updateDate FROM poolvilla_pool;";
 				stmt = conn.prepareStatement(sql);
 				rs = stmt.executeQuery();
@@ -95,7 +95,7 @@ public class PoolvillaPoolDao {
 			int row = 0;
 
 			try {
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				System.out.println("deletePoolvillaPool DB 로딩");
 
 				String sql = "DELETE FROM poolvilla_pool WHERE pool_no = ?;";
@@ -129,7 +129,7 @@ public class PoolvillaPoolDao {
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			try {
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				String sql = "SELECT pool_no poolNo"
 						+ "		, pv_no pvNo"
 						+ "		, pool_name poolName"

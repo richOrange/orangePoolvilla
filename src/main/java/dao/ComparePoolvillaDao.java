@@ -22,7 +22,7 @@ public class ComparePoolvillaDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			String sql = "SELECT pv_no pvNo"
 					+ "			, pv_name pvName"
 					+ "		FROM poolvilla "

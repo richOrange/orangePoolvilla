@@ -20,7 +20,7 @@ public class OttDao {
 		PreparedStatement stmt = null;
 		String sql = "INSERT INTO ott(ott_name, update_date) VALUES (?, NOW());";
 		try {
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, ottName);
 			int row = stmt.executeUpdate();
@@ -49,7 +49,7 @@ public class OttDao {
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			try {
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				String sql = "SELECT ott_no ottNo, ott_name ottName, update_date updateDate FROM ott";
 				stmt = conn.prepareStatement(sql);
 				rs = stmt.executeQuery();
@@ -85,7 +85,7 @@ public class OttDao {
 			
 			try {
 				// 데이터베이스 드라이버 연결
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				System.out.println("[PoolvillaDao.selectPoolvillaOttByPvNo()] 드라이버 로딩 성공");
 				
 				String sql = "SELECT po.pv_no pvNo"
@@ -131,7 +131,7 @@ public class OttDao {
 			int row = -1;
 
 			try {
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				System.out.println("deleteOtt DB 로딩");
 				// 오토커밋해제
 				conn.setAutoCommit(false);
@@ -175,7 +175,7 @@ public class OttDao {
 			
 			try {
 				// 데이터베이스 드라이버 연결
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				System.out.println("[OttDao.insertPoolvillaOtt()] 드라이버 로딩 성공");
 				
 				String sql = "INSERT INTO poolvilla_ott(pv_no, ott_no, update_date) VALUES (?, ?, NOW())";
@@ -215,7 +215,7 @@ public class OttDao {
 			
 			try {
 				// 데이터베이스 드라이버 연결
-				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+				conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
 				System.out.println("[OttDao.deletePoolvillaOtt()] 드라이버 로딩 성공");
 				
 				String sql = "DELETE FROM poolvilla_ott WHERE pv_no = ? AND ott_no = ?";
