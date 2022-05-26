@@ -111,8 +111,9 @@
 		<h2>Enter the room info</h2>
 		<br>
         <!-- Form -->
-        <form action="${pageContext.request.contextPath}/host/insertPoolvillaRoomNBedController" method="post" class="probootstrap-form mb60" id="insertForm1">
-            <div class="row">
+        <table>
+        <form action="${pageContext.request.contextPath}/host/insertPoolvillaRoomNBedController" method="post" class="probootstrap-form mb60" id="insertForm1" >
+        <div class="row">
             <div class="form-group">
             <input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
               <input type="text" name="roomName" id="roomName" class="form-control" placeholder="Please enter the room name">
@@ -133,11 +134,10 @@
 			  &nbsp; 
 			  <span id="roomSizeHelper" class="helper"></span>            
             </div>
-            <div class="form-group">
-              <button type="button" class="btn btn-primary btn-sm" id="submit1" name="submit" >추가</button>
-            </div>
+              <button type="button" class="btn btn-primary btn-sm" id="submit1" >추가</button>
+          </div>
           </form>
-		</table>
+          </table>
 		<hr>
 		
 		<h2>Enter the room bed</h2>
@@ -173,9 +173,10 @@
 			  <span id="bedCntHelper" class="helper"></span>
             </div>
 		<div class="form-group">
-              <button type="button" class="btn btn-primary btn-sm" id="submit2" name="submit2" >추가</button>
+              <button type="button" class="btn btn-primary btn-sm" id="submit2" >추가</button>
         </div>
-            </div>
+        </div>
+         
         </form>
 		</table>
 		
@@ -200,22 +201,22 @@
         
         // 방, 침대 등록 유효성 검사
         $('#submit1').click(function(){
+    			$('#roomNameHelper').text('');
+    			$('#roomTypeHelper').text('');
+    			$('#roomInfoHelper').text('');
     		if($('#roomName').val()==''){
     			$('#roomNameHelper').text('방 이름을 입력하세요');
     			$('#roomName').focus();
     		
     		}else if($('#roomType').val() == -1) {
-    			$('#roomNameHelper').text('');
     			$('#roomTypeHelper').text('방 유형을 선택하세요');
     			$('#roomType').focus();
     		
     		} else if($('#roomInfo').val()=='') {
-    			$('#roomTypeHelper').text('');
     			$('#roomInfoHelper').text('방 정보를 입력하세요');
     			$('#roomInfo').focus();
     		
     		} else if($('#roomSize').val() == '') {
-    			$('#roomInfoHelper').text('');
     			$('#roomSizeHelper').text('방 크기를 입력하세요');
     			$('#roomSize').focus();
     		
@@ -225,17 +226,17 @@
     	});
 
         $('#submit2').click(function(){
+    			$('#roomNoHelper').text('');
+    			$('#bedSizeHelper').text('');
     		if($('#roomNo').val()== -1){
     			$('#roomNoHelper').text('방 이름을 입력하세요');
     			$('#roomNo').focus();
     		
     		}else if($('#bedSize').val() == -1) {
-    			$('#roomNoHelper').text('');
     			$('#bedSizeHelper').text('침대 사이즈를 선택하세요');
     			$('#bedSize').focus();
     		
     		} else if($('#bedCnt').val()=='') {
-    			$('#bedSizeHelper').text('');
     			$('#bedCntHelper').text('침대 개수를 입력하세요');
     			$('#bedCnt').focus();
 
