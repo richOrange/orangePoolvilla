@@ -49,9 +49,7 @@ public class PoolvillaDao {
 					+ "		LEFT JOIN reservation res "
 					+ "		ON res.pv_no = pv.pv_no "
 					+ "		LEFT JOIN review review "
-					+ "		ON res.reservation_no = review.reservation_no "
-					+ "		LEFT JOIN poolvilla_photo photo "
-					+ "		ON photo.pv_no = pv.pv_no ";
+					+ "		ON res.reservation_no = review.reservation_no ";
 			//WHERE 쿼리 입력
 			List<Object> setObject = new ArrayList<>(); // ? 값 넣을 ArrayList<String>
 			//1. location 검색 (필수)

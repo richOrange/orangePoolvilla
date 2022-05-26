@@ -85,17 +85,16 @@
 				<tr>
 					<td>주소</td>
 					<td>
-						
 			          	<input class="form-control" name="searchAddress" id ="searchAddress" placeholder="주소" type="text" value="${param.searchAddress}"/>
-			          	<button class="btn btn-primary" type="submit">주소검색</button><br>
-							<c:if test="${searchAddressList != null}">
-			            		<select class="form-control" id="addressNo" name="addressNo">
-				       		    	<option value = "" style="text-align:center;">:: 주소 선택 ::</option>
-						            <c:forEach var="s" items="${searchAddressList}">
-						            		<option value="${s.addressNo}" style="text-align:center;">${s.addr}</option>
-						            </c:forEach>
-				            	</select>
-			            	</c:if>
+			          	<button class="btn btn-primary" type="button" id="serarchReset">주소검색</button>
+						<c:if test="${searchAddressList != null}">
+		            		<select class="form-control" id="addressNo" name="addressNo">
+			       		    	<option value = "" style="text-align:center;">:: 주소 선택 ::</option>
+					            <c:forEach var="s" items="${searchAddressList}">
+					            		<option value="${s.addressNo}" style="text-align:center;">${s.addr}</option>
+					            </c:forEach>
+			            	</select>
+		            	</c:if>
 			            <span id="addressNoHelper" class="helper"></span>
 					</td>
 				</tr>
@@ -167,47 +166,48 @@
   <script>
         $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
         $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
-    	// 풀빌라 등록 유효성 검사
        
+    	// 주소 다시검색 기능
+    	$('#serarchReset').click(function(){
+   			$('#addressNo').text(""); //searchAddress의 value을 초기화 후 submit
+   			$('#insertForm').submit();
+    	});
+    	// 풀빌라 등록 유효성 검사
     	$('#insert').click(function(){
+    			$('#locationNoHelper').text('');
+    			$('#addressNoHelper').text('');
+    			$('#pvNameHelper').text('');
+    			$('#priceHelper').text('');
+    			$('#pvSizeHelper').text('');
+    			$('#pvDetailaddrHelper').text('');
+    			$('#pvFloorHelper').text('');
     		if($('#hostId').val()==''){
     			$('#hostId').focus();
-    		
     		}else if($('#locationNo').val() == -1) {
     			$('#locationNoHelper').text('지역을 입력하세요');
     			$('#locationNo').focus();
-    		
-    		} else if($('#addressNo').val()=='') {
-    			$('#locationNoHelper').text('');
+    		} else if($('#searchAddress').val()=='') {
     			$('#addressNoHelper').text('주소를 입력하세요');
     			$('#addressNo').focus();
-    		
+    		} else if($('#addressNo').val()=='') {
+    			$('#addressNoHelper').text('주소를 입력하세요');
+    			$('#addressNo').focus();
     		} else if($('#pvDetailaddr').val() == '') {
-    			$('#addressNoHelper').text('');
     			$('#pvDetailaddrHelper').text('상세 주소를 입력하세요');
     			$('#pvDetailaddr').focus();
-    		
     		} else if($('#pvName').val() == '') {
-    			$('#pvDetailaddrHelper').text('');
     			$('#pvNameHelper').text('풀빌라 이름을 입력하세요');
     			$('pvName').focus(); 
-    		
     		} else if($('#price').val() == '') {
-    			$('#pvNameHelper').text('');
     			$('#priceHelper').text('가격을 입력하세요');
     			$('price').focus();
-    		
     		} else if($('#pvSize').val() == '' ) {
-    			$('#priceHelper').text('');
     			$('#pvSizeHelper').text('풀빌라의 사이즈를 입력하세요');
     			$('#pvSize').focus();
-    		
     		} else if($('#pvFloor').val() == '') {
-    			$('#pvSizeHelper').text('');
     			$('#pvFloorHelper').text('풀빌라의 층수를 입력하세요');
     			$('#pvFloor').focus();
     		} else if($('#pvPeople').val() == ''){
-    			$('#pvFloorHelper').text('');
     			$('#pvPeopleHelper').text('최대인원을 입력하세요')
     			$('#pvPeople').focus();
     

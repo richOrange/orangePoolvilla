@@ -43,7 +43,7 @@ public class InsertPoolvillaController extends HttpServlet {
 		request.setAttribute("locationList", locationList);
 		
 		
-		if(request.getParameter("addressNo")==null&&request.getParameter("searchAddress")!=null||!request.getParameter("searchAddress").equals("")) {
+		if(request.getParameter("addressNo")==null&&request.getParameter("searchAddress")!=null) {
 			String searchAddress = request.getParameter("searchAddress"); // 검색한 주소값 받아오기
 			
 			this.poolvillaAddressDao = new PoolvillaAddressDao();
