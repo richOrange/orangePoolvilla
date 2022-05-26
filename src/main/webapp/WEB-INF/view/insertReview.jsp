@@ -203,7 +203,7 @@
 			$('#revisitHelper').text('재방문 의사를 선택하세요');
 			$('#revisit').focus();
 			
-		} else if($('#satisfaction').val() < -1 || $('#satisfaction').val() > 6 || || $('#satisfaction').val() == '') {
+		} else if($('#satisfaction').val() < -1 || $('#satisfaction').val() > 6 || $('#satisfaction').val() == '') {
 			$('#satisfactionHelper').text('만족도는 0이상 5이하');
 			$('#satisfaction').focus();
 			
