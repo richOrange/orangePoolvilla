@@ -75,7 +75,7 @@
 									<!-- 상품 img 부분 -->
 									<div class="probootstrap-card-media">
 										<img
-											src="${pageContext.request.contextPath}/template/img/slider_1.jpg"
+											src="${pageContext.request.contextPath}/image/poolvilla/${m.photoName}"
 											class="img-responsive"
 											alt="Free HTML5 Template by uicookies.com"> 
 									</div>

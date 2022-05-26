@@ -79,7 +79,7 @@
 	<div class="col-sm-2">
 		<!-- 카테고리 변경 form -->
 		<form method="get" action="${pageContext.request.contextPath}/host/selectHostReservationListController">
-  			<select name ="reservationStatus" >
+  			<select name ="reservationStatus"  onchange ="this.form.submit()">
   				<option value="">::카테고리::</option>
 				<c:forEach var="m" items="${selectCompleteReservationStatusCount}">
 					<option value="${m.reservationStatus}">${m.reservationStatus}</option>		

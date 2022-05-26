@@ -133,6 +133,7 @@ public class WishListDao {
 				map.put("reviewSatisfaction", rs.getInt("reviewSatisfaction"));
 				map.put("photoName", rs.getString("photoName"));
 				map.put("address", rs.getString("address"));
+				map.put("photoName", rs.getString("photoName"));
 				
 				// 동적 배열에 map 데이터 저장 
 				wishListList.add(map);

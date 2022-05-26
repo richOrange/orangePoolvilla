@@ -41,6 +41,11 @@
           	<li><a href="${pageContext.request.contextPath}/all/insertCustomerController">회원가입</a></li>
           	<li><a href="${pageContext.request.contextPath}/all/loginController" id="login">로그인</a></li>
           </c:if>
+          <!-- 블라인트처리된(level=-1인 회원이 들어왔을경우) -->
+          <c:if test="${sessionLoginMember.level  < 0 }">
+          	<li>블랙리스트에 등록된 회원입니다, 관리자에게 문의하세요 010-111-2232</li>
+            <li><a href="${pageContext.request.contextPath}/all/logoutController">로그아웃</a></li>
+          </c:if>
           </ul>
           <div class="extra-text visible-xs"> 
             <a href="${pageContext.request.contextPath}/template/#" class="probootstrap-burger-menu"><i>Menu</i></a>
