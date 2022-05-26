@@ -62,7 +62,9 @@
 	   					<div class="probootstrap-card probootstrap-listing">
 	        		<!-- 상품 img 부분 -->
 	        			<div class="probootstrap-card-media">
+	        			<c:if test="${ not empty m.photoName }">
 	        				<img src="${pageContext.request.contextPath}/image/poolvilla/${m.photoName}">
+	        			</c:if>
 	        			</div>
 	        		<!-- 이미지 내 상품설명부분 -->
 	        			<div class="probootstrap-card-text"> 
@@ -96,9 +98,9 @@
 	    		</div>
 	    		<!-- 한줄에 2개씩 나오게 하는 if문 -->
 	    	</c:forEach>
-	      <a href="${pageContext.request.contextPath}/host/insertPoolvillaController" class = "btn btn-primary btn-sm">상품 추가</a>
 		</div>
 	      <!-- poolvillaList 부분 끝 -->
+	      <a href="${pageContext.request.contextPath}/host/insertPoolvillaController" class = "btn btn-primary btn-sm">상품 추가</a>
 	    </div>
 	  </section>
 	</form>
