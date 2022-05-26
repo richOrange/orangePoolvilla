@@ -71,11 +71,11 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12 text-center">
-					<img src="${pageContext.request.contextPath}/image/poolvilla/${poolvillaPhoto.photoName}" width="700" height="700" alt="">
+					<img src="${pageContext.request.contextPath}/image/poolvilla/${poolvillaPhoto.photoName}" width="1140" height="700" alt="">
 						${sppList.PhotoName}
 				</div>
 			</div>
-			
+			<br>
 			<!-- 예약 기능, 관리자이외의 모든사람에게 보임(관리자는 level 5 이상) -->
 			<c:if test="${sessionLoginMember.level < 5 }">
 				<div class="row">
