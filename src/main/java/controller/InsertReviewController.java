@@ -98,7 +98,7 @@ public class InsertReviewController extends HttpServlet {
 			System.out.println("[/customer/insertReviewController.doPost()] reviewActive : " + reviewActive);
 			
 		}
-		if(Integer.parseInt(request.getParameter("reservationNo")) != 0) {
+		if(request.getParameter("reservationNo") != null) {
 			reservationNo = Integer.parseInt(request.getParameter("reservationNo"));
 			review.setReservationNo(reservationNo);
 			System.out.println("[/customer/insertReviewController.doPost()] reservationNo : " + reservationNo);
