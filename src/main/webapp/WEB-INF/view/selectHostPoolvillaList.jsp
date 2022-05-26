@@ -63,7 +63,7 @@
 	        		<!-- 상품 img 부분 -->
 	        			<div class="probootstrap-card-media">
 	        			<c:if test="${ not empty m.photoName }">
-	        				<img src="${pageContext.request.contextPath}/image/poolvilla/${m.photoName}">
+	        				<img src="${pageContext.request.contextPath}/image/poolvilla/${m.photoName}" class="img-responsive">
 	        			</c:if>
 	        			</div>
 	        		<!-- 이미지 내 상품설명부분 -->

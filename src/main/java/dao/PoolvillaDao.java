@@ -36,7 +36,7 @@ public class PoolvillaDao {
 					+ "					, pv.pv_name pvName"
 					+ "					,COUNT(room.room_no) roomCnt"
 					+ "					, AVG(review.satisfaction) reviewSatisfaction "
-					+ "					, pv_photo.photo_name photoName"
+					+ "					, photo.photo_name photoName"
 					+ "		FROM poolvilla pv "
 					+ "		INNER JOIN poolvilla_location loc "
 					+ "		ON pv.location_no = loc.location_no "
@@ -50,8 +50,8 @@ public class PoolvillaDao {
 					+ "		ON res.pv_no = pv.pv_no "
 					+ "		LEFT JOIN review review "
 					+ "		ON res.reservation_no = review.reservation_no "
-					+ "		LEFT JOIN poolvilla_photo pv_photo "
-					+ "		ON pv_photo.pv_no = pv.pv_no ";
+					+ "		LEFT JOIN poolvilla_photo photo "
+					+ "		ON photo.pv_no = pv.pv_no ";
 			//WHERE 쿼리 입력
 			List<Object> setObject = new ArrayList<>(); // ? 값 넣을 ArrayList<String>
 			//1. location 검색 (필수)
@@ -432,7 +432,8 @@ public class PoolvillaDao {
 					+ "			, loc.location_name locationName"
 					+ "			, CONCAT(addr.province,' ', addr.city,' ',addr.town,' ',addr.street,' ',addr.building1) address"
 					+ "			, COUNT(room.room_no) roomCnt"
-					+ "			, AVG(review.satisfaction) reviewSatisfaction "
+					+ "			, AVG(review.satisfaction) reviewSatisfaction"
+					+ "			, photo.photo_name photoName "
 					+ " FROM poolvilla p "
 					+ " INNER JOIN poolvilla_location loc "
 					+ " ON p.location_no = loc.location_no "
@@ -464,6 +465,7 @@ public class PoolvillaDao {
 				m.put("pvName", rs.getString("pvName")); // 풀빌라 이름
 				m.put("roomCnt", rs.getInt("roomCnt")); // 방 개수
 				m.put("reviewSatisfaction", rs.getInt("reviewSatisfaction")); // 평균 만족도
+				m.put("photoName", rs.getString("photoName"));//사진 정보
 				list.add(m);
 			}
 			
