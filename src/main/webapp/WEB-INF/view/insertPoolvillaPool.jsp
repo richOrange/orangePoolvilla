@@ -14,7 +14,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/styles-merged.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/style.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/custom.css">
-
+	
+	<style>
+	    .helper {
+	    	color : #FF0000;
+	    }
+	</style>
   </head>
   
   	<!-- jquery -->
@@ -94,35 +99,47 @@
 		
 		<hr>
       
-		<h2>Enter the pool info$</h2>
+		<h2>Enter the pool info</h2>
 		<br>
         <!-- Form -->
-        <form action="${pageContext.request.contextPath}/host/insertPoolvillaPoolController?pvNo=${pvNo }" method="post" class="probootstrap-form mb60">
+        <table>
+        <form action="${pageContext.request.contextPath}/host/insertPoolvillaPoolController?pvNo=${pvNo }" method="post" class="probootstrap-form mb60" id="insertForm3">
             <div class="row">
             	<div class="form-group">
             		<input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
-             		<input type="text" name="poolName" class="form-control" placeholder="Please enter the pool name">
-              		<input type="text" name="poolWidth" class="form-control" placeholder="Please enter the pool width">
-              		<input type="text" name="poolLength" class="form-control" placeholder="Please enter the pool length">
-              		<input type="text" name="depth" class="form-control" placeholder="Please enter the pool depth">
-            		
-            		<select name="hotWater" class="form-control">
+             		<input type="text" name="poolName" id="poolName" class="form-control" placeholder="Please enter the pool name">
+             		&nbsp; 
+					<span id="poolNameHelper" class="helper"></span>
+              		<input type="text" name="poolWidth" id="poolWidth" class="form-control" placeholder="Please enter the pool width">
+              		&nbsp; 
+					<span id="poolWidthHelper" class="helper"></span>
+              		<input type="text" name="poolLength" id="poolLength" class="form-control" placeholder="Please enter the pool length">
+              		&nbsp; 
+					<span id="poolLengthHelper" class="helper"></span>
+              		<input type="text" name="depth" id="depth" class="form-control" placeholder="Please enter the pool depth">
+              		&nbsp; 
+					<span id="depthHelper" class="helper"></span>
+            		<select name="hotWater" id="hotWater" class="form-control">
                			<option value="-1">:: 온수 여부 ::</option>
                     	<option value="Y">Y</option>
                     	<option value="N">N</option>
               		</select>
-            		<select name="indoorOutdoor" class="form-control">
+              		&nbsp; 
+					<span id="hotWaterHelper" class="helper"></span>
+            		<select name="indoorOutdoor" id="indoorOutdoor" class="form-control">
                			<option value="-1">:: 실내/야외 ::</option>
                     	<option value="실내">실내</option>
                     	<option value="야외">야외</option>
               		</select>
-              		
+              		&nbsp; 
+					<span id="indoorOutdoorHelper" class="helper"></span>
            		</div>
 				<div class="form-group">
-					<input type="submit" class="btn btn-primary btn-sm" id="submit" name="submit" value="추가">
+					<button type="button" class="btn btn-primary btn-sm" id="submit" >추가</button>
 				</div>
 			</div>
 		</form>
+		</table>
 		<hr>
 		<a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${ param.pvNo }" class = "btn btn-primary btn-sm">update완료</a>
 
@@ -142,6 +159,41 @@
   <script>
         $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
         $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+        
+        $('#submit').click(function(){
+    			$('#poolNameHelper').text('');    		
+    			$('#poolWidthHelper').text('');
+    			$('#poolLengthHelper').text('');
+    			$('#depthHelper').text('');
+    			$('#hotWaterHelper').text('');
+    		if($('#poolName').val()==''){
+    			$('#poolNameHelper').text('수영장을 입력하세요');
+    			$('#poolName').focus();
+    		
+    		}else if($('#poolWidth').val() == '') {
+    			$('#poolWidthHelper').text('가로 길이를 입력하세요');
+    			$('#poolWidth').focus();
+    		} else if($('#poolLength').val()=='') {
+    			$('#poolLengthHelper').text('세로 길이를 입력하세요');
+    			$('#poolLength').focus();
+    		
+    		} else if($('#depth').val() == '') {
+    			$('#depthHelper').text('깊이를 입력하세요');
+    			$('#depth').focus();
+    		
+    		} else if($('#hotWater').val() == -1) {
+    			$('#hotWaterHelper').text('온수 여부를 입력하세요');
+    			$('#hotWater').focus(); 
+    		
+    		} else if($('#indoorOutdoor').val() == -1) {
+    			$('#indoorOutdoorHelper').text('실내/야외를 입력하세요');
+    			$('#indoorOutdoor').focus();
+    		} else {
+    			$('insertForm3').submit();
+    		}
+    	});
+        
+        
   </script>
   
   <script src="${pageContext.request.contextPath}/template/js/scripts.min.js"></script>
