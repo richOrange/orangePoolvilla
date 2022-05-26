@@ -52,9 +52,22 @@
 		<div class="container">
 			<div class="row">
         		<div class="col-md-8">
-          			<form action="${pageContext.request.contextPath}/all/loginController" id="loginForm" method="post" class="probootstrap-form mb60">
-						<div class="row">
-							<div class="col-12">
+					<div class="row">
+						<div class="col-12">
+							<!-- 입력없이 관리자로 로그인 하는 버튼 -->
+		          			<form action="${pageContext.request.contextPath}/all/loginController" method="post" class="probootstrap-form mb60">
+								<input type="text" name="memberId" value="admin" readonly="readonly">
+								<input type="password" name="memberPw" value="1234" readonly="readonly">
+								<button type="submit" class="btn btn-primary btn-sm">관리자로 바로 로그인</button>
+							</form>
+							<!-- 입력없이 일반회원으로 로그인 하는 버튼 -->
+		          			<form action="${pageContext.request.contextPath}/all/loginController"  method="post" class="probootstrap-form mb60">
+								<input type="text" name="memberId" value="guest" readonly="readonly">
+								<input type="password" name="memberPw" value="1234" readonly="readonly">
+								<button type="submit"  class="btn btn-primary btn-sm">일반회원으로 바로 로그인</button>
+							</form>
+							<!-- 기존 정상 로그인 기능 -->
+		          			<form action="${pageContext.request.contextPath}/all/loginController" id="loginForm" method="post" class="probootstrap-form mb60">
 								<table class="table table-hover">
 									<tr>
 										<td>ID</td>
@@ -71,9 +84,9 @@
 										</td>
 									</tr>
 								</table>
-							</div>
+							</form>
 						</div>
-					</form>
+					</div>
 				</div>
 			</div>
 		</div>
