@@ -15,7 +15,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/styles-merged.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/style.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/template/css/custom.css">
-
+	<style>
+	    .helper {
+	    	color : #FF0000;
+	    }
+	</style>
   </head>
   
   	<!-- jquery -->
@@ -107,22 +111,30 @@
 		<h2>Enter the room info</h2>
 		<br>
         <!-- Form -->
-        <form action="${pageContext.request.contextPath}/host/insertPoolvillaRoomNBedController" method="post" class="probootstrap-form mb60">
+        <form action="${pageContext.request.contextPath}/host/insertPoolvillaRoomNBedController" method="post" class="probootstrap-form mb60" id="insertForm1">
             <div class="row">
             <div class="form-group">
             <input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
-              <input type="text" name="roomName" class="form-control" placeholder="Please enter the room name">
-              <select name="roomType" class="form-control">
+              <input type="text" name="roomName" id="roomName" class="form-control" placeholder="Please enter the room name">
+              &nbsp; 
+			  <span id="roomNameHelper" class="helper"></span>
+              <select name="roomType" id="roomType" class="form-control">
                	<option value="-1">:: room type ::</option>
                     <option value="침대방">침대방</option>
                     <option value="온돌방">온돌방</option>
                     <option value="놀이방">놀이방</option>
               </select>
-              <input type="text" name="roomInfo" class="form-control" placeholder="Please enter the room info">
-              <input type="text" name="roomSize" class="form-control" placeholder="Please enter the room size">
+              &nbsp; 
+			  <span id="roomTypeHelper" class="helper"></span>
+              <input type="text" name="roomInfo" id="roomInfo" class="form-control" placeholder="Please enter the room info">
+              &nbsp; 
+			  <span id="roomInfoHelper" class="helper"></span>
+              <input type="text" name="roomSize" id="roomSize" class="form-control" placeholder="Please enter the room size">
+			  &nbsp; 
+			  <span id="roomSizeHelper" class="helper"></span>            
             </div>
             <div class="form-group">
-              <input type="submit" class="btn btn-primary btn-sm" id="submit" name="submit" value="추가">
+              <button type="button" class="btn btn-primary btn-sm" id="submit1" name="submit" >추가</button>
             </div>
           </form>
 		</table>
@@ -133,17 +145,19 @@
         <!-- Form -->
         <table>
         
-        <form action="${pageContext.request.contextPath}/host/insertRoomNBedController" method="post" class="probootstrap-form mb60">
+        <form action="${pageContext.request.contextPath}/host/insertRoomNBedController" method="post" class="probootstrap-form mb60" id="insertForm2">
         	<div class="row">
            		<div class="form-group">
             		<input type = "hidden" name = "pvNo" value = "${ pvNo }" readonly>
-              			<select name="roomNo" class="form-control">
+              			<select name="roomNo" id="roomNo" class="form-control">
                			<option value="-1">:: room ::</option>
                  			<c:forEach var ="r" items="${ roomNameList }">
                     			<option value="${ r.roomNo }">${ r.roomName }</option>
                  		</c:forEach>
               			</select>
-              		<select name="bedSize" class="form-control">
+              			&nbsp; 
+			  			<span id="roomNoHelper" class="helper"></span> 
+              		<select name="bedSize" id="bedSize" class="form-control">
 	               		<option value="-1">:: bed Size ::</option>
 	                    <option value="싱글">싱글</option>
 	                    <option value="슈퍼싱글">슈퍼싱글</option>
@@ -152,10 +166,14 @@
 	                    <option value="킹">킹</option>
                     	<option value="라지킹">라지킹</option>
               		</select>
-              <input type="text" name="bedCnt" class="form-control" placeholder="Please enter the bed count">
+              		&nbsp; 
+			  		<span id="bedSizeHelper" class="helper"></span>
+              <input type="text" name="bedCnt" id="bedCnt" class="form-control" placeholder="Please enter the bed count">
+              &nbsp; 
+			  <span id="bedCntHelper" class="helper"></span>
             </div>
 		<div class="form-group">
-              <input type="submit" class="btn btn-primary btn-sm" id="submit" name="submit" value="추가">
+              <button type="button" class="btn btn-primary btn-sm" id="submit2" name="submit2" >추가</button>
         </div>
             </div>
         </form>
@@ -179,6 +197,53 @@
   <script>
         $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
         $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
+        
+        // 방, 침대 등록 유효성 검사
+        $('#submit1').click(function(){
+    		if($('#roomName').val()==''){
+    			$('#roomNameHelper').text('방 이름을 입력하세요');
+    			$('#roomName').focus();
+    		
+    		}else if($('#roomType').val() == -1) {
+    			$('#roomNameHelper').text('');
+    			$('#roomTypeHelper').text('방 유형을 선택하세요');
+    			$('#roomType').focus();
+    		
+    		} else if($('#roomInfo').val()=='') {
+    			$('#roomTypeHelper').text('');
+    			$('#roomInfoHelper').text('방 정보를 입력하세요');
+    			$('#roomInfo').focus();
+    		
+    		} else if($('#roomSize').val() == '') {
+    			$('#roomInfoHelper').text('');
+    			$('#roomSizeHelper').text('방 크기를 입력하세요');
+    			$('#roomSize').focus();
+    		
+    		} else {
+    			$('#insertForm1').submit();
+    		}
+    	});
+
+        $('#submit2').click(function(){
+    		if($('#roomNo').val()== -1){
+    			$('#roomNoHelper').text('방 이름을 입력하세요');
+    			$('#roomNo').focus();
+    		
+    		}else if($('#bedSize').val() == -1) {
+    			$('#roomNoHelper').text('');
+    			$('#bedSizeHelper').text('침대 사이즈를 선택하세요');
+    			$('#bedSize').focus();
+    		
+    		} else if($('#bedCnt').val()=='') {
+    			$('#bedSizeHelper').text('');
+    			$('#bedCntHelper').text('침대 개수를 입력하세요');
+    			$('#bedCnt').focus();
+
+    		
+    		} else {
+    			$('#insertForm2').submit();
+    		}
+    	});
   </script>
   
   <script src="${pageContext.request.contextPath}/template/js/scripts.min.js"></script>
