@@ -103,7 +103,7 @@
 		<br>
         <!-- Form -->
         <table>
-        <form action="${pageContext.request.contextPath}/host/insertPoolvillaPoolController?pvNo=${pvNo }" method="post" class="probootstrap-form mb60" id="insertForm3">
+        <form action="${pageContext.request.contextPath}/host/insertPoolvillaPoolController?pvNo=${pvNo }" method="post" class="probootstrap-form mb60" id="insertForm3" >
             <div class="row">
             	<div class="form-group">
             		<input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
@@ -135,7 +135,7 @@
 					<span id="indoorOutdoorHelper" class="helper"></span>
            		</div>
 				<div class="form-group">
-					<button type="button" class="btn btn-primary btn-sm" id="submit" >추가</button>
+					<button type="button" class="btn btn-primary btn-sm" id="submit3" >추가</button>
 				</div>
 			</div>
 		</form>
@@ -160,7 +160,7 @@
         $("#includeHeader").load('${pageContext.request.contextPath}/includeHeaderController');
         $("#includeFooter").load('${pageContext.request.contextPath}/includeFooterController');
         
-        $('#submit').click(function(){
+        $('#submit3').click(function(){
     			$('#poolNameHelper').text('');    		
     			$('#poolWidthHelper').text('');
     			$('#poolLengthHelper').text('');
@@ -189,7 +189,7 @@
     			$('#indoorOutdoorHelper').text('실내/야외를 입력하세요');
     			$('#indoorOutdoor').focus();
     		} else {
-    			$('insertForm3').submit();
+    			$('#insertForm3').submit();
     		}
     	});
         
