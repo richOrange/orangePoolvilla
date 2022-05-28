@@ -43,7 +43,8 @@
                     
                       
                       <div>
-	                      체크인 :<input type="date" class="form-control" id="checkIn" name="reservationBeginDate">
+                      	  오늘 날짜:<input type="date" class="form-control" id="today" name="reservationToday" value="${applicationToday}" readonly="readonly">
+	                      체크인 :<input type="date" class="form-control" id="checkIn" name="reservationBeginDate" >
     	                  체크 아웃 :<input type="date" class="form-control" id="checkOut" name="reservationLastDate">
                       </div>
                       <!-- 지역검색부분 -->
@@ -90,11 +91,15 @@
 		if($('#checkIn').val() == ''){
 			$('#searchHelper').text('체크인 날짜를 선택해주세요');
 			$('#checkIn').focus();
-			
+		}else if($('#checkIn').val() <= $('#today').val() ){
+			$('#searchHelper').text('과거날짜 및 오늘날짜는 체크인 날짜로 지정할 수 없습니다.');
+			$('#checkIn').focus();
 		}else if($('#checkOut').val() == ''){
 			$('#searchHelper').text('체크아웃 날짜를 선택해주세요');
 			$('#checkOut').focus();
-			
+		}else if($('#checkIn').val() >= $('#checkOut').val() ){
+			$('#searchHelper').text('체크아웃 날짜는 체크인 날짜이후여야합니다');
+			$('#checkOut').focus();
 		}else if($('#locationNo').val() == '-1') {
 			$('#searchHelper').text('지역을 선택해주세요');
 			$('#locationNo').focus();

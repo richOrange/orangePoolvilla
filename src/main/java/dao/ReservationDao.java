@@ -91,6 +91,84 @@ public class ReservationDao {
 			}
 		return row; //성공여부 반환
 	}
+	//예약상태 : 결제완료, 체크인 날짜가 오늘인 예약을 Select 하는 메서드
+	public List<Integer> selectReservationBytodayCheckIn(String today){
+		List<Integer> list = new ArrayList<>(); //예약상태 : 결제완료, 오늘 체크인이라 예약상태를 변경해야하는 예약을 리스트에 저장하는 변수 초기화
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
+			//쿼리 입력
+			String sql = "SELECT reservation_no reservationNo"
+					+ "			 FROM reservation "
+					+ "			WHERE reservation_status = '결제완료' "
+					+ "			AND reservation_begin_date = ? ";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, today);//오늘 날짜 입력
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+			list.add(rs.getInt("reservationNo"));
+			}
+				
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	//예약상태 : 이용중, 체크아웃 날짜가 오늘인 예약을 Select 하는 메서드
+	public List<Integer> selectReservationBytodayCheckOut(String today){
+		List<Integer> list = new ArrayList<>(); //예약상태 : 결제완료, 오늘 체크인이라 예약상태를 변경해야하는 예약을 리스트에 저장하는 변수 초기화
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "java1234");
+			System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
+			//쿼리 입력
+			String sql = "SELECT reservation_no reservationNo"
+					+ "			 FROM reservation "
+					+ "			WHERE reservation_status = '이용중' "
+					+ "			AND reservation_last_date = ? ";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, today);//오늘 날짜 입력
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				list.add(rs.getInt("reservationNo"));
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
 	
 	
 	
