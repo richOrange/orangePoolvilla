@@ -119,6 +119,10 @@
 	        			</div>
 	      			</div>
 	    		</div>
+	    		<!-- 한줄에 3개씩 나오게 하는 if문 -->
+   				<c:if test="${status.count%2== 0}">
+   					</div><div class="row">
+   				</c:if>
 	    	</c:forEach>
 	      </div>
 	      <!-- 페이징 부분 시작 -->
