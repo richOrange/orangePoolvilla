@@ -326,6 +326,8 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
+		conn = DBUtil.getConnection();
+		
 		// 리뷰 테이블 삭제 쿼리 
 		String sql = "DELETE FROM review WHERE reservation_no = ?";
 		
@@ -338,7 +340,7 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 			stmt = conn.prepareStatement(sql);
 			
 			stmt.setInt(1, reservationNo);
-			
+			System.out.println("[ReviewDao.deleteReview()] stmt : " + stmt);
 			
 			// 리뷰 삭제되면 1이라는 숫자값을 row에 저장 
 			int row = stmt.executeUpdate();
