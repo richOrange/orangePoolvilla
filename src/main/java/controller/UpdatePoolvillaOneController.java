@@ -97,11 +97,18 @@ public class UpdatePoolvillaOneController extends HttpServlet {
 		poolvilla.setPvFloor(Integer.parseInt(request.getParameter("pvFloor")));
 		poolvilla.setPvPeople(Integer.parseInt(request.getParameter("pvPeople")));
 		
-		
+		System.out.println("request.getParameter(\"hostId\") : " +request.getParameter("hostId"));
+		System.out.println("request.getParameter(\"locationNo\") : " + request.getParameter("locationNo"));
+		System.out.println("request.getParameter(\"addressNo\") : " + request.getParameter("addressNo"));
+		System.out.println("request.getParameter(\"pvDetailaddr\") : " + request.getParameter("pvDetailaddr"));
+		System.out.println("request.getParameter(\"pvName\") : " + request.getParameter("pvName"));
+		System.out.println("request.getParameter(\"price\") : " + request.getParameter("price"));
+		System.out.println("request.getParameter(\"pvFloor\") : " + request.getParameter("pvFloor"));
+		System.out.println("request.getParameter(\"pvPeople\") : " + request.getParameter("pvPeople"));
 		
 		poolvillaDao = new PoolvillaDao();
 		// 풀빌라 등록 메서드 실행
-		poolvillaDao.insertPoolvilla(poolvilla);
+		poolvillaDao.updatePoolvilla(poolvilla, pvNo);
 		System.out.println("풀빌라 업데이트 성공");
 		
 		response.sendRedirect(request.getContextPath() + "/host/selectHostPoolvillaOneController?pvNo=" + pvNo);
