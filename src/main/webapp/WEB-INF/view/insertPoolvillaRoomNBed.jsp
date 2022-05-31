@@ -97,6 +97,7 @@
 									<c:if test="${not empty prb.photoName }">
 									<td><img src="${pageContext.request.contextPath}/image/room/${prb.photoName}" width="100" height="100" alt=""></td>
 									</c:if>
+									<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomPhotoController?pvNo=${ pvNo }&roomNo=${ prb.roomNo }&photoName=${prb.photoName}" class = "btn btn-outline-secondary btn-sm">사진삭제</a></td>
 									<td><a href="${pageContext.request.contextPath}/host/deletePoolvillaRoomNBedController?pvNo=${ pvNo }&roomNo=${ prb.roomNo }" class = "btn btn-outline-secondary btn-sm">삭제</a></td>
 							</form>
 							</tr>

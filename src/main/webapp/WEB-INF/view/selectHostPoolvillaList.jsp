@@ -52,59 +52,92 @@
   <!-- END: slider  -->
   
 	<!-- poolvillaList와 상세검색기능 부분 시작-->
-	<form method="get" action="${pageContext.request.contextPath}/all/poolvillaListController">
+	<form method="get" action="${pageContext.request.contextPath}/host/selectHostPoolvillaListController">
 	  <section class="probootstrap-section probootstrap-section-lighter">
 	    <div class="container">
 	    	<!-- poolvillaList 부분  시작-->
-	    	<div class ="col-sm-12">
+				<div class="row">
 	  				<c:forEach var="m" items="${poolvillaList}" varStatus="status">
-	    				<div class="col-md-4 col-sm-4">
-	   					<div class="probootstrap-card probootstrap-listing">
-	        		<!-- 상품 img 부분 -->
-	        			<div class="probootstrap-card-media">
-	        			<c:if test="${ not empty m.photoName }">
-	        				<img src="${pageContext.request.contextPath}/image/poolvilla/${m.photoName}" class="img-responsive">
-	        			</c:if>
+	    				<div class="col-md-4">
+		   					<div class="probootstrap-card probootstrap-listing">
+		        			<!-- 상품 img 부분 -->
+			        			<div class="probootstrap-card-media">
+				        			<c:if test="${ not empty m.photoName }">
+				        				<img src="${pageContext.request.contextPath}/image/poolvilla/${m.photoName}" class="img-responsive">
+				        			</c:if>
+			        			</div>
+			        			<!-- 이미지 내 상품설명부분 -->
+			        			<div class="probootstrap-card-text"> 
+			          				<h2 class="probootstrap-card-heading"><a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${m.pvNo}">${m.pvName}</a></h2>
+			          				<div class="probootstrap-listing-location">
+			            				<i class="icon-location2"></i> <span>${m.address}</span>
+			          				</div>
+			          				<div class="probootstrap-listing-price"><strong>${m.price}원</strong> / Day</div>
+		       					</div>
+			        			<div class="probootstrap-card-extra">
+			          				<ul>
+			            				<li>
+		             					  면적
+		              					  <span>${m.pvSize} m2</span>
+			            				</li>
+							            <li>
+							              방 개수
+							              <span>${m.roomCnt}</span>
+							            </li>
+							            <li>
+							              최대인원
+							              <span>${m.pvPeople}</span>
+							            </li>
+							            <li>
+							              평균 만족도
+							              <span>${m.reviewSatisfaction}/10 </span>
+							            </li>
+							          </ul>
+			        			</div>
+		        			</div>
 	        			</div>
-	        		<!-- 이미지 내 상품설명부분 -->
-	        			<div class="probootstrap-card-text"> 
-	          				<h2 class="probootstrap-card-heading"><a href="${pageContext.request.contextPath}/host/selectHostPoolvillaOneController?pvNo=${m.pvNo}">${m.pvName}</a></h2>
-	          				<div class="probootstrap-listing-location">
-	            				<i class="icon-location2"></i> <span>${m.address}</span>
-	          				</div>
-	          				<div class="probootstrap-listing-price"><strong>${m.price}원</strong> / Day</div>
-	       				</div>
-	        			<div class="probootstrap-card-extra">
-	          				<ul>
-	            				<li>
-             					  면적
-              					  <span>${m.pvSize} m2</span>
-	            				</li>
-					            <li>
-					              방 개수
-					              <span>${m.roomCnt}</span>
-					            </li>
-					            <li>
-					              최대인원
-					              <span>${m.pvPeople}</span>
-					            </li>
-					            <li>
-					              평균 만족도
-					              <span>${m.reviewSatisfaction}/10 </span>
-					            </li>
-					          </ul>
-	        			</div>
-	      			</div>
-	    		</div>
-	    		<!-- 한줄에 2개씩 나오게 하는 if문 -->
-	    	</c:forEach>
-		</div>
-	      <!-- poolvillaList 부분 끝 -->
+	    		<!-- 한줄에 3개씩 나오게 하는 if문 -->
+	    				<c:if test="${status.count%3== 0}">
+	    					</div><div class="row">
+	    				</c:if>
+    			</c:forEach>
 	      <a href="${pageContext.request.contextPath}/host/insertPoolvillaController" class = "btn btn-primary btn-sm">상품 추가</a>
-	    </div>
+   	      <!-- 페이징 부분 시작 -->
+			<div>
+			<!-- 이전 목록 표시 -->
+				<c:if test="${minPage > 10 }">
+					<button type = "submit" value ="${minPage-10}" name ="minPage" class="btn">이전목록</button>
+				</c:if>				
+			<!-- 이전 부분 -->
+				<c:if test="${currentPage>1}">
+			 		<button type = "submit" value ="${currentPage-1}" name = "currentPage" class="btn" >이전</button>
+				</c:if>
+			<!-- 목록 사이 번호 표시 -->
+				<c:forEach var="i" begin="${minPage}" end="${minPage+9}" step="1">
+					<c:if test= "${i <= lastPage}" >
+						<c:if test="${currentPage == i}">
+							<button type = "submit" value="${i}" name = "currentPage" class="btn btn-primary">${i}</button>
+						</c:if>
+						<c:if test="${currentPage != i}">
+							<button type = "submit" value ="${i}" name = "currentPage" class="btn btn-default">${i}</button>
+						</c:if>
+					</c:if>
+				
+				</c:forEach>
+				<!-- 다음 부분 -->
+				<c:if test="${currentPage< lastPage }">
+			 		<button type = "submit" value ="${currentPage+1}" name = "currentPage" class="btn" >다음</button>
+				</c:if>
+				<!-- 다음목록 표시 -->
+				<c:if test="${minPage+10<= lastPage }">
+			 		<button type = "submit" value ="${minPage+10 }" name = "minPage" class="btn">다음목록</button>
+				</c:if>
+			 </div>
+		</div>
+	      <!-- 페이징 부분 끝 --> 
 	  </section>
 	</form>
-	<!-- poolvillaList와 상세검색기능 부분 끝-->
+	<!-- poolvillaList 부분 끝-->
   <!-- END: section -->
 
 	<!-- START: footer -->

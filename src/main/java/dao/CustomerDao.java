@@ -51,39 +51,24 @@ public class CustomerDao {
 	}
 	
 	
-	public void deleteCustomer(String customerId, String customerPw) {
+	public void deleteCustomer(String customerId) {
 		int row = -1;
 		
 		Connection conn = null;
 		conn = DBUtil.getConnection();
-		PreparedStatement stmt1 = null; // selectCustomersql 에 사용
-		PreparedStatement stmt2 = null; // deleteCustomerSql 에 사용
+		PreparedStatement stmt = null; // deleteCustomerSql 에 사용
 		ResultSet rs = null;
-		
-		//select customer_id
-		String selectCustomerIdSql = "SELECT customer_id, name, level"
-				+ "					  FROM customer WHERE customer_id= ?";
-		
 		
 		try {
 			
 			conn.setAutoCommit(false); 
 			//0. select customer_id
-			stmt1 = conn.prepareStatement(selectCustomerIdSql);
-			stmt1.setString(1, customerId);
-			rs = stmt1.executeQuery();
-			List<Integer> list = new ArrayList<>(); 
-			while(rs.next()) {
-				list.add(rs.getInt("customerId"));
-				
-			}
-			String deleteCustomerSql = "UPDATE FROM customer WHERE customer_id=? "
-					+ "					AND customer_pw=PASSWORD(?)";
 			
-			stmt2 = conn.prepareStatement(deleteCustomerSql);
-			stmt2.setString(1, customerId);
-			stmt2.setString(2, customerPw);
-			row = stmt2.executeUpdate();
+			String deleteCustomerSql = "UPDATE customer SET level = -1 WHERE customer_id=? ";
+			
+			stmt = conn.prepareStatement(deleteCustomerSql);
+			stmt.setString(1, customerId);
+			row = stmt.executeUpdate();
 			if (row == 1) {
 				conn.commit();
 			} else { 
@@ -100,8 +85,7 @@ public class CustomerDao {
 		}finally {
 			try {
 				
-				stmt1.close();
-				stmt2.close();
+				stmt.close();
 				conn.close();
 			}catch(SQLException e) {
 				e.printStackTrace();

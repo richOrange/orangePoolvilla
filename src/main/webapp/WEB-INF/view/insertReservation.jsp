@@ -66,12 +66,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<p>
-						<img
-							src="${pageContext.request.contextPath}/template/img/slider_5.jpg"
-							class="img-responsive"
-							alt="Free Bootstrap Template by uicookies.com">
-					</p>
+					<img src="${pageContext.request.contextPath}/image/poolvilla/${poolvillaPhoto.photoName}" width="1140" height="700" alt="Free Bootstrap Template by uicookies.com">
 				</div>
 			</div>
 			<form

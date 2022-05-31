@@ -195,6 +195,37 @@ public class PoolvillaDao {
 		}
 		return totalRow;
 	};
+	//전체 상품 수 구하는 메서드
+	public int selectPoolvillatotalRow(int beginRow,int rowPerPage) {
+		int totalRow = 0;
+		//DB자원 준비
+		Connection conn = null;
+		conn = DBUtil.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		//쿼리 작성
+		String sql = "SELECT COUNT(*) cnt FROM poolvilla"; 
+		try {
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				totalRow = rs.getInt("cnt");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				rs.close();
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		return totalRow;
+	}
 	
 	
 	// 풀빌라 상세보기 기능
@@ -325,88 +356,10 @@ public class PoolvillaDao {
 		
 		return pvNo;
 	}
-	/*
-	// (페이징 추가된) 관리자 풀빌라 상세보기 기능
-	public List<Map<String,Object>> selectPoolvillaList(int beginRow, int rowPerPage){
-		List<Map<String,Object>> list = new ArrayList<>();
-		
-		//DB자원 준비
-		Connection conn = null;
-		conn = DBUtil.getConnection();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		try {
-			String sql = "SELECT p.pv_no pvNo"
-					+ "			, p.location_no locationNo"
-					+ "			, p.address_no"
-					+ "			, p.pv_detailaddr"
-					+ "			, p.pv_name pvName"
-					+ "			, p.price price"
-					+ "			, p.pv_size pvSize"
-					+ "			, p.pv_floor pvFloor"
-					+ "			, p.pv_people pvPeople"
-					+ "			, p.create_date"
-					+ "			, p.update_date"
-					+ "			, loc.location_name locationName"
-					+ "			, CONCAT(addr.province,' ', addr.city,' ',addr.town,' ',addr.street,' ',addr.building1) address"
-					+ "			, COUNT(room.room_no) roomCnt"
-					+ "			, AVG(review.satisfaction) reviewSatisfaction "
-					+ " FROM poolvilla p "
-					+ " INNER JOIN poolvilla_location loc "
-					+ " ON p.location_no = loc.location_no "
-					+ " INNER JOIN address addr "
-					+ " ON addr.address_no = p.address_no "
-					+ " LEFT JOIN poolvilla_photo photo "
-					+ " ON photo.pv_no = p.pv_no "
-					+ " LEFT JOIN poolvilla_room room "
-					+ " ON p.pv_no = room.pv_no "
-					+ " LEFT JOIN reservation res "
-					+ " ON res.pv_no = p.pv_no "
-					+ " LEFT JOIN review review "
-					+ " ON res.reservation_no = review.reservation_no "
-					+ " GROUP BY p.pv_no "
-					+ "	ORDER BY p.update_date DESC"
-					+ "	LIMIT ?, ?";
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, beginRow);
-			stmt.setInt(2, rowPerPage);
-			rs = stmt.executeQuery();
-			
-			while(rs.next()) {
-				Map<String,Object> m = new HashMap<>();
-				m.put("pvNo", rs.getInt("pvNo")); // 풀빌라 번호
-				m.put("locationNo", rs.getString("locationNo")); // 풀빌라 검색 지역 정보
-				m.put("locationName", rs.getString("locationName")); // 풀빌라 검색 지역 이름
-				m.put("address", rs.getString("address")); // 풀빌라 기본주소
-				m.put("pvSize", rs.getDouble("pvSize")); // 풀빌라 면적
-				m.put("pvPeople", rs.getInt("pvPeople")); // 풀빌라 인원수
-				m.put("price", rs.getInt("price")); // 1박당 가격
-				m.put("pvFloor", rs.getString("pvFloor")); // 풀빌라 층수
-				m.put("pvName", rs.getString("pvName")); // 풀빌라 이름
-				m.put("roomCnt", rs.getInt("roomCnt")); // 방 개수
-				m.put("reviewSatisfaction", rs.getInt("reviewSatisfaction")); // 평균 만족도
-				list.add(m);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				// 데이터베이스 자원 반환
-				rs.close();
-				stmt.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return list;
-	}
-	*/
+
 		
 	// 관리자 풀빌라 상세보기 기능
-	public List<Map<String,Object>> selectPoolvillaList() {
+	public List<Map<String,Object>> selectPoolvillaList(int beginRow, int rowPerPage) {
 		List<Map<String,Object>> list = new ArrayList<>();
 		
 		//DB자원 준비
@@ -446,8 +399,11 @@ public class PoolvillaDao {
 					+ " LEFT JOIN review review "
 					+ " ON res.reservation_no = review.reservation_no "
 					+ " GROUP BY p.pv_no "
-					+ "	ORDER BY p.update_date DESC";
+					+ "	ORDER BY p.update_date DESC"
+					+ " LIMIT ?, ? ";
 			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, beginRow);
+			stmt.setInt(2, rowPerPage);
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
