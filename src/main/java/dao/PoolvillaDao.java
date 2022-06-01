@@ -356,6 +356,64 @@ public class PoolvillaDao {
 		
 		return pvNo;
 	}
+	
+	// orangepoolvilla db의 poolvilla 테이블 데이터 수정
+	public void updatePoolvilla(Poolvilla p, int pvNo) {
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		conn = DBUtil.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int row = 0;
+		
+		try {
+			// 데이터베이스 드라이버 연결
+			System.out.println("[PoolvillaDao.updatePoolvilla()] 드라이버 로딩 성공");
+			
+			String sql = "UPDATE poolvilla SET host_id = ?"
+					+ "							, location_no = ?"
+					+ "							, address_no = ?"
+					+ "							, pv_detailaddr = ?"
+					+ "							, pv_name = ?"
+					+ "							, price = ?"
+					+ "							, pv_size = ?"
+					+ "							, pv_floor = ?"
+					+ "							, pv_people = ?"
+					+ "							, update_date = NOW()"
+					+ "	  WHERE pv_no = ?";
+			stmt = conn.prepareStatement(sql);
+			
+			stmt.setString(1, p.getHostId());
+			stmt.setInt(2, p.getLocationNo());
+			stmt.setInt(3, p.getAddressNo());
+			stmt.setString(4, p.getPvDetailaddr());
+			stmt.setString(5, p.getPvName());
+			stmt.setInt(6, p.getPrice());
+			stmt.setDouble(7, p.getPvSize());
+			stmt.setInt(8, p.getPvFloor());
+			stmt.setInt(9, p.getPvPeople());
+			stmt.setInt(10, pvNo);
+			
+			row = stmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+				
+				// -디버깅 코드
+				if(row == 1) {
+					System.out.println("[PoolvillaDao.updatetPoolvilla()] updatePoolvilla 수정 성공");
+				} else {
+					System.out.println("[PoolvillaDao.updatePoolvilla()] updatePoolvilla 수정 실패");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 		
 	// 관리자 풀빌라 상세보기 기능
