@@ -106,7 +106,7 @@ public class PoolvillaPhotoDao {
 	}
 	
 	// orangepoolvilla db의 poolvilla_photo 테이블 데이터 삭제
-		public int deletePoolvillaPhoto(int photoNo) {
+		public int deletePoolvillaPhoto(String photoName) {
 			System.out.println("[PoolvillaPhotoDao.deletePoolvillaPhoto] 진행  시작");
 			// DB 자원 준비
 			Connection conn = null;
@@ -115,10 +115,10 @@ public class PoolvillaPhotoDao {
 			int row = 0;
 
 			try {
-				String sql = "DELETE FROM poolvilla_photo WHERE photo_no = ?";
+				String sql = "DELETE FROM poolvilla_photo WHERE photo_name = ?";
 				stmt = conn.prepareStatement(sql);
 
-				stmt.setInt(1, photoNo);
+				stmt.setString(1, photoName);
 				row = stmt.executeUpdate();
 			} catch (Exception e) {
 				e.printStackTrace();

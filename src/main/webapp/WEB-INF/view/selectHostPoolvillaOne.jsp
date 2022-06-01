@@ -73,6 +73,7 @@
 			<div class="row">
 				<div class="col-md-12">
    						<img src="${pageContext.request.contextPath}/image/poolvilla/${poolvillaPhoto.photoName}" width="1140" height="700" alt="">
+   						<button style="float: right;" class = "btn btn-outline-secondary btn-sm"><a href="${pageContext.request.contextPath}/host/deletePoolvillaPhotoController?pvNo=${ param.pvNo }&photoName=${poolvillaPhoto.photoName}">사진 삭제</a></button>
 				</div>
 			</div>
 			<br>
