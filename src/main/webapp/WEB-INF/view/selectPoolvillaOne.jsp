@@ -295,6 +295,7 @@
 							<table class="table table-hover">
 								<thead>
 									<tr>
+										<th class="text text-center">방 사진</th>
 										<th class="text text-center">방 이름</th>
 										<th class="text text-center">방 유형</th>
 										<th class="text text-center">방 설명</th>
@@ -307,6 +308,7 @@
 									<tr>
 										<c:forEach var="prb" items="${ poolvillaRoomNBedList }">
 											<tr>
+												<td><img src="${pageContext.request.contextPath}/image/room/${prb.photoName}" width="100" height="100" alt=""></td>
 												<td>${ prb.roomName }</td>
 												<td>${ prb.roomType }</td>
 												<td>${ prb.roomInfo }</td>
