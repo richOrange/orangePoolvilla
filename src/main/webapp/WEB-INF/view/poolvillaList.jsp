@@ -51,9 +51,8 @@
 
             <div class="page-title probootstrap-animate">
               <div class="probootstrap-breadcrumbs">
-                <a href="${pageContext.request.contextPath}/template/#">PoolvillaList</a><span>${poolvillaList[0].locationName}</span>
               </div>
-              <h1>${poolvillaList[0].locationName}</h1>
+              <h1>PoolvillaList</h1>
             </div>
 
           </div>
@@ -61,9 +60,7 @@
       </div>
     </div>
     <ul class="slides">
-      <li style="background-image: url(${pageContext.request.contextPath}/template/img/slider_1.jpg);"></li>
       <li style="background-image: url(${pageContext.request.contextPath}/template/img/slider_4.jpg);"></li>
-      <li style="background-image: url(${pageContext.request.contextPath}/template/img/slider_2.jpg);"></li>
     </ul>
   </section>
   <!-- END: slider  -->
