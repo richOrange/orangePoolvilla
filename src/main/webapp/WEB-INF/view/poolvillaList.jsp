@@ -164,6 +164,7 @@
                  <!-- 지역검색부분 -->
                 	지역선택 : 
                     <select name="locationNo" class="form-control" onchange ="this.form.submit()">
+                     			<option value="-1">:::지역을 선택해주세요:::</option>
                      	<c:forEach var="m" items="${locationList}">
                      		<c:if test="${m.locationNo==locationNo}">
                      			<option value="${m.locationNo}" selected>${m.locationName}</option><!-- 기존 지역 검색 정보 selected -->

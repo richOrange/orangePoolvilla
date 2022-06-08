@@ -35,14 +35,14 @@ public class SuppliesDao {
 		
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
 			// 데이터베이스 드라이버 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[SuppliesDao.selectSupplies()] 드라이버 로딩 성공");
-			
+			//쿼리작성
 			String sql = "SELECT supplies_no suppliesNo, supplies_name suppliesName, update_date updateDate FROM supplies";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
@@ -73,17 +73,17 @@ public class SuppliesDao {
 	public void insertSupplies(String suppliesName) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
+		//결과 행의 수 받을 변수 초기화
 		int row = 0;
 		
 		try {
 			// 데이터베이스 드라이버 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[SuppliesDao.insertSupplies()] 드라이버 로딩 성공");
 			
 			String sql = "INSERT INTO supplies(supplies_name, update_date) VALUES (?, NOW())";
 			stmt = conn.prepareStatement(sql);
-			
 			stmt.setString(1, suppliesName);
 			row = stmt.executeUpdate();
 			
@@ -110,13 +110,14 @@ public class SuppliesDao {
 	public int deleteSupplies(int suppliesNo) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt1 = null;
 		PreparedStatement stmt2 = null;
+		//결과 행의 수 받을 변수 초기화
 		int row = -1;
 		
 		try {
 			// 데이터베이스 드라이버 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[SuppliesDao.deleteSupplies()] 드라이버 로딩 성공");
 			// 오토커밋해제
 			conn.setAutoCommit(false);
@@ -209,14 +210,14 @@ public class SuppliesDao {
 	public void insertPoolvillaSupplies(int pvNo, int suppliesNo, int suppliesCnt) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		int row = 0;
 		
 		try {
 			// 데이터베이스 드라이버 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[SuppliesDao.insertPoolvillaSupplies()] 드라이버 로딩 성공");
-			
+			//쿼리 작성
 			String sql = "INSERT INTO poolvilla_supplies(pv_no, supplies_no, supplies_cnt, update_date) VALUES (?, ?, ?, NOW())";
 			stmt = conn.prepareStatement(sql);
 			
@@ -248,12 +249,13 @@ public class SuppliesDao {
 	public void deletePoolvillaSupplies(int pvNo, int suppliesNo) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
+		//결과 행의 값 받을 변수 초기화
 		int row = 0;
 		
 		try {
 			// 데이터베이스 드라이버 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[SuppliesDao.deletePoolvillaSupplies()] 드라이버 로딩 성공");
 			
 			String sql = "DELETE FROM poolvilla_supplies WHERE pv_no = ? AND supplies_no = ?";

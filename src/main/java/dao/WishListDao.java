@@ -25,9 +25,6 @@ public class WishListDao {
 		try {
 			conn = DBUtil.getConnection();
 			System.out.println("[WishListDao.insertWishList()] conn : " + conn);
-			// 자동 커밋을 해제 
-			conn.setAutoCommit(false);
-			
 			// 찜 목록 생성 쿼리를 저장 
 			stmt = conn.prepareStatement(sql);
 			
@@ -43,17 +40,7 @@ public class WishListDao {
 				System.out.println("[WishListDao.insertWishList()] row : 입력 실패");
 			}
 			
-			// 커밋 실행 
-			conn.commit();
 		} catch (Exception e) {
-			try {
-				// 예외 발생시 롤백 
-				conn.rollback();
-			} catch (SQLException e1) {
-				// TODO: handle exception
-				e1.printStackTrace();
-			}
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -73,7 +60,6 @@ public class WishListDao {
 		
 		// DB 자원 준비 
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		
@@ -106,7 +92,8 @@ public class WishListDao {
 				+ " LIMIT ?,?";
 		
 		try {
-			// 디버깅 
+			//DB 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[WishListDao.selectWishList()] conn : " + conn);
 			
 			// 찜 목록 테이블+x의 데이터를 가져오는 쿼리를 저장한다 
@@ -157,15 +144,15 @@ public class WishListDao {
 	
 	// WISH_LIST 테이블 전체 행 갯수 구하는 메서드
 		public int selectWishListTotalRow(String customerId) {
+			//결과 값 받을 변수 초기화
 			int totalRow = 0;
-
+			//DB 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
-
 			String sql = "SELECT COUNT(*) cnt FROM wish_list wishList WHERE customer_id = ?";
 			try {
+				conn = DBUtil.getConnection();
 				System.out.println("[WishListDao.selectWishListTotalRow()] conn:" + conn);
 
 				stmt = conn.prepareStatement(sql);
@@ -178,7 +165,6 @@ public class WishListDao {
 					System.out.println("[WishListDao.selectWishListTotalRow()] totalRow :" + totalRow);
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				try {
@@ -198,19 +184,17 @@ public class WishListDao {
 		public void deleteWishList(int pvNo, String customerId) {
 			// DB 자원 준비 
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			
-			// 찜 목록 테이블 생성 쿼리 
-			String sql = "DELETE FROM wish_list WHERE customer_id = ? AND pv_no = ?";
-			
 			try {
+				//DB 연결
+				conn = DBUtil.getConnection();
 				System.out.println("[WishListDao.deleteWishList()] conn : " + conn);
-				// 자동 커밋을 해제 
-				conn.setAutoCommit(false);
 				
 				// 찜 목록 삭제 쿼리를 저장 
+				String sql = "DELETE FROM wish_list WHERE customer_id = ? AND pv_no = ?";
+				
 				stmt = conn.prepareStatement(sql);
 				
 				stmt.setString(1, customerId);
@@ -225,17 +209,7 @@ public class WishListDao {
 					System.out.println("[WishListDao.deleteWishList()] row : 입력 실패");
 				}
 				
-				// 커밋 실행 
-				conn.commit();
 			} catch (Exception e) {
-				try {
-					// 예외 발생시 롤백 
-					conn.rollback();
-				} catch (SQLException e1) {
-					// TODO: handle exception
-					e1.printStackTrace();
-				}
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				try {

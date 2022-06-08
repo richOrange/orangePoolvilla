@@ -12,7 +12,7 @@ public class DBUtil {
 		
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
-			 conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/orangepoolvilla", "root", "mariadb1234");
+			 conn = DriverManager.getConnection("jdbc:mariadb://:3306/orangepoolvilla", "root", "mariadb1234");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

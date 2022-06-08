@@ -260,7 +260,6 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 		
 		// DB 자원 준비 
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
@@ -271,19 +270,16 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 				+ " VALUES (?, ?, ?, ?, ?,'Y', now(), now(), ?)";
 		
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[ReviewDao.insertReview()] conn : " + conn);
-			// 자동 커밋을 해제 
-			conn.setAutoCommit(false);
-			
 			// 찜 목록 생성 쿼리를 저장 
 			stmt = conn.prepareStatement(sql);
-			
 			stmt.setInt(1, review.getCleanliness());
 			stmt.setString(2, review.getRevisit());
 			stmt.setInt(3, review.getSatisfaction());
 			stmt.setString(4, review.getOpinion());
 			stmt.setString(5, review.getReviewContents());
-			// stmt.setString(6, review.getReviewActive());
 			stmt.setInt(6, review.getReservationNo());
 			
 			// 찜 목록이 생성되면 1이라는 숫자값을 row에 저장 
@@ -295,18 +291,8 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 				System.out.println("[ReviewDao.insertReview()] row : 입력 실패");
 			}
 			
-			// 커밋 실행 
-			conn.commit();
 		} catch (Exception e) {
-			try {
-				// 예외 발생시 롤백 
-				conn.rollback();
-			} catch (SQLException e1) {
-				// TODO: handle exception
-				e1.printStackTrace();
-			}
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				e.printStackTrace();
 		} finally {
 			try {
 				// DB 연결을 종료 
@@ -326,15 +312,14 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		conn = DBUtil.getConnection();
 		
 		// 리뷰 테이블 삭제 쿼리 
 		String sql = "DELETE FROM review WHERE reservation_no = ?";
 		
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[ReviewDao.deleteReview()] conn : " + conn);
-			// 자동 커밋을 해제 
-			conn.setAutoCommit(false);
 			
 			// 찜 목록 삭제 쿼리를 저장 
 			stmt = conn.prepareStatement(sql);
@@ -351,17 +336,7 @@ public Review selectReviewOnePerCustomer(int reservationNo) {
 				System.out.println("[ReviewDao.deleteReview()] row : 입력 실패");
 			}
 			
-			// 커밋 실행 
-			conn.commit();
 		} catch (Exception e) {
-			try {
-				// 예외 발생시 롤백 
-				conn.rollback();
-			} catch (SQLException e1) {
-				// TODO: handle exception
-				e1.printStackTrace();
-			}
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {

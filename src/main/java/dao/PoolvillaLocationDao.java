@@ -14,11 +14,14 @@ import vo.PoolvillaLocation;
 public class PoolvillaLocationDao {
 	// orangepoolvilla db의 poolvilla_location 테이블 데이터 입력
 	public void insertPoolvillaLocation(String locationName) {
+		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
+		//쿼리 작성
 		String sql = "INSERT INTO poolvilla_location(location_name, update_date) VALUES (?, NOW());";
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, locationName);
 			int row = stmt.executeUpdate();
@@ -42,12 +45,16 @@ public class PoolvillaLocationDao {
 
 	// orangepoolvilla db의 poolvilla_location 테이블 목록 가져오기
 	public List<PoolvillaLocation> selectPoolvillaLocationList() {
+		//리턴 변수 초기화
 		List<PoolvillaLocation> list = new ArrayList<>();
+		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
+			//쿼리 작성
 			String sql = "SELECT location_no locationNo, location_name locationName, update_date updateDate FROM poolvilla_location";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
@@ -75,11 +82,13 @@ public class PoolvillaLocationDao {
 	public int deletePoolvillaLocation(int locationNo) {
 		// DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
+		//결과 행 받을 변수 초기화
 		int row = 0;
 
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
 			System.out.println("deletePoolvillaLocation DB 로딩");
 
 			String sql = "DELETE FROM poolvilla_location WHERE location_no = ?;";

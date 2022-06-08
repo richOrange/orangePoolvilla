@@ -17,11 +17,14 @@ import vo.PoolvillaOtt;
 public class OttDao {
 	
 	public void insertOtt(String ottName) {
+		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
+		//쿼리 작성
 		String sql = "INSERT INTO ott(ott_name, update_date) VALUES (?, NOW());";
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, ottName);
 			int row = stmt.executeUpdate();
@@ -45,20 +48,23 @@ public class OttDao {
 		
 		// orangepoolvilla db의 ott 테이블 목록 가져오기
 		public List<Ott> selectOttList() {
+			//리턴 변수 초기화
 			List<Ott> list = new ArrayList<>();
+			//DB 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			try {
+				//DB 연결
+				conn = DBUtil.getConnection();
 				String sql = "SELECT ott_no ottNo, ott_name ottName, update_date updateDate FROM ott";
 				stmt = conn.prepareStatement(sql);
 				rs = stmt.executeQuery();
 				while (rs.next()) {
 					Ott o = new Ott();
-					o.setOttNo(rs.getInt("ottNo"));
-					o.setOttName(rs.getString("ottName"));
-					o.setUpdateDate(rs.getString("updateDate"));
+					o.setOttNo(rs.getInt("ottNo")); // ott 번호
+					o.setOttName(rs.getString("ottName")); // ott 이름
+					o.setUpdateDate(rs.getString("updateDate")); //수정 날짜
 					list.add(o);
 				}
 			} catch (Exception e) {
@@ -77,16 +83,17 @@ public class OttDao {
 		
 		// pvno에 따른 orangepoolvilla db의 해당 풀빌라의 ott 테이블 목록 가져오기
 		public List<Map<String,Object>> selectPoolvillaOttByPvNo(int pvNo) {
+			//리턴 변수 초기화
 			List<Map<String,Object>> list = new ArrayList<>();
 			
 			// 데이터베이스 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			
 			try {
 				// 데이터베이스 드라이버 연결
+				conn = DBUtil.getConnection();
 				System.out.println("[PoolvillaDao.selectPoolvillaOttByPvNo()] 드라이버 로딩 성공");
 				
 				String sql = "SELECT po.pv_no pvNo"
@@ -127,12 +134,14 @@ public class OttDao {
 		public int deleteOtt(int ottNo) {
 			// DB 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt1 = null;
 			PreparedStatement stmt2 = null;
+			//결과행 확인 변수 초기화
 			int row = -1;
 
 			try {
+				//데이터 베이스 연결
+				conn = DBUtil.getConnection();
 				System.out.println("deleteOtt DB 로딩");
 				// 오토커밋해제
 				conn.setAutoCommit(false);
@@ -153,6 +162,11 @@ public class OttDao {
 					conn.commit();
 					}
 			} catch (Exception e) {
+				try {
+					conn.rollback(); //예외가 발생하면 롤백
+				} catch(SQLException e1) {
+				e1.printStackTrace();
+				}
 				e.printStackTrace();
 			} finally {
 				try {
@@ -170,13 +184,14 @@ public class OttDao {
 			
 			// 데이터베이스 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
+			//결과행 받을 변수 초기화
 			int row = 0;
 			
 			try {
 				// 데이터베이스 드라이버 연결
+				conn = DBUtil.getConnection();
 				System.out.println("[OttDao.insertPoolvillaOtt()] 드라이버 로딩 성공");
 				
 				String sql = "INSERT INTO poolvilla_ott(pv_no, ott_no, update_date) VALUES (?, ?, NOW())";
@@ -211,12 +226,13 @@ public class OttDao {
 		public void deletePoolvillaOtt(int pvNo, int ottNo) {
 			// 데이터베이스 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
-			int row = 0;
+			//결과행 받을 변수 초기화
+			int row = -1;
 			
 			try {
 				// 데이터베이스 드라이버 연결
+				conn = DBUtil.getConnection();
 				System.out.println("[OttDao.deletePoolvillaOtt()] 드라이버 로딩 성공");
 				
 				String sql = "DELETE FROM poolvilla_ott WHERE pv_no = ? AND ott_no = ?";

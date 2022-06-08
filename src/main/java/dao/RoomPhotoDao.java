@@ -15,21 +15,25 @@ import vo.RoomPhoto;
 
 public class RoomPhotoDao {
 	public int insertRoomPhoto(RoomPhoto roomPhoto) {
-		System.out.println("[PoolvillaDao.insertPoolvillaPhoto]");
+		//결과행수 받을 변수 초기화
 		int row=-1;
+		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql="INSERT INTO room_photo("
-				+ "							room_no"
-				+ "							,photo_name"
-				+ "							,photo_original_name"
-				+ "							,photo_type"
-				+ "							,create_date"
-				+ "							,update_date)"
-				+ "	VALUES(?,?,?,?,NOW(),NOW())";
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
+			System.out.println("[PoolvillaDao.insertPoolvillaPhoto] DB 연결");
+			//쿼리 작성
+			String sql="INSERT INTO room_photo("
+					+ "							room_no"
+					+ "							,photo_name"
+					+ "							,photo_original_name"
+					+ "							,photo_type"
+					+ "							,create_date"
+					+ "							,update_date)"
+					+ "	VALUES(?,?,?,?,NOW(),NOW())";
 			stmt = conn.prepareStatement(sql);					
 			stmt.setInt(1, roomPhoto.getRoomNo());
 			stmt.setString(2, roomPhoto.getPhotoName());
@@ -37,6 +41,7 @@ public class RoomPhotoDao {
 			stmt.setString(4, roomPhoto.getPhotoType());
 			row=stmt.executeUpdate();
 			System.out.println("[RoomPhotoDao.RoomPhoto] row " + row);
+			//디버깅
 			if(row ==1 ) {
 				System.out.println("[RoomPhotoDao.updatePassword] RoomPhoto 추가 성공");
 			} else {
@@ -57,22 +62,26 @@ public class RoomPhotoDao {
 	}
 	
 	public List<RoomPhoto> selectRoomPhoto(int roomNo){
+		//결과 값 받을 변수 초기화
 		List<RoomPhoto> list = new ArrayList<>();
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql ="SELECT photo_no"
-				+ "			,room_no"
-				+ "			,photo_name"
-				+ "			,photo_original_name"
-				+ "			,photo_type"
-				+ "			,photo_area"
-				+ "			,create_date"
-				+ "			,update_date"
-				+ "	FROM room_photo"
-				+ "	WHERE room_no = ?;";
 		try {
+			//DB연결
+			conn = DBUtil.getConnection();
+			System.out.println("[PoolvillaDao.selectRoomPhoto] DB 연결");
+			//쿼리 작성
+			String sql ="SELECT photo_no"
+					+ "			,room_no"
+					+ "			,photo_name"
+					+ "			,photo_original_name"
+					+ "			,photo_type"
+					+ "			,photo_area"
+					+ "			,create_date"
+					+ "			,update_date"
+					+ "	FROM room_photo"
+					+ "	WHERE room_no = ?;";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, roomNo);
             rs = stmt.executeQuery();
@@ -92,6 +101,7 @@ public class RoomPhotoDao {
 			   e.printStackTrace();
 		   } finally {
 			   try {
+				   //DB 자원 반납
 				   conn.close();
 			   } catch (SQLException e) {
 				   e.printStackTrace();
@@ -101,14 +111,18 @@ public class RoomPhotoDao {
 		
 		return list;
 	}
+	//룸 사진 삭제 기능
 	public void deletePoolvillaRoomPhoto(int roomNo) {
 		//DB자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
+			System.out.println("[PoolvillaDao.deletePoolvillaRoomPhoto] DB 연결");
+			//쿼리 작성
 			String sql = "DELETE FROM room_photo WHERE room_no = ?  ";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, roomNo);

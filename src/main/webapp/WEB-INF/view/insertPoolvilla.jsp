@@ -91,7 +91,7 @@
 		            		<select class="form-control" id="addressNo" name="addressNo">
 			       		    	<option value = "" style="text-align:center;">:: 주소 선택 ::</option>
 					            <c:forEach var="s" items="${searchAddressList}">
-					            		<option value="${s.addressNo}" style="text-align:center;">${s.addr}</option>
+					            		<option value="${s.addressNo}" style="text-align:center;">${s.address}</option>
 					            </c:forEach>
 			            	</select>
 		            	</c:if>

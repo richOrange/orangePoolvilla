@@ -15,13 +15,16 @@ public class PoolvillaPoolDao {
 	// orangepoolvilla db의 poolvilla_pool 테이블 데이터 입력
 		public int insertPoolvillaPool(PoolvillaPool pp) { 
 			// DB 자원 준비
-			
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
+			//결과 행 받을 변수 초기화
 			int row = -1;
+			//쿼리작성
 			String sql = "INSERT INTO poolvilla_pool(pv_no, pool_name, pool_width, pool_length, depth, hot_water, indoor_outdoor, update_date) VALUES(?, ?, ?, ?, ?, ?, ?, NOW());"; 
 			try {
+				//DB 연결
+				conn = DBUtil.getConnection();
+				System.out.println("[PoolvillaPoolDao.insertPoolvillaPool] DB 연결");
 				stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, pp.getPvNo());
 				stmt.setString(2, pp.getPoolName());
@@ -30,13 +33,12 @@ public class PoolvillaPoolDao {
 				stmt.setDouble(5, pp.getDepth());
 				stmt.setString(6, pp.getHotWater());
 				stmt.setString(7, pp.getIndoorOutdoor());
-				System.out.println("stmt :" );
 				row = stmt.executeUpdate();
 				System.out.println("row :" + row);
 				if (row == 1) {
-					System.out.println("입력 성공");
+					System.out.println("[PoolvillaPoolDao.insertPoolvillaPool] : 입력 성공");
 				} else {
-					System.out.println("입력 실패");
+					System.out.println("[PoolvillaPoolDao.insertPoolvillaPool] : 입력 실패");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -53,13 +55,27 @@ public class PoolvillaPoolDao {
 
 		// orangepoolvilla db의 poolvilla_pool 테이블 목록 가져오기
 		public List<PoolvillaPool> selectPoolvillaPoolList() {
+			//리턴타입 변수 초기화
 			List<PoolvillaPool> list = new ArrayList<>();
+			//DB 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
+			//쿼리 작성
+			String sql = "SELECT pool_no poolNo "
+					+ "					, pv_no pvNo "
+					+ "					, pool_name poolName "
+					+ "					, pool_width poolWidth "
+					+ "					, pool_length poolLength"
+					+ "					, depth"
+					+ "					, hot_water hotWater"
+					+ "					, indoor_outdoor indoorOutdoor"
+					+ "					, update_date updateDate"
+					+ "			 FROM poolvilla_pool;";
 			try {
-				String sql = "SELECT pool_no poolNo, pv_no pvNo, pool_name poolName, pool_width poolWidth, pool_length poolLength, depth, hot_water hotWater, indoor_outdoor indoorOutdoor, update_date updateDate FROM poolvilla_pool;";
+				//DB 연결
+				conn = DBUtil.getConnection();
+				System.out.println("[PoolvillaPoolDao.selectPoolvillaPoolList] DB 연결");
 				stmt = conn.prepareStatement(sql);
 				rs = stmt.executeQuery();
 				while (rs.next()) {
@@ -79,6 +95,7 @@ public class PoolvillaPoolDao {
 				e.printStackTrace();
 			} finally {
 				try {
+					//DB 자원 반납
 					rs.close();
 					stmt.close();
 					conn.close();
@@ -92,13 +109,14 @@ public class PoolvillaPoolDao {
 		public int deletePoolvillaPool(int pvNo, int poolNo) {
 			// DB 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
+			//결과행 받을 변수 초기화
 			int row = 0;
 
 			try {
-				System.out.println("deletePoolvillaPool DB 로딩");
-
+				//DB 연결
+				conn = DBUtil.getConnection();
+				System.out.println("[PoolvillaPoolDao.deletePoolvillaPool] : DB 로딩");
 				String sql = "DELETE FROM poolvilla_pool WHERE pool_no = ?;";
 				stmt = conn.prepareStatement(sql);
 
@@ -113,9 +131,9 @@ public class PoolvillaPoolDao {
 
 					// 디버깅 코드
 					if (row == 1) {
-						System.out.println("삭제 성공");
+						System.out.println("[PoolvillaPoolDao.deletePoolvillaPool] : 삭제 성공");
 					} else {
-						System.out.println("삭제 실패");
+						System.out.println("[PoolvillaPoolDao.deletePoolvillaPool] : 삭제 실패");
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -125,22 +143,27 @@ public class PoolvillaPoolDao {
 		}
 		// pvNo에 따른 pool 정보 출력
 		public List<PoolvillaPool> selectPoolvillaPoolListByPvNo(int pvNo) {
+			//리턴값 변수 초기화
 			List<PoolvillaPool> list = new ArrayList<>();
+			//DB 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
+			//쿼리 작성
+			String sql = "SELECT pool_no poolNo"
+					+ "		, pv_no pvNo"
+					+ "		, pool_name poolName"
+					+ "		, pool_width poolWidth"
+					+ "		, pool_length poolLength"
+					+ "		, depth, hot_water hotWater"
+					+ "		, indoor_outdoor indoorOutdoor"
+					+ "		, update_date updateDate"
+					+ " FROM poolvilla_pool"
+					+ " WHERE pv_no = ?;";
 			try {
-				String sql = "SELECT pool_no poolNo"
-						+ "		, pv_no pvNo"
-						+ "		, pool_name poolName"
-						+ "		, pool_width poolWidth"
-						+ "		, pool_length poolLength"
-						+ "		, depth, hot_water hotWater"
-						+ "		, indoor_outdoor indoorOutdoor"
-						+ "		, update_date updateDate"
-						+ " FROM poolvilla_pool"
-						+ " WHERE pv_no = ?;";
+				//DB 연결
+				conn = DBUtil.getConnection();
+				System.out.println("[PoolvillaPoolDao.selectPoolvillaPoolListByPvNo] : DB 로딩");
 				stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, pvNo);
 				

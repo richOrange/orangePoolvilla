@@ -24,12 +24,11 @@ public class CustomerDao {
 		Map<String,Object> sessionLoginMember = new HashMap<>();
 		
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sql = "SELECT customer_id customerId, level FROM customer WHERE customer_id=? AND customer_pw=PASSWORD(?)";
 		try {
-         
+			conn = DBUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customer.getCustomerId());
 			stmt.setString(2, customer.getCustomerPw());
@@ -53,38 +52,29 @@ public class CustomerDao {
 	
 	public void deleteCustomer(String customerId) {
 		int row = -1;
-		
+		//DB자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null; // deleteCustomerSql 에 사용
 		ResultSet rs = null;
 		
 		try {
-			
-			conn.setAutoCommit(false); 
-			//0. select customer_id
-			
+			//DB 연결
+			conn = DBUtil.getConnection();
+			System.out.println("[customerDao.deleteCustomer] DB 로딩");	
+			//쿼리 작성
 			String deleteCustomerSql = "UPDATE customer SET level = -1 WHERE customer_id=? ";
-			
 			stmt = conn.prepareStatement(deleteCustomerSql);
 			stmt.setString(1, customerId);
 			row = stmt.executeUpdate();
-			if (row == 1) {
-				conn.commit();
-			} else { 
-				conn.rollback();
+			if (row == 1) {// 성공
+				System.out.println("[customerDao.deleteCustomer] 삭제 성공");	
+			} else { //실패
+				System.out.println("[customerDao.deleteCustomer] 삭제 실패");	
 			}
 		} catch (Exception e) {
-			try {
-				conn.rollback();
-				
-			} catch(SQLException e1) {
-				e1.printStackTrace();
-			}
 			e.printStackTrace();
 		}finally {
 			try {
-				
 				stmt.close();
 				conn.close();
 			}catch(SQLException e) {
@@ -93,18 +83,19 @@ public class CustomerDao {
 		}
 	}
 	
-
+	//회원 등록
 	public int insertCustomer(Customer customer) {
+		//결과 행의 값을 넣을 리턴 변수값 초기화
 		int row = -1; 
-		String customerId = null;
-		String customerPw = null;
-		
+		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
+		PreparedStatement stmt3 = null;
 		ResultSet rs = null;
-		
+		//1번에 자동 등록된 비밀번호 변경 날짜를 넣을 변수 초기화
+		String customerPwUpdateDate = null;
+		//1번 회원 가입 쿼리
 		String sql ="INSERT INTO customer (customer_id "
 				+ "									,customer_pw "
 				+ "									,customer_pw_update_date"
@@ -117,14 +108,18 @@ public class CustomerDao {
 				+ "									,create_date "
 				+ "									,update_date)"
 				+ "									VALUES (?,PASSWORD(?),NOW(),?,?,?,?,?,3,NOW(),NOW()) ";
-		
-		String sql2 = "INSERT INTO customer_pw_history(customer_id, customer_pw, customer_pw_update_date) VALUES (?, PASSWORD(?), NOW())";
+		//2번. 회원 가입 후 방금 등록한 회원의 customer_pw_update_date 를 가져오는 쿼리
+		String sql2= "SELECT customer_pw_update_date customerPwUpdateDate FROM customer WHERE customer_id = ?";
+		//3번. 회원가입 후 비밀번호 변경 이력 테이블에 비밀번호 변경 이력 등록 쿼리
+		String sql3 = "INSERT INTO customer_pw_history(customer_id, customer_pw, customer_pw_update_date) VALUES (?, PASSWORD(?), NOW())";
 		
 		try {
-			
+			//DB연결
+			conn = DBUtil.getConnection();
+			System.out.println("[customerDao.insertCustomer] DB 로딩");
 			conn.setAutoCommit(false); // 자동 커밋을 해제
-			
-			stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			//1번 쿼리 실행
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customer.getCustomerId());
 			stmt.setString(2, customer.getCustomerPw());
 			stmt.setString(3, customer.getName());
@@ -133,17 +128,33 @@ public class CustomerDao {
 			stmt.setString(6, customer.getEmail());
 			stmt.setString(7, customer.getPhone());
 			row = stmt.executeUpdate();
+			if(row==1) {//1번쿼리 성공시에만 2번쿼리,3번 쿼리 실행
+				row = -1; //결과행 변수 다시 초기화
+				//2번쿼리 실행
+				stmt2 = conn.prepareStatement(sql2);
+				stmt2.setString(1, customer.getCustomerId()); // ?에 방금 가입한 아이디 대입
+				if(rs.next()) {
+					customerPwUpdateDate = rs.getString("customerPwUpdateDate");
+				}
+				if(customerPwUpdateDate!=null) {//쿼리 2번 성공시에 쿼리 3번 진행
+					//3번 쿼리 실행
+					stmt3 = conn.prepareStatement(sql3);
+					stmt3.setString(1, customer.getCustomerId());
+					stmt3.setString(2, customer.getCustomerPw());
+					row=	stmt3.executeUpdate();
+				}
+			}
+			if(row==1) {//3번쿼리까지 모두 성공시에 커밋
+				System.out.println("[customerDao.insertCustomer] 등록 성공");
+				conn.commit();	
+			}else {
+				System.out.println("[customerDao.insertCustomer] 등록 실패");
+				conn.rollback();
+			}
 			
-			rs = stmt.getGeneratedKeys();
-			stmt2 = conn.prepareStatement(sql2);
-			stmt2.setString(1, customer.getCustomerId());
-			stmt2.setString(2, customer.getCustomerPw());
-			stmt2.executeUpdate();
-			
-			conn.commit();	
 		} catch (Exception e) {
 			try { 
-				conn.rollback();
+				conn.rollback();//예외 발생시 롤백
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			} 
@@ -158,14 +169,13 @@ public class CustomerDao {
 		}
 		return row;
 	}
-	
+	//customer 비밀번호 변경 메서드
 	public int updatePassword(Customer customer,String newMemberPw) {
 		int row = -1; // 쿼리문 실패시 -1 반환
 		String customerId = null;// 변경된 Customer 저장할 변수 초기화
 		String updateDate = null;// 변경된 updateDate 저장할 변후 초기화
 		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt0 = null; // checkPwSpl에 사용
 		PreparedStatement stmt1 = null; // customer 에 사용
 		PreparedStatement stmt2 = null; // select custmomer_password_update_date에 사용
@@ -175,7 +185,7 @@ public class CustomerDao {
 		//1. Customer테이블의 상태를 변경
 		
 		try {
-			
+			conn = DBUtil.getConnection();
 			//오토커밋해제
 			conn.setAutoCommit(false);
 			// 0. 기존비밀번호와 중복여부 확인
@@ -246,7 +256,6 @@ public class CustomerDao {
 			e.printStackTrace();
 		}finally {
 			try {
-
 				conn.close();
 			}catch(SQLException e) {
 				e.printStackTrace();
@@ -255,11 +264,11 @@ public class CustomerDao {
 		return row;
 	}
 	
+	//회원정보 수정 메서드
 	public int updateCustomer(Customer customer) {
 		int row = -1;
 		
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		
 		String sql ="UPDATE customer SET name = ?"
@@ -271,7 +280,8 @@ public class CustomerDao {
 				+ "									WHERE customer_id = ? ";
 		
 		try {
-			
+			//DB연결
+			conn = DBUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customer.getName());
 			stmt.setString(2, customer.getGender());
@@ -294,49 +304,47 @@ public class CustomerDao {
 		}
 		return row;
 	}
-//아이디 중복 체크 기능
-public int checkIdInCustomer(String customerId) {
-	int row = -1; //쿼리가 정상적으로 작동 되지 않으면 -1
-	// 데이터베이스 자원 준비
-	Connection conn = null;
-	conn = DBUtil.getConnection();
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-	
-	try {
-		String sql = "SELECT * FROM customer WHERE customer_id = ?";
-		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, customerId);
-		rs = stmt.executeQuery();
+	//아이디 중복 체크 기능
+	public int checkIdInCustomer(String customerId) {
+		int row = -1; //쿼리가 정상적으로 작동 되지 않으면 -1
+		// 데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		
-		if(rs.next()) {
-			//rs.next()에 값이 있으면 row = 1
-			row = 1;
-			System.out.println("[CustomerDao.checkIdInCustomer()] 중복아이디가 존재합니다");
-		}else {//없으면 row = 0
-			row=0;
-			System.out.println("[CustomerDao.checkIdInCustomer()] 가입가능한 아이디입니다");
-		}
-		
-	} catch (Exception e) {
-		e.printStackTrace();
-	} finally {
 		try {
-			// 데이터베이스 자원 반환
-			conn.close();
-		} catch (SQLException e) {
+			conn = DBUtil.getConnection();
+			String sql = "SELECT * FROM customer WHERE customer_id = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				//rs.next()에 값이 있으면 row = 1
+				row = 1;
+				System.out.println("[CustomerDao.checkIdInCustomer()] 중복아이디가 존재합니다");
+			}else {//없으면 row = 0
+				row=0;
+				System.out.println("[CustomerDao.checkIdInCustomer()] 가입가능한 아이디입니다");
+			}
+			
+		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				// 데이터베이스 자원 반환
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		return row;
 	}
-	return row;
-}
 	// customerId로 회원 1명 정보 받아 오는 메세드
 	public Customer selectCustomerOneByCustomerId(String customerId) {
-		
-		Customer customer = null; 
-		
+		Customer customer = null; // 리턴변수 초기화
+		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		
@@ -345,7 +353,8 @@ public int checkIdInCustomer(String customerId) {
 				+ " WHERE customer_id = ?"; 
 		
 		try {
-		
+			//DB 연결
+			conn = DBUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customerId);
 			
@@ -381,11 +390,10 @@ public int checkIdInCustomer(String customerId) {
 
 // 회원 리스트보기 모델 
 	public ArrayList<HashMap<String, Object>> selectCustomerList() {
-		
+		//리턴 변수 초기화
 		ArrayList<HashMap<String, Object>> customerList = new ArrayList<>();
-		
+		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		
@@ -394,7 +402,8 @@ public int checkIdInCustomer(String customerId) {
 				+ " ORDER BY update_date DESC"; 
 		
 		try {
-			
+			//DB 연결
+			conn = DBUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
@@ -420,15 +429,17 @@ public int checkIdInCustomer(String customerId) {
 	}
 	// Customer 테이블 전체 행 갯수 구하는 메서드 : 회원 전체 수
 	public int selectCustomerTotalRow() {
+		//리턴변수 초기화
 		int totalRow = 0;
-
+		//DB자원준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		String sql = "SELECT COUNT(*) cnt FROM customer";
 		try {
+			//DB연결
+			conn = DBUtil.getConnection();
 			System.out.println("[customerDao.selectTotalRow()] conn:" + conn);
 
 			stmt = conn.prepareStatement(sql);
@@ -460,7 +471,6 @@ public int checkIdInCustomer(String customerId) {
 		String date = null; // 마지막 비밀번호 변경 날짜 들어갈 변수 초기화
 		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
@@ -470,6 +480,8 @@ public int checkIdInCustomer(String customerId) {
 				+ "WHERE customer_id = ? "
 				+ "ORDER BY customer_pw_update_date DESC";
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[customerDao.selectLastUpdateDateCustomerPw()] conn:" + conn);
 
 			stmt = conn.prepareStatement(sql);

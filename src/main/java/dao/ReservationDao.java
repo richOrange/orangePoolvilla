@@ -23,13 +23,14 @@ public class ReservationDao {
 		String updateDate = null; // 변경된 updateDate 저장할 변수 초기화
 		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt1 = null; // reservation update에 사용
 		PreparedStatement stmt2 = null; // select reservation_update_date에 사용
 		PreparedStatement stmt3 = null; // reservation_status_history insert에 사용
 		ResultSet rs = null; // select reservation_update_date에 사용 
-		//DB에 요청
 		try {
+			//DB에 요청
+			conn = DBUtil.getConnection();
+			System.out.println("[ReservationDao.updateReservationStatusOfReservation] DB연결");
 			//오토커밋해제
 			conn.setAutoCommit(false);
 			//1. reservation테이블의 상태를 변경
@@ -99,13 +100,13 @@ public class ReservationDao {
 		List<Integer> list = new ArrayList<>(); //예약상태 : 결제완료, 오늘 체크인이라 예약상태를 변경해야하는 예약을 리스트에 저장하는 변수 초기화
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
+			conn = DBUtil.getConnection();
+			System.out.println("[ReservationDao.selectReservationBytodayCheckIn()] 드라이버 로딩 성공");
 			//쿼리 입력
 			String sql = "SELECT reservation_no reservationNo"
 					+ "			 FROM reservation "
@@ -138,13 +139,13 @@ public class ReservationDao {
 		List<Integer> list = new ArrayList<>(); //예약상태 : 결제완료, 오늘 체크인이라 예약상태를 변경해야하는 예약을 리스트에 저장하는 변수 초기화
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
+			conn = DBUtil.getConnection();
+			System.out.println("[ReservationDao.selectReservationBytodayCheckOut()] 드라이버 로딩 성공");
 			//쿼리 입력
 			String sql = "SELECT reservation_no reservationNo"
 					+ "			 FROM reservation "
@@ -182,17 +183,18 @@ public class ReservationDao {
 	//customer 개인 예약 목록 보기 메서드
 	//myReservationController에서 호출
 	public List<Map<String,Object>> selectMyReservationList (String customerId,String reservationStatus){
+		//리턴값 받을 변수 초기화
 		List<Map<String,Object>> myReservationList = new ArrayList<>();
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			System.out.println("[CustomerDao.checkIdInCustomer()] 드라이버 로딩 성공");
-			
+			conn = DBUtil.getConnection();
+			System.out.println("[ReservationDao.selectMyReservationList()] 드라이버 로딩 성공");
+			//쿼리 작성
 			String sql = "SELECT res.reservation_no reservationNo"
 					+ "					, res.customer_id customerId"
 					+ "					, res.pv_no pvNo"
@@ -243,14 +245,17 @@ public class ReservationDao {
 	}
 	//예약 기능 메서드
 	public int insertReservation(Reservation reservation) {
+		//결과행 받을 변수 초기화
 		int row = -1;
 			//DB 자원 준비
 			Connection conn = null;
-			conn = DBUtil.getConnection();
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
 			//DB에 요청
 			try {
+				//DB 연결
+				conn = DBUtil.getConnection();
+				System.out.println("[reservationDao.insertReservation()] 드라이버 로딩 성공");
 				conn.setAutoCommit(false); // 오토커밋해제
 				//예약가능한지 검색하는 쿼리
 				String checkReservationsql = "SELECT COUNT(*) cnt  "
@@ -284,7 +289,12 @@ public class ReservationDao {
 				stmt2.setString(4,reservation.getReservationLastDate());
 				row = stmt2.executeUpdate(); // 결과값 새로 row에 입력 row가 1이면 성공, 0이면 중복은 안됫지만 실패
 				}
-				conn.commit(); //최종 커밋
+				
+				if(row==1) {// 최종적으로 row가 1이면 성공 커밋
+					conn.commit(); //최종 커밋
+				}else {//그이외에는 실패, rollback
+					conn.rollback();
+				}
 			} catch (Exception e) {
 				try {
 					conn.rollback(); //예외가 발생하면 롤백
@@ -310,23 +320,22 @@ public class ReservationDao {
 		ArrayList<HashMap<String, Object>> selectWaitReservationStatusCount = new ArrayList<HashMap<String, Object>>();
 		//DB자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		String sql = "SELECT reservation_status reservationStatus"
-				+ "					, COUNT(*) cnt "
-				+ "		FROM reservation "
-				+ "		WHERE reservation_status = '결제대기' "
-				+ "		OR reservation_status = '취소대기' "
-				+ "		OR reservation_status = '이용중' "
-				+ "GROUP BY reservationStatus";
 
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[HostDao.selectWaitReservationStatusCount()] : 드라이버 로딩 성공");
-
-			System.out.println("[HostDao.selectWaitReservationStatusCount()] conn:" + conn);
-
+			//쿼리 작성
+			String sql = "SELECT reservation_status reservationStatus"
+					+ "					, COUNT(*) cnt "
+					+ "		FROM reservation "
+					+ "		WHERE reservation_status = '결제대기' "
+					+ "		OR reservation_status = '취소대기' "
+					+ "		OR reservation_status = '이용중' "
+					+ "GROUP BY reservationStatus";
 			stmt = conn.prepareStatement(sql);
 
 			rs = stmt.executeQuery();
@@ -359,23 +368,22 @@ public class ReservationDao {
 				ArrayList<HashMap<String, Object>> selectCompleteReservationStatusCount = new ArrayList<HashMap<String, Object>>();
 				//DB자원준비
 				Connection conn = null;
-				conn = DBUtil.getConnection();
 				PreparedStatement stmt = null;
 				ResultSet rs = null;
 				
-				String sql = "SELECT reservation_status reservationStatus"
-						+ "					, COUNT(*) cnt "
-						+ "		FROM reservation "
-						+ "		WHERE reservation_status = '결제완료' "
-						+ "		OR reservation_status = '취소' "
-						+ "		OR reservation_status = '이용완료' "
-						+ "GROUP BY reservationStatus";
 				
 				try {
+					//DB 연결
+					conn = DBUtil.getConnection();
 					System.out.println("[HostDao.selectCompleteReservationStatusCount()] : 드라이버 로딩 성공");
-					
-					System.out.println("[HostDao.selectCompleteReservationStatusCount()] conn:" + conn);
-					
+					//쿼리 작성
+					String sql = "SELECT reservation_status reservationStatus"
+							+ "					, COUNT(*) cnt "
+							+ "		FROM reservation "
+							+ "		WHERE reservation_status = '결제완료' "
+							+ "		OR reservation_status = '취소' "
+							+ "		OR reservation_status = '이용완료' "
+							+ "GROUP BY reservationStatus";
 					stmt = conn.prepareStatement(sql);
 					
 					rs = stmt.executeQuery();
@@ -409,7 +417,6 @@ public class ReservationDao {
 		ArrayList<HashMap<String, Object>> reservationList = new ArrayList<>();
 
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
@@ -419,16 +426,16 @@ public class ReservationDao {
 		 * create_date, update_date FROM reservation ORDER BY reservation_date DESC
 		 * LIMIT ?,?;
 		 */
+		//쿼리 들어갈 변수 초기화
 		String sql = null;
 
 		try {
-			// 2022/05/12 이후 뺴야함
+			//DB연결
+			conn = DBUtil.getConnection();
 			System.out.println("[HostDao.selectReservationList()] : 드라이버 로딩 성공");
 
-			System.out.println("[HostDao.selectReservationList()] conn:" + conn);
-
 			if (reservationStatus.equals("")) {
-				sql = "SELECT reservation_no reservationNo"
+			 sql = "SELECT reservation_no reservationNo"
 						+ "			,customer_id customerId"
 						+ "			,pv_no pvNo"
 						+ "			, concat(reservation_begin_date,' ~ ',reservation_last_date) AS reservationDate"
@@ -456,7 +463,7 @@ public class ReservationDao {
 				stmt.setInt(3, rowPerPage);
 			}
 
-			rs = stmt.executeQuery(); // 
+			rs = stmt.executeQuery();  
 
 			while (rs.next()) {
 				HashMap<String, Object> map = new HashMap<>();
@@ -470,7 +477,6 @@ public class ReservationDao {
 				reservationList.add(map);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -478,7 +484,6 @@ public class ReservationDao {
 				stmt.close();
 				conn.close();
 			} catch (SQLException e1) {
-				// TODO: handle exception
 				e1.printStackTrace();
 			}
 		}
@@ -511,7 +516,6 @@ public class ReservationDao {
 				System.out.println("[HostDao.selectTotalRow()] totalRow :" + totalRow);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -519,7 +523,6 @@ public class ReservationDao {
 				stmt.close();
 				conn.close();
 			} catch (SQLException e1) {
-				// TODO: handle exception
 				e1.printStackTrace();
 			}
 		}

@@ -20,11 +20,12 @@ public class ComparePoolvillaDao {
 		
 		// DB 자원준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
 			String sql = "SELECT pv_no pvNo"
 					+ "			, pv_name pvName"
 					+ "		FROM poolvilla "

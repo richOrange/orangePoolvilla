@@ -41,6 +41,7 @@ public class CookingToolDao {
 		ResultSet rs = null;
 		
 		try {
+			conn = DBUtil.getConnection();
 			// 데이터베이스 드라이버 연결
 			System.out.println("[CookingToolDao.selectCookingTool()] 드라이버 로딩 성공");
 			
@@ -80,6 +81,7 @@ public class CookingToolDao {
 		
 		try {
 			// 데이터베이스 드라이버 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[CookingToolDao.insertCookingTool()] 드라이버 로딩 성공");
 			
 			String sql = "INSERT INTO cooking_tool(cooking_tool_name, update_date) VALUES (?, NOW())";
@@ -111,12 +113,12 @@ public class CookingToolDao {
 	public int deleteCookingTool(int cookingToolNo) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt1 = null;
 		PreparedStatement stmt2 = null;
 		int row = -1;
 		
 		try {
+			conn = DBUtil.getConnection();
 			// 데이터베이스 드라이버 연결
 			System.out.println("[CookingToolDao.deleteCookingTool()] 드라이버 로딩 성공");
 			// 오토커밋 해제
@@ -131,14 +133,19 @@ public class CookingToolDao {
 			
 			stmt2.setInt(1, cookingToolNo);
 			row = stmt2.executeUpdate();
-			if(row == 0) {
+			if(row == 1) {
 				System.out.println("[CookingToolDao.deleteCookingTool()] cooking tool 삭제 성공");
+				conn.commit();
 			} else {
 				System.out.println("[CookingToolDao.deleteCookingTool()] cooking tool 삭제 실패");
-				conn.commit();
 			}
 			
 		} catch (Exception e) {
+			try {
+				conn.rollback(); //예외가 발생하면 롤백
+			} catch(SQLException e1) {
+			e1.printStackTrace();
+			}
 			e.printStackTrace();
 		} finally {
 			try {
@@ -159,12 +166,12 @@ public class CookingToolDao {
 		
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
 			// 데이터베이스 드라이버 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[CookingToolDao.selectPoolvillaCookingTool()] 드라이버 로딩 성공");
 			
 			String sql = "SELECT pct.pv_no pvNo"
@@ -210,13 +217,13 @@ public class CookingToolDao {
 		
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		int row = 0;
 		
 		try {
 			// 데이터베이스 드라이버 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[CookingToolDao.insertPoolvillaCookingTool()] 드라이버 로딩 성공");
 			
 			String sql = "INSERT INTO poolvilla_cooking_tool(pv_no, cooking_tool_no, cooking_tool_cnt, update_date) VALUES (?, ?, ?, NOW())";
@@ -252,12 +259,12 @@ public class CookingToolDao {
 	public void deletePoolvillaCookingTool(int pvNo, int cookingToolNo) {
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		int row = 0;
 		
 		try {
 			// 데이터베이스 드라이버 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[CookingToolDao.deletePoolvillaCookingTool()] 드라이버 로딩 성공");
 			
 			String sql = "DELETE FROM poolvilla_cooking_tool WHERE pv_no = ? AND cooking_tool_no = ?";

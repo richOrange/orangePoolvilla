@@ -30,14 +30,18 @@ public class PoolvillaRoomDao {
 	
 	// orangepoolvilla db의 poolvilla_room 테이블 목록 가져오기
 	public List<PoolvillaRoom> selectPoolvillaRoomList() {
+		//리턴값 받을 변수 초기화
 		List<PoolvillaRoom> list = new ArrayList<>();
 		// DB 자원준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		//쿼리작성
+		String sql = "SELECT room_no roomNo, pv_no pvNo, room_type roomType, room_name roomName, room_info roomInfo, room_size roomSize, update_date updateDate FROM poolvilla_room";
 		try {
-			String sql = "SELECT room_no roomNo, pv_no pvNo, room_type roomType, room_name roomName, room_info roomInfo, room_size roomSize, update_date updateDate FROM poolvilla_room";
+			//DB 연결
+			conn = DBUtil.getConnection();
+			System.out.println("[PoolvillaRoomDao.selectPoolvillaRoomList] : DB연결");
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -70,16 +74,16 @@ public class PoolvillaRoomDao {
 	public int deletePoolvillaRoom(int roomNo) {
 		// DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
+		//결과 행 값 받을 변수 초기화
 		int row = 0;
-
 		try {
-			System.out.println("deletePoolvillaRoom DB 로딩");
-
+			//DB 연결
+			conn = DBUtil.getConnection();
+			System.out.println("[PoolvillaRoomDao.deletePoolvillaRoom] : DB연결");
+			//쿼리 작성
 			String sql = "DELETE FROM poolvilla_room WHERE room_no = ?";
 			stmt = conn.prepareStatement(sql);
-
 			stmt.setInt(1, roomNo);
 			row = stmt.executeUpdate();
 		} catch (Exception e) {
@@ -91,9 +95,9 @@ public class PoolvillaRoomDao {
 
 				// 디버깅 코드
 				if (row == 1) {
-					System.out.println("[PoolvillaRoomDao.insertPoolvillaRoom] 삭제 성공");
+					System.out.println("[PoolvillaRoomDao.deletePoolvillaRoom] 삭제 성공");
 				} else {
-					System.out.println("[PoolvillaRoomDao.insertPoolvillaRoom] 삭제 실패");
+					System.out.println("[PoolvillaRoomDao.deletePoolvillaRoom] 삭제 실패");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -104,18 +108,19 @@ public class PoolvillaRoomDao {
 	
 	// orangepoolvilla db의 해당 풀빌라의 room과 bed 테이블 목록 가져오기
 	public List<Map<String,Object>> selectPoolvillaRoomNBedByPvNo(int pvNo) {
+		//리턴값 받을 변수 초기화
 		List<Map<String,Object>> list = new ArrayList<>();
 		
 		// 데이터베이스 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
 			// 데이터베이스 드라이버 연결
-			System.out.println("[PoolvillaDao.selectPoolvillaRoomNBedByPvNo()] 드라이버 로딩 성공");
-
+			conn = DBUtil.getConnection();
+			System.out.println("[PoolvillaRoomDao.selectPoolvillaRoomNBedByPvNo] DB연결");
+			//쿼리작성
 			String sql = "SELECT rb.bed_no bedNo"
 					+ "									, pr.room_no roomNo"
 					+ "									, CONCAT(rb.bed_size,' ',rb.bed_cnt,'') bed "
@@ -171,13 +176,18 @@ public class PoolvillaRoomDao {
 	
 	// orangepoolvilla db의 poolvilla_room 테이블 room_name 가져오기
 	public List<Map<String,Object>> selectPoolvillaRoomRoomName(int pvNo) {
+		//리턴값 받을 변수 초기화
 		List<Map<String,Object>> list = new ArrayList<>();
 		// DB 자원준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
+			System.out.println("[PoolvillaRoomDao.selectPoolvillaRoomRoomName] DB연결");
+
+			//쿼리작성
 			String sql = "SELECT room_no roomNo"
 					+ "			, room_name roomName"
 					+ "		FROM poolvilla_room "
@@ -210,14 +220,19 @@ public class PoolvillaRoomDao {
 
 	// orangepoolvilla db의 poolvilla_room 테이블 데이터 입력
 	public int insertPoolvillaRoom(PoolvillaRoom pr) { 
-		
+		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
+		//결과 행 값 받을 변수 초기화
 		int row = -1;
 		
-		String sql = "INSERT INTO poolvilla_room(pv_no, room_type, room_name, room_info, room_size, update_date) VALUES(?, ?, ?, ?, ?, NOW())"; 
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
+			System.out.println("[PoolvillaRoomDao.insertPoolvillaRoom] DB연결");
+
+			//쿼리작성
+			String sql = "INSERT INTO poolvilla_room(pv_no, room_type, room_name, room_info, room_size, update_date) VALUES(?, ?, ?, ?, ?, NOW())"; 
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, pr.getPvNo());
 			stmt.setString(2, pr.getRoomType()); 
@@ -247,14 +262,18 @@ public class PoolvillaRoomDao {
 	
 	// orangepoolvilla db의 room_bed 테이블 데이터 입력
 	public void insertRoomBed(int pvNo, String bedSize, int bedCnt) { 
-		
+		//DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
 		PreparedStatement stmt = null;
+		//결과 행 수 값 반환할 변수 초기화
 		int row = -1;
 		
-		String sql = "INSERT INTO room_bed(room_no, bed_size, bed_cnt, update_date) VALUES(?, ?, ?, NOW())"; 
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
+			System.out.println("[PoolvillaRoomDao.insertRoomBed] DB연결");
+			//쿼리 작성
+			String sql = "INSERT INTO room_bed(room_no, bed_size, bed_cnt, update_date) VALUES(?, ?, ?, NOW())"; 
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, pvNo);
 			stmt.setString(2, bedSize); 
@@ -282,56 +301,54 @@ public class PoolvillaRoomDao {
 		}
 	}
 
-	// orangepoolvilla db의 poolvilla_room 테이블 데이터와 room_bed 데이터 삭제
+	// 방 삭제시 orangepoolvilla db의 poolvilla_room 테이블 데이터와 room_bed 데이터 삭제
 	public void deletePoolvillaRoomNBed(int pvNo, int roomNo) {
 		// DB 자원 준비
 		Connection conn = null;
-		conn = DBUtil.getConnection();
-		PreparedStatement rpStmt = null;
-		PreparedStatement rbStmt = null;
-		PreparedStatement prStmt = null;
-		
+		PreparedStatement rpStmt = null; //delete roomphoto stmt
+		PreparedStatement rbStmt = null;//delete roombed stmt
+		PreparedStatement prStmt = null;//delete poolvila_room stmt
+		//결과 행값 받을 변수 초기화
 		int row = 0;
 
 		try {
+			//DB 연결
+			conn = DBUtil.getConnection();
 			System.out.println("[PoolvillaRoomDao.deletePoolvillaRoomNBed] DB 로딩");
 			conn.setAutoCommit(false); // 자동 커밋을 해제
-			
+			//쿼리1. 방 번호에 따른 room_photo 테이블 정보 삭제 
 			String rpSql = "DELETE FROM room_photo WHERE room_no = ?";
 			rpStmt = conn.prepareStatement(rpSql);
-			
 			rpStmt.setInt(1, roomNo);
-			
 			rpStmt.executeUpdate();
-			
+			//쿼리2. 방번호에 따른 room_bed 테이블 정보 삭제
 			String rbSql = "DELETE FROM room_bed WHERE room_no = ?";
 			rbStmt = conn.prepareStatement(rbSql);
-
 			rbStmt.setInt(1, roomNo);
-			
 			rbStmt.executeUpdate();
-			
+			//쿼리3. 방번호에 따른 poolvilla_room 삭제
 			String prsql = "DELETE FROM poolvilla_room WHERE room_no = ?";
 			prStmt = conn.prepareStatement(prsql);
-
 			prStmt.setInt(1, roomNo);
-			
-			row = prStmt.executeUpdate();
-			
-			conn.commit();
-		} catch (Exception e) {
+			row = prStmt.executeUpdate(); // room 삭제 성공 여부
+			if(row==1) {//성공시 commit
+				System.out.println("[PoolvillaRoomDao.deletePoolvillaRoomNBed] 삭제 성공");
+				conn.commit();
+			} else {//실패시 rollback
+				System.out.println("[PoolvillaRoomDao.deletePoolvillaRoomNBed] 삭제 실패");
+				conn.rollback();
+			}
+		} catch (SQLException e) {
+			try {
+				conn.rollback(); //예외가 발생하면 롤백
+			} catch(SQLException e1) {
+			e1.printStackTrace();
+			}
 			e.printStackTrace();
 		} finally {
 			try {
 				// DB 자원 반환
 				conn.close();
-
-				// 디버깅 코드
-				if (row == 1) {
-					System.out.println("[PoolvillaRoomDao.deletePoolvillaRoomNBed] 삭제 성공");
-				} else {
-					System.out.println("[PoolvillaRoomDao.deletePoolvillaRoomNBed] 삭제 실패");
-				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
