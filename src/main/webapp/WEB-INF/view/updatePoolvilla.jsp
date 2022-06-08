@@ -88,14 +88,15 @@
 						<input type = "hidden" name = "pvNo" value = "${ param.pvNo }" readonly>
 			          	<input class="form-control" name="searchAddress" id ="searchAddress" placeholder="주소" type="text" value="${param.searchAddress}"/>
 			          	<button class="btn btn-primary" type="button" id="serarchReset">주소검색</button>
-						<c:if test="${searchAddressList != null}">
 		            		<select class="form-control" id="addressNo" name="addressNo">
+					            	<c:if test="${empty searchAddressList}">
+					            		<option value="${selectPoolvillaOne.addressNo}" style="text-align:center;" selected="selected">${selectPoolvillaOne.address}</option>
+					            	</c:if>
 			       		    	<option value = "" style="text-align:center;">:: 주소 선택 ::</option>
 					            <c:forEach var="s" items="${searchAddressList}">
-					            		<option value="${s.addressNo}" style="text-align:center;">${s.addr}</option>
+					            		<option value="${s.addressNo}" style="text-align:center;" selected="selected">${s.addr}</option>
 					            </c:forEach>
 			            	</select>
-		            	</c:if>
 			            <span id="addressNoHelper" class="helper"></span>
 					</td>
 				</tr>

@@ -23,6 +23,7 @@ public class WishListDao {
 		String sql = "INSERT INTO wish_list VALUES (?,?,NOW())";
 		
 		try {
+			conn = DBUtil.getConnection();
 			System.out.println("[WishListDao.insertWishList()] conn : " + conn);
 			// 자동 커밋을 해제 
 			conn.setAutoCommit(false);
